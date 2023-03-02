@@ -1,1 +1,0 @@
-Ball = detect_ball() 
