@@ -11,6 +11,15 @@ int currRealIdx;//used in first try when robot is solving the maze
 
 int currIdx;//Used in Second try when robot is walking on correct path
 
+
+
+int IR1;
+int IR2;
+int IR3;
+int IR4;
+int IR5;
+
+
 void Forward()
 {
 
@@ -138,10 +147,10 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
        delay(100);   
     }
     shortestPathCalculated = true;
-    GOT_SHORTEST_PATH(MAZE_ARRAY,SIZE_OF_ARRAY)
+    GOT_SHORTEST_PATH(MAZE_ARRAY,SIZE_OF_ARRAY);
 }
 
-void setup 
+void setup ()
 {
   //DECLARING IR1 IR2 IR3 IR4 AND IR5 AS INPUTS
   
@@ -167,14 +176,14 @@ void setup
 }
 
 
-void loop 
+void loop ()
 {
   // Leftmost -> IR1 - IR2 - IR3 - IR4 - IR5 <- Rightmost
-  IR1 = digitalRead(2) //First Left
-  IR2 = digitalRead(3) //Second Left
-  IR3 = digitalRead(4) //Center
-  IR4 = digitalRead(5) //Second Right
-  IR5 = digitalRead(6) //First Right
+  IR1 = digitalRead(2);//First Left
+  IR2 = digitalRead(3);//Second Left
+  IR3 = digitalRead(4);//Center
+  IR4 = digitalRead(5);//Second Right
+  IR5 = digitalRead(6);//First Right
 
   if(shortestPathCalculated){
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
