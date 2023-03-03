@@ -2,9 +2,64 @@
 // TODO: Implement Left, Forward, Right, U_Turn, Stop functions.
 // TODO: Change pins in setup to the right ones.
 
-char path[50];
-int actualSize = 0;
-bool shortestPathCalculated = false;
+
+char path[50];   //Assuming number of operations won't exceed 50
+int actualSize;
+bool shortestPathCalculated;
+char realPath[100];
+int currRealIdx;//used in first try when robot is solving the maze
+
+int currIdx;//Used in Second try when robot is walking on correct path
+
+void Forward()
+{
+
+}
+
+void Left()
+{
+
+}
+
+void Right()
+{
+
+}
+
+void U_Turn()
+{
+
+}
+
+void Stop()
+{
+
+}
+
+void MiniLeft()
+{
+
+}
+
+void MiniRight()
+{
+
+}
+
+
+void GOT_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
+{
+  int pIndex=0;
+  for(int i=0;i<SIZE_OF_ARRAY;i++)
+  {
+    if(MAZE_ARRAY[i]!=0)
+    {
+      path[pIndex++]=MAZE_ARRAY[i];
+    }
+
+  }
+  actualSize=pIndex;
+}
 
 void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
 {
@@ -34,7 +89,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'B';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1); 
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1); 
             }
 
            if(MAZE_ARRAY[i-1]== 'L' && MAZE_ARRAY[i+1] == 'S')
@@ -42,7 +97,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'R';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
             }
 
             if(MAZE_ARRAY[i-1]== 'R' && MAZE_ARRAY[i+1] == 'L')
@@ -50,7 +105,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'B';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);         
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);         
             }
 
             if(MAZE_ARRAY[i-1]== 'S' && MAZE_ARRAY[i+1] == 'L')
@@ -58,7 +113,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'R';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);             
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);             
             }
 
             if(MAZE_ARRAY[i-1]== 'S' && MAZE_ARRAY[i+1] == 'S')
@@ -66,7 +121,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'B';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);             
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);             
             }
 
             if(MAZE_ARRAY[i-1]== 'L' && MAZE_ARRAY[i+1] == 'L')
@@ -74,7 +129,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
               MAZE_ARRAY[i] = 'S';
               MAZE_ARRAY[i-1] = 0;
               MAZE_ARRAY[i+1] = 0;
-              REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
+              // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
             }
             
           i = -1;
@@ -83,6 +138,7 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
        delay(100);   
     }
     shortestPathCalculated = true;
+    GOT_SHORTEST_PATH(MAZE_ARRAY,SIZE_OF_ARRAY)
 }
 
 void setup 
@@ -100,9 +156,16 @@ void setup
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
+
+
+  shortestPathCalculated=false;
+  actualSize=0;
+  currRealIdx=0;
+  currIdx=0;
+
+
 }
 
-int currIdx = 0;
 
 void loop 
 {
@@ -117,6 +180,18 @@ void loop
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
     {
       Forward();
+    }
+    else if(IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+    {
+      MiniLeft();
+    }
+    else if(IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+    {
+      MiniRight();
+    }
+    else if(IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)
+    {
+      Stop();
     }
     else{
       switch(path[currIdx]){
@@ -145,37 +220,59 @@ void loop
     if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Left turn
     {
       Left();
+      realPath[currRealIdx]='L';
+
     }
 
     if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Right Turn
     {
       Right();
+      realPath[currRealIdx]='R';
+      
+
     }
 
     if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//T Intersection
     {
       Left(); // As left is possible
+      realPath[currRealIdx]='L';
+
     }
 
     if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Left T Intersection
     {
       Left();// As Left is possible
+      realPath[currRealIdx]='L';
     }
 
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Right T Tntersection
     {
       Forward();//As Straight path is possible
+      realPath[currRealIdx]='S';
+
     }
 
     if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Dead End
     {
       U_Turn(); //As no other direction is possible
+      realPath[currRealIdx]='B';
+
     }
 
-    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//4 Lane intersection
+    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//4 Lane intersection //Check this
     {
       Left(); //As no other direction is possible
     } 
+
+    if (IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+    {
+      MiniLeft();
+    }
+
+    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+    {
+      MiniRight();
+    }
 
     //--------------
     //      |<-
