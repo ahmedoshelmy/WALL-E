@@ -207,7 +207,7 @@
                     android:layout_marginRight="@dimen/bottom_sheet_control_text_side_margin"
                     android:gravity="center"
                     android:minEms="@integer/bottom_sheet_control_text_min_ems"
-                    android:text="4"
+                    android:text="6"
                     android:textColor="@color/bottom_sheet_text_color"
                     android:textSize="@dimen/bottom_sheet_text_size" />
 
@@ -238,7 +238,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="#ffffff"
                 android:entries="@array/delegate_spinner_titles"
                 android:minWidth="@dimen/bottom_sheet_spinner_delegate_min_width"
                 android:spinnerMode="dropdown"
@@ -266,7 +265,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="49dp"
                 android:layout_marginRight="0dp"
-                android:background="#ffffff"
                 android:entries="@array/models_spinner_titles"
                 android:minWidth="@dimen/bottom_sheet_spinner_model_min_width"
                 android:spinnerMode="dropdown"
