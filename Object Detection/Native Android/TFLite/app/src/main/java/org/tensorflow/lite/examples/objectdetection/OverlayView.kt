@@ -23,11 +23,13 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import java.util.LinkedList
 import kotlin.math.max
 import org.tensorflow.lite.task.vision.detector.Detection
+import kotlin.math.roundToInt
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -85,6 +87,9 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
             val drawableText =
                 result.categories[0].label + " " +
                         String.format("%.2f", result.categories[0].score)
+
+            // log the objects detected
+            Log.i("Data",result.categories[0].label + " location = (" + String.format("%1f",(((right-left)/2 + left)*100.0).roundToInt()/100.0) + ","+ String.format("%1f",(((bottom-top)/2 + top)*100.0).roundToInt()/100.0) + ") and radius = "+ String.format("%1f",(((right-left)/2)*100.0).roundToInt()/100.0) )
 
             // Draw rect behind display text
             textBackgroundPaint.getTextBounds(drawableText, 0, drawableText.length, bounds)
