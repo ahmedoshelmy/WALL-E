@@ -36,7 +36,7 @@
     <string name="label_max_results">Max Results</string>
     <string name="label_threads">Number of Threads</string>
     <string name="label_delegate">Delegate</string>
-    <string name="label_models">ML Model</string>
+    <string name="label_models">ML</string>
 
     <string-array name="delegate_spinner_titles">
         <item>CPU</item>
@@ -49,6 +49,7 @@
         <item>EfficientDet Lite0</item>
         <item>EfficientDet Lite1</item>
         <item>EfficientDet Lite2</item>
-        <item>Malek Model V1</item>
+        <item>Custom Model V1</item>
+        <item>Custom Model V2</item>
     </string-array>
 </resources>

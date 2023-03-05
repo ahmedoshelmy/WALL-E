@@ -29,7 +29,7 @@ import org.tensorflow.lite.task.vision.detector.ObjectDetector
 
 class ObjectDetectorHelper(
     var threshold: Float = 0.5f,
-    var numThreads: Int = 2,
+    var numThreads: Int = 4,
     var maxResults: Int = 3,
     var currentDelegate: Int = 0,
     var currentModel: Int = 0,
@@ -88,7 +88,8 @@ class ObjectDetectorHelper(
                 MODEL_EFFICIENTDETV0 -> "efficientdet-lite0.tflite"
                 MODEL_EFFICIENTDETV1 -> "efficientdet-lite1.tflite"
                 MODEL_EFFICIENTDETV2 -> "efficientdet-lite2.tflite"
-                MalekV1 -> "malek-model1.tflite"
+                V1 -> "model1.tflite"
+                V2 -> "model1.tflite"
                 else -> "mobilenetv1.tflite"
             }
 
@@ -151,6 +152,7 @@ class ObjectDetectorHelper(
         const val MODEL_EFFICIENTDETV0 = 1
         const val MODEL_EFFICIENTDETV1 = 2
         const val MODEL_EFFICIENTDETV2 = 3
-        const val MalekV1 = 4
+        const val V1 = 4
+        const val V2 = 5
     }
 }

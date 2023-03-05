@@ -155,7 +155,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
         // When clicked, increase the number of threads used for detection
         fragmentCameraBinding.bottomSheetLayout.threadsPlus.setOnClickListener {
-            if (objectDetectorHelper.numThreads < 4) {
+            if (objectDetectorHelper.numThreads < 8) {
                 objectDetectorHelper.numThreads++
                 updateControlsUi()
             }
