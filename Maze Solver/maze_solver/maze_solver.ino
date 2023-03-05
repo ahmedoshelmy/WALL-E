@@ -19,40 +19,73 @@ int IR3;
 int IR4;
 int IR5;
 
+int motor_lA = 7;
+int motor_lB = 8;
+int motor_rA = 9;
+int motor_rB = 10;
+
 
 void Forward()
 {
-
+  digitalWrite(motor_lA, 1);
+  digitalWrite(motor_lB, 0);
+  digitalWrite(motor_rA, 1);
+  digitalWrite(motor_rB, 0);
+  delay(1000);
 }
 
 void Left()
 {
-
+  digitalWrite(motor_lA, 0);
+  digitalWrite(motor_lB, 1);
+  digitalWrite(motor_rA, 1);
+  digitalWrite(motor_rB, 0);
+  delay(10);
 }
 
 void Right()
 {
-
+  digitalWrite(motor_lA, 1);
+  digitalWrite(motor_lB, 0);
+  digitalWrite(motor_rA, 0);
+  digitalWrite(motor_rB, 1);
+  delay(10);
 }
 
 void U_Turn()
 {
-
+  digitalWrite(motor_lA, 0);
+  digitalWrite(motor_lB, 1);
+  digitalWrite(motor_rA, 1);
+  digitalWrite(motor_rB, 0);
+  delay(900);
 }
 
 void Stop()
 {
-
+  digitalWrite(motor_lA, 0);
+  digitalWrite(motor_lB, 0);
+  digitalWrite(motor_rA, 0);
+  digitalWrite(motor_rB, 0);
+  delay(300);
 }
 
 void MiniLeft()
 {
-
+  digitalWrite(motor_lA, 0);
+  digitalWrite(motor_lB, 1);
+  digitalWrite(motor_rA, 1);
+  digitalWrite(motor_rB, 0);
+  delay(10);
 }
 
 void MiniRight()
 {
-
+  digitalWrite(motor_lA, 1);
+  digitalWrite(motor_lB, 0);
+  digitalWrite(motor_rA, 0);
+  digitalWrite(motor_rB, 1);
+  delay(10);
 }
 
 
@@ -291,6 +324,7 @@ void loop ()
     if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//End of Maze
     {
       Stop(); //As no other direction is possible
+      CALCULATE_SHORTEST_PATH(realPath, 100);
     } 
   }
 
