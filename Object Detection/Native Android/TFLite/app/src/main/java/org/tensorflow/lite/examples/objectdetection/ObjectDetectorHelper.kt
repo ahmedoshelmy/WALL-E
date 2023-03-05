@@ -28,13 +28,13 @@ import org.tensorflow.lite.task.vision.detector.Detection
 import org.tensorflow.lite.task.vision.detector.ObjectDetector
 
 class ObjectDetectorHelper(
-  var threshold: Float = 0.5f,
-  var numThreads: Int = 2,
-  var maxResults: Int = 3,
-  var currentDelegate: Int = 0,
-  var currentModel: Int = 0,
-  val context: Context,
-  val objectDetectorListener: DetectorListener?
+    var threshold: Float = 0.5f,
+    var numThreads: Int = 2,
+    var maxResults: Int = 3,
+    var currentDelegate: Int = 0,
+    var currentModel: Int = 0,
+    val context: Context,
+    val objectDetectorListener: DetectorListener?
 ) {
 
     // For this example this needs to be a var so it can be reset on changes. If the ObjectDetector
@@ -88,6 +88,7 @@ class ObjectDetectorHelper(
                 MODEL_EFFICIENTDETV0 -> "efficientdet-lite0.tflite"
                 MODEL_EFFICIENTDETV1 -> "efficientdet-lite1.tflite"
                 MODEL_EFFICIENTDETV2 -> "efficientdet-lite2.tflite"
+                MalekV1 -> "malek-model1.tflite"
                 else -> "mobilenetv1.tflite"
             }
 
@@ -128,16 +129,17 @@ class ObjectDetectorHelper(
             results,
             inferenceTime,
             tensorImage.height,
-            tensorImage.width)
+            tensorImage.width
+        )
     }
 
     interface DetectorListener {
         fun onError(error: String)
         fun onResults(
-          results: MutableList<Detection>?,
-          inferenceTime: Long,
-          imageHeight: Int,
-          imageWidth: Int
+            results: MutableList<Detection>?,
+            inferenceTime: Long,
+            imageHeight: Int,
+            imageWidth: Int
         )
     }
 
@@ -149,5 +151,6 @@ class ObjectDetectorHelper(
         const val MODEL_EFFICIENTDETV0 = 1
         const val MODEL_EFFICIENTDETV1 = 2
         const val MODEL_EFFICIENTDETV2 = 3
+        const val MalekV1 = 4
     }
 }
