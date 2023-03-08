@@ -28,6 +28,7 @@
 
     <!-- Declare permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.usb.host"></uses-feature>
 
     <application
         android:icon="@mipmap/ic_launcher"

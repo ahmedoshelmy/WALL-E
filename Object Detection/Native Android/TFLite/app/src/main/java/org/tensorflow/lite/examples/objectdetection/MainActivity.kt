@@ -16,10 +16,15 @@
 
 package org.tensorflow.lite.examples.objectdetection
 
+import android.hardware.usb.UsbDevice
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.physicaloid.lib.Physicaloid
+import com.physicaloid.lib.usb.UsbAccessor
 import org.tensorflow.lite.examples.objectdetection.databinding.ActivityMainBinding
+
 
 /**
  * Main entry point into our app. This app follows the single-activity pattern, and all
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
     }
 
     override fun onBackPressed() {

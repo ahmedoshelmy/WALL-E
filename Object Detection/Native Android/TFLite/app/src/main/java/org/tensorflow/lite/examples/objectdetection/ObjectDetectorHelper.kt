@@ -28,11 +28,11 @@ import org.tensorflow.lite.task.vision.detector.Detection
 import org.tensorflow.lite.task.vision.detector.ObjectDetector
 
 class ObjectDetectorHelper(
-    var threshold: Float = 0.5f,
-    var numThreads: Int = 6,
-    var maxResults: Int = 3,
-    var currentDelegate: Int = 0,
-    var currentModel: Int = 0,
+    var threshold: Float = 0.3f,
+    var numThreads: Int = 4,
+    var maxResults: Int = 2,
+    var currentDelegate: Int = DELEGATE_CPU,
+    var currentModel: Int = V1,
     val context: Context,
     val objectDetectorListener: DetectorListener?
 ) {
@@ -91,7 +91,7 @@ class ObjectDetectorHelper(
                 V1 -> "V1.tflite"
                 V2 -> "V2.tflite"
                 V3 -> "V3.tflite"
-                else -> "mobilenetv1.tflite"
+                else -> "V1.tflite"
             }
 
         try {

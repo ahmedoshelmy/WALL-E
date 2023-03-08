@@ -28,6 +28,20 @@ allprojects {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
