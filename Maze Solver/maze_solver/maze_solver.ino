@@ -1,4 +1,4 @@
-
+// TODO: Check how to differentiate between lane Intersection and end of maze
 // TODO: Implement Left, Forward, Right, U_Turn, Stop functions.
 // TODO: Change pins in setup to the right ones.
 
@@ -325,14 +325,14 @@ void loop ()
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Left turn
     {
       Left();
-      realPath[currRealIdx]='L';
+      realPath[currRealIdx++]='L';
 
     }
 
     if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Right Turn
     {
       Right();
-      realPath[currRealIdx]='R';
+      realPath[currRealIdx++]='R';
       
 
     }
@@ -340,33 +340,36 @@ void loop ()
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//T Intersection
     {
       Left(); // As left is possible
-      realPath[currRealIdx]='L';
+      realPath[currRealIdx++]='L';
 
     }
 
     if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Left T Intersection
     {
       Left();// As Left is possible
-      realPath[currRealIdx]='L';
+      realPath[currRealIdx++]='L';
     }
 
     if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Right T Tntersection
     {
       Forward();//As Straight path is possible
-      realPath[currRealIdx]='S';
+      realPath[currRealIdx++]='S';
 
     }
 
     if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Dead End
     {
       // U_Turn(); //As no other direction is possible
-      Stop();
-      realPath[currRealIdx]='B';
+      // Stop();
+      U_Turn();
+      realPath[currRealIdx++]='B';
 
     }
 
-    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//4 Lane intersection //Check this
+    //here we want to check if it's + of end of game
+    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//4 Lane intersection //Check this////////////////////////////////////////////////////////
     {
+      //if left go left and add L to realPath, if end stop and calc shortest
       Left(); //As no other direction is possible
     } 
 
@@ -385,10 +388,10 @@ void loop ()
     //      |
     //      |
 
-    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//End of Maze
+    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//End of Maze // can be eliminated and added with case of +
     {
       Stop(); //As no other direction is possible
-      CALCULATE_SHORTEST_PATH(realPath, 100);
+      CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
     } 
   }
 
