@@ -2,6 +2,10 @@
 // TODO: Implement Left, Forward, Right, U_Turn, Stop functions.
 // TODO: Change pins in setup to the right ones.
 
+//connect 10 to EnA
+//connect 11 to EnB
+
+
 
 char path[50];   //Assuming number of operations won't exceed 50
 int actualSize;
@@ -11,7 +15,10 @@ int currRealIdx;//used in first try when robot is solving the maze
 
 int currIdx;//Used in Second try when robot is walking on correct path
 
+int fullSpeed=254;
 
+float ENA=10;
+float ENB=11;
 
 int IR1;
 int IR2;
@@ -19,10 +26,17 @@ int IR3;
 int IR4;
 int IR5;
 
+
+int IR1Add=2;
+int IR2Add=3;
+int IR3Add=4;
+int IR4Add=5;
+int IR5Add=6;
+
 int motor_lA = 7;
 int motor_lB = 8;
 int motor_rA = 9;
-int motor_rB = 10;
+int motor_rB = 12;///connect IN4 with 12
 
 
 void Forward()
@@ -31,16 +45,23 @@ void Forward()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  delay(1000);
+  analogWrite(ENA,fullSpeed/2.0);
+  analogWrite(ENB,fullSpeed/2.0);
+  
+
+  // delay(100);
 }
 
 void Left()
 {
   digitalWrite(motor_lA, 0);
-  digitalWrite(motor_lB, 1);
+  digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  delay(10);
+  analogWrite(ENA,fullSpeed/2.0);
+  analogWrite(ENB,fullSpeed/2.0);
+
+  // delay(10);
 }
 
 void Right()
@@ -48,8 +69,11 @@ void Right()
   digitalWrite(motor_lA, 1);
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
-  digitalWrite(motor_rB, 1);
-  delay(10);
+  digitalWrite(motor_rB, 0);
+  analogWrite(ENA,fullSpeed/2.0);
+  analogWrite(ENB,fullSpeed/2.0);
+
+  // delay(10);
 }
 
 void U_Turn()
@@ -58,7 +82,10 @@ void U_Turn()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  delay(900);
+  analogWrite(ENA,fullSpeed/2.0);
+  analogWrite(ENB,fullSpeed/2.0);
+
+  // delay(900);
 }
 
 void Stop()
@@ -67,25 +94,40 @@ void Stop()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 0);
-  delay(300);
+  analogWrite(ENA,fullSpeed/2.0);
+  analogWrite(ENB,fullSpeed/2.0);
+
+  delay(1000);
 }
 
 void MiniLeft()
 {
+  while(!(IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH))
+  {
   digitalWrite(motor_lA, 0);
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  delay(10);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
+
+  }
+  // delay(10);
 }
 
 void MiniRight()
 {
+  while(!(IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH))
+  {
   digitalWrite(motor_lA, 1);
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  delay(10);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
+
+  }
+  // delay(10);
 }
 
 
@@ -187,17 +229,17 @@ void setup ()
 {
   //DECLARING IR1 IR2 IR3 IR4 AND IR5 AS INPUTS
   
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-  pinMode(4, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
+  pinMode(IR1Add, INPUT);
+  pinMode(IR2Add, INPUT);
+  pinMode(IR3Add, INPUT);
+  pinMode(IR4Add, INPUT);
+  pinMode(IR5Add, INPUT);
 
   //DECLARING MOTORS AS OUTPUTS
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
+  pinMode(motor_lA, OUTPUT);
+  pinMode(motor_lB, OUTPUT);
+  pinMode(motor_rA, OUTPUT);
+  pinMode(motor_rB, OUTPUT);
 
 
   shortestPathCalculated=false;
@@ -219,19 +261,19 @@ void loop ()
   IR5 = digitalRead(6);//First Right
 
   if(shortestPathCalculated){
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
+    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Straight path
     {
       Forward();
     }
-    else if(IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+    else if(IR1 == HIGH && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)
     {
       MiniLeft();
     }
-    else if(IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+    else if(IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == HIGH)
     {
       MiniRight();
     }
-    else if(IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)
+    else if(IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)
     {
       Stop();
     }
@@ -254,19 +296,19 @@ void loop ()
     }
   }
   else{
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
+    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Straight path
     {
       Forward();
     }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Left turn
+    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Left turn
     {
       Left();
       realPath[currRealIdx]='L';
 
     }
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Right Turn
+    if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Right Turn
     {
       Right();
       realPath[currRealIdx]='R';
@@ -274,44 +316,45 @@ void loop ()
 
     }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//T Intersection
+    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//T Intersection
     {
       Left(); // As left is possible
       realPath[currRealIdx]='L';
 
     }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Left T Intersection
+    if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Left T Intersection
     {
       Left();// As Left is possible
       realPath[currRealIdx]='L';
     }
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Right T Tntersection
+    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Right T Tntersection
     {
       Forward();//As Straight path is possible
       realPath[currRealIdx]='S';
 
     }
 
-    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Dead End
+    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Dead End
     {
-      U_Turn(); //As no other direction is possible
+      // U_Turn(); //As no other direction is possible
+      Stop();
       realPath[currRealIdx]='B';
 
     }
 
-    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//4 Lane intersection //Check this
+    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//4 Lane intersection //Check this
     {
       Left(); //As no other direction is possible
     } 
 
-    if (IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+    if (IR1 == HIGH && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)
     {
       MiniLeft();
     }
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == HIGH)
     {
       MiniRight();
     }
@@ -321,7 +364,7 @@ void loop ()
     //      |
     //      |
 
-    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//End of Maze
+    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//End of Maze
     {
       Stop(); //As no other direction is possible
       CALCULATE_SHORTEST_PATH(realPath, 100);
