@@ -18,14 +18,12 @@ package org.tensorflow.lite.examples.objectdetection
 
 import android.content.Context
 import android.graphics.*
-import android.text.Html
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.physicaloid.lib.Physicaloid
-import com.physicaloid.lib.usb.driver.uart.UartConfig
 import org.tensorflow.lite.task.vision.detector.Detection
 import java.util.*
 import kotlin.math.max
@@ -43,7 +41,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
     private var bounds = Rect()
 
-    private lateinit var mPhysicaloid : Physicaloid
+    private lateinit var mPhysicaloid: Physicaloid
     private var ready = false
 
     init {
@@ -92,50 +90,34 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
                 result.categories[0].label + " " +
                         String.format("%.2f", result.categories[0].score)
 
+            var direction: String
+
+            if (((right - left) / 2 + left) >= ((1080 / 2) + 30)) {
+                direction = "right"
+            } else if (((right - left) / 2 + left) <= ((1080 / 2) - 30)) {
+                direction = "left"
+            } else {
+                direction = "center"
+            }
+
+            var print: String = result.categories[0].label + " location = (" + String.format(
+                "%1f",
+                (((right - left) / 2 + left) * 100.0).roundToInt() / 100.0
+            ) + "," + String.format(
+                "%1f",
+                (((bottom - top) / 2 + top) * 100.0).roundToInt() / 100.0
+            ) + ") and radius = " + String.format(
+                "%1f",
+                (((right - left) / 2) * 100.0).roundToInt() / 100.0
+            ) + " direction = "+direction
+
+            val tv = Constants.Act.findViewById<TextView>(R.id.fragment_logger)
+            tv.text =  print
             // log the objects detected
             Log.i(
                 "Data",
-                result.categories[0].label + " location = (" + String.format(
-                    "%1f",
-                    (((right - left) / 2 + left) * 100.0).roundToInt() / 100.0
-                ) + "," + String.format(
-                    "%1f",
-                    (((bottom - top) / 2 + top) * 100.0).roundToInt() / 100.0
-                ) + ") and radius = " + String.format(
-                    "%1f",
-                    (((right - left) / 2) * 100.0).roundToInt() / 100.0
-                )
+                print
             )
-
-//            if (!::mPhysicaloid.isInitialized){
-//                mPhysicaloid = Physicaloid(context);
-//                if (mPhysicaloid.open()){
-//                    Toast.makeText(context , "opened" , Toast.LENGTH_SHORT).show();
-//                    ready = true
-//                }else{
-//                    Toast.makeText(context , "failed" , Toast.LENGTH_SHORT).show();
-//                    ready = false
-//                }
-//
-//            }
-//
-//            if (!ready){
-//                if (mPhysicaloid.open()){
-//                    Toast.makeText(context , "opened" , Toast.LENGTH_SHORT).show();
-//                    ready = true
-//                }else{
-//                    Toast.makeText(context , "failed" , Toast.LENGTH_SHORT).show();
-//                    ready = false
-//                }
-//            }
-//
-//
-//            if(ready) {
-//                var message ="a"
-//                var b = message.toByteArray();
-//                mPhysicaloid.write(b,b.size);
-//            }
-
 
 
 

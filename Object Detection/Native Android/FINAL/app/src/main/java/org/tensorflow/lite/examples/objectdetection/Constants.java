@@ -62,15 +62,15 @@ public class Constants {
 //                                }
 //
 //                                while (true) {
-//
 //                                    serialPort.write("a".getBytes());
 //                                    try {
-//                                        Thread.sleep(200);
+//                                        Thread.sleep(2000);
 //                                    } catch (InterruptedException e) {
 //                                        e.printStackTrace();
 //                                    }
 //                                }
 //                            }).start(); //for debugging only
+
                         } else {
                             Log.d("SERIAL", "PORT NOT OPEN");
                         }
@@ -81,7 +81,7 @@ public class Constants {
                     Log.d("SERIAL", "PERM NOT GRANTED");
                 }
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-                Toast.makeText(Act , "Connection in" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(Act, "Connection in", Toast.LENGTH_SHORT).show();
                 CreateConnection(context);
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 connection = null;
@@ -90,17 +90,17 @@ public class Constants {
         }
     };
 
-    public static void init(){
+    public static void init() {
         usbManager = (UsbManager) Act.getSystemService(Context.USB_SERVICE);
         IntentFilter i = new IntentFilter();
         i.addAction("org.tensorflow.lite.examples.objectdetection.USB_PERMISSION");
         i.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         i.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        Act.registerReceiver(recv , i);
+        Act.registerReceiver(recv, i);
         Toast.makeText(Act, "Registered receiver", Toast.LENGTH_SHORT).show();
     }
 
-    public static void CreateConnection(Context c){
+    public static void CreateConnection(Context c) {
         HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
         if (!usbDevices.isEmpty()) {
             boolean keep = true;
@@ -109,7 +109,7 @@ public class Constants {
                 int deviceVID = device.getVendorId();
                 if (deviceVID == 0x2341)//Arduino Vendor ID
                 {
-                    Toast.makeText(c , "Requesting permission", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(c, "Requesting permission", Toast.LENGTH_SHORT).show();
                     PendingIntent pi = PendingIntent.getBroadcast(c, 0,
                             new Intent("org.tensorflow.lite.examples.objectdetection.USB_PERMISSION"), PendingIntent.FLAG_MUTABLE);
                     usbManager.requestPermission(device, pi);

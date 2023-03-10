@@ -91,6 +91,7 @@ class ObjectDetectorHelper(
                 V1 -> "V1.tflite"
                 V2 -> "V2.tflite"
                 V3 -> "V3.tflite"
+                V4 -> "V4.tflite"
                 else -> "V1.tflite"
             }
 
@@ -156,5 +157,6 @@ class ObjectDetectorHelper(
         const val V1 = 4
         const val V2 = 5
         const val V3 = 6
+        const val V4 = 7
     }
 }

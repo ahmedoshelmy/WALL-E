@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         Constants.Act = this
 
         Constants.init()
-    }
+    }S
 
 
 
