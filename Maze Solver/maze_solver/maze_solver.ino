@@ -13,16 +13,16 @@ int currIdx;//Used in Second try when robot is walking on correct path
 
 
 
-int IR1;
-int IR2;
-int IR3;
-int IR4;
-int IR5;
+int IR1 = 8;
+int IR2 = 9;
+int IR3 = 10;
+int IR4 = 11;
+int IR5 = 12;
 
-int motor_lA = 7;
-int motor_lB = 8;
-int motor_rA = 9;
-int motor_rB = 10;
+int motor_lA =4 ;
+int motor_lB = 5;
+int motor_rA = 2;
+int motor_rB = 3;
 
 
 void Forward()
@@ -187,17 +187,19 @@ void setup ()
 {
   //DECLARING IR1 IR2 IR3 IR4 AND IR5 AS INPUTS
   
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-  pinMode(4, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
+  pinMode(IR1, INPUT);
+  pinMode(IR2, INPUT);
+  pinMode(IR3, INPUT);
+  pinMode(IR4, INPUT);
+  pinMode(IR5, INPUT);
 
   //DECLARING MOTORS AS OUTPUTS
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
+  pinMode(motor_lA, OUTPUT);
+  pinMode(motor_lB, OUTPUT);
+  pinMode(motor_rA, OUTPUT);
+  pinMode(motor_rB, OUTPUT);
+
+  Serial.begin(9600);
 
 
   shortestPathCalculated=false;
@@ -211,121 +213,131 @@ void setup ()
 
 void loop ()
 {
+  // Left();
   // Leftmost -> IR1 - IR2 - IR3 - IR4 - IR5 <- Rightmost
-  IR1 = digitalRead(2);//First Left
-  IR2 = digitalRead(3);//Second Left
-  IR3 = digitalRead(4);//Center
-  IR4 = digitalRead(5);//Second Right
-  IR5 = digitalRead(6);//First Right
+  // IR1 = digitalRead(2);//First Left
+  // IR2 = digitalRead(3);//Second Left
+  // IR3 = digitalRead(4);//Center
+  // IR4 = digitalRead(5);//Second Right
+  // IR5 = digitalRead(6);//First Right
+  Serial.println("---------------------");
+  Serial.println(digitalRead(IR1));
+  Serial.println(digitalRead(IR2));
+  Serial.println(digitalRead(IR3));
+  Serial.println(digitalRead(IR4));
+  Serial.println(digitalRead(IR5));
+  Serial.println("---------------------");
+  delay(1000);
 
-  if(shortestPathCalculated){
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
-    {
-      Forward();
-    }
-    else if(IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
-    {
-      MiniLeft();
-    }
-    else if(IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
-    {
-      MiniRight();
-    }
-    else if(IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)
-    {
-      Stop();
-    }
-    else{
-      switch(path[currIdx]){
-        case 'S':
-          Forward();
-          break;
-        case 'L':
-          Left();
-          break;
-        case 'R':
-          Right();
-          break;
-        case 'B': //We'll check if we can remove it.
-          U_Turn();
-          break;
-      }
-      currIdx++;
-    }
-  }
-  else{
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
-    {
-      Forward();
-    }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Left turn
-    {
-      Left();
-      realPath[currRealIdx]='L';
+  // if(shortestPathCalculated){
+  //   if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
+  //   {
+  //     Forward();
+  //   }
+  //   else if(IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+  //   {
+  //     MiniLeft();
+  //   }
+  //   else if(IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+  //   {
+  //     MiniRight();
+  //   }
+  //   else if(IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)
+  //   {
+  //     Stop();
+  //   }
+  //   else{
+  //     switch(path[currIdx]){
+  //       case 'S':
+  //         Forward();
+  //         break;
+  //       case 'L':
+  //         Left();
+  //         break;
+  //       case 'R':
+  //         Right();
+  //         break;
+  //       case 'B': //We'll check if we can remove it.
+  //         U_Turn();
+  //         break;
+  //     }
+  //     currIdx++;
+  //   }
+  // }
+  // else{
+  //   if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Straight path
+  //   {
+  //     Forward();
+  //   }
 
-    }
+  //   if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Left turn
+  //   {
+  //     Left();
+  //     realPath[currRealIdx]='L';
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Right Turn
-    {
-      Right();
-      realPath[currRealIdx]='R';
+  //   }
+
+  //   if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Right Turn
+  //   {
+  //     Right();
+  //     realPath[currRealIdx]='R';
       
 
-    }
+  //   }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//T Intersection
-    {
-      Left(); // As left is possible
-      realPath[currRealIdx]='L';
+  //   if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//T Intersection
+  //   {
+  //     Left(); // As left is possible
+  //     realPath[currRealIdx]='L';
 
-    }
+  //   }
 
-    if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Left T Intersection
-    {
-      Left();// As Left is possible
-      realPath[currRealIdx]='L';
-    }
+  //   if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Left T Intersection
+  //   {
+  //     Left();// As Left is possible
+  //     realPath[currRealIdx]='L';
+  //   }
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Right T Tntersection
-    {
-      Forward();//As Straight path is possible
-      realPath[currRealIdx]='S';
+  //   if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Right T Tntersection
+  //   {
+  //     Forward();//As Straight path is possible
+  //     realPath[currRealIdx]='S';
 
-    }
+  //   }
 
-    if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Dead End
-    {
-      U_Turn(); //As no other direction is possible
-      realPath[currRealIdx]='B';
+  //   if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//Dead End
+  //   {
+  //     U_Turn(); //As no other direction is possible
+  //     realPath[currRealIdx]='B';
 
-    }
+  //   }
 
-    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//4 Lane intersection //Check this
-    {
-      Left(); //As no other direction is possible
-    } 
+  //   if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//4 Lane intersection //Check this
+  //   {
+  //     Left(); //As no other direction is possible
+  //   } 
 
-    if (IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
-    {
-      MiniLeft();
-    }
+  //   if (IR1 == LOW && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)
+  //   {
+  //     MiniLeft();
+  //   }
 
-    if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
-    {
-      MiniRight();
-    }
+  //   if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == HIGH && IR5 == LOW)
+  //   {
+  //     MiniRight();
+  //   }
 
-    //--------------
-    //      |<-
-    //      |
-    //      |
+  //   //--------------
+  //   //      |<-
+  //   //      |
+  //   //      |
 
-    if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//End of Maze
-    {
-      Stop(); //As no other direction is possible
-      CALCULATE_SHORTEST_PATH(realPath, 100);
-    } 
-  }
+  //   if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//End of Maze
+  //   {
+  //     Stop(); //As no other direction is possible
+  //     CALCULATE_SHORTEST_PATH(realPath, 100);
+  //   } 
+  // }
 
 }
