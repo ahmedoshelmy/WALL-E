@@ -274,12 +274,22 @@ void setup ()
 
 void loop ()
 {
+  // Left();
   // Leftmost -> IR1 - IR2 - IR3 - IR4 - IR5 <- Rightmost
-  IR1 = digitalRead(2);//First Left
-  IR2 = digitalRead(3);//Second Left
-  IR3 = digitalRead(4);//Center
-  IR4 = digitalRead(5);//Second Right
-  IR5 = digitalRead(6);//First Right
+  // IR1 = digitalRead(2);//First Left
+  // IR2 = digitalRead(3);//Second Left
+  // IR3 = digitalRead(4);//Center
+  // IR4 = digitalRead(5);//Second Right
+  // IR5 = digitalRead(6);//First Right
+  Serial.println("---------------------");
+  Serial.println(digitalRead(IR1));
+  Serial.println(digitalRead(IR2));
+  Serial.println(digitalRead(IR3));
+  Serial.println(digitalRead(IR4));
+  Serial.println(digitalRead(IR5));
+  Serial.println("---------------------");
+  delay(1000);
+
 
   if(shortestPathCalculated){
     if (IR1 == HIGH && IR2 == HIGH && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Straight path
@@ -327,7 +337,7 @@ void loop ()
       Left();
       realPath[currRealIdx++]='L';
 
-    }
+  //   }
 
     if (IR1 == HIGH && IR2 == HIGH && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//Right Turn
     {
@@ -335,14 +345,14 @@ void loop ()
       realPath[currRealIdx++]='R';
       
 
-    }
+  //   }
 
     if (IR1 == LOW && IR2 == LOW && IR3 == HIGH && IR4 == LOW && IR5 == LOW)//T Intersection
     {
       Left(); // As left is possible
       realPath[currRealIdx++]='L';
 
-    }
+  //   }
 
     if (IR1 == LOW && IR2 == LOW && IR3 == LOW && IR4 == HIGH && IR5 == HIGH)//Left T Intersection
     {
@@ -355,7 +365,7 @@ void loop ()
       Forward();//As Straight path is possible
       realPath[currRealIdx++]='S';
 
-    }
+  //   }
 
     if (IR1 == HIGH && IR2 ==HIGH && IR3 == HIGH && IR4 == HIGH && IR5 == HIGH)//Dead End
     {
@@ -364,7 +374,7 @@ void loop ()
       U_Turn();
       realPath[currRealIdx++]='B';
 
-    }
+  //   }
 
     //here we want to check if it's + of end of game
     if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//4 Lane intersection //Check this////////////////////////////////////////////////////////
@@ -383,10 +393,10 @@ void loop ()
       MiniRight();
     }
 
-    //--------------
-    //      |<-
-    //      |
-    //      |
+  //   //--------------
+  //   //      |<-
+  //   //      |
+  //   //      |
 
     if (IR1 == LOW && IR2 ==LOW && IR3 == LOW && IR4 == LOW && IR5 == LOW)//End of Maze // can be eliminated and added with case of +
     {
