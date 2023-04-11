@@ -19,8 +19,8 @@ int fullSpeed=254;
 
 bool flag=1;
 
-int ENA=10;
-int ENB=11;
+int ENA=11;
+int ENB=10;
 
 int IR1=2;
 int IR2=3;
@@ -62,8 +62,8 @@ void Forward()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
   
 
   // delay(100);
@@ -75,8 +75,8 @@ void Back()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
   // delay(50);
 }
 
@@ -86,8 +86,8 @@ void slightForward()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
   // delay(50);
 }
 
@@ -98,7 +98,7 @@ void Left()
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
   analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/4.0);
 
   IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
@@ -112,8 +112,6 @@ void Left()
     digitalWrite(motor_lB, 1);
     digitalWrite(motor_rA, 1);
     digitalWrite(motor_rB, 0);
-    analogWrite(ENA,fullSpeed/3.0);
-    analogWrite(ENB,fullSpeed/3.0);
   }
 
   // delay(1000);
@@ -126,7 +124,7 @@ void Right()
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
   analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/4.0);
 
 IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
@@ -139,8 +137,6 @@ IRV3 = digitalRead(IR3);
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
   }
 
   // delay(1000);
@@ -153,7 +149,7 @@ void U_Turn()
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
   analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/4.0);
   while(IRV2!=0 || IRV3!=1 || IRV4!=0){
     IRV2=digitalRead(IR2);
     IRV3=digitalRead(IR3);
@@ -162,8 +158,6 @@ void U_Turn()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
   }
 
   // delay(5000);
@@ -175,8 +169,8 @@ void Stop()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
 
   // delay(1000);
 }
@@ -189,8 +183,8 @@ void MiniLeft()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
 
   }
   // delay(100);
@@ -204,8 +198,8 @@ void MinIRVight()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENA,fullSpeed/4.0);
+  analogWrite(ENB,fullSpeed/4.0);
 
   }
   // delay(100);
@@ -425,19 +419,19 @@ void loop()
   }
   else if(IRV2==1 && IRV3==1 && IRV4==1){   //Intersection
     //Check if end of maze
-    CheckEndGame();
-    if(IRV2==1 && IRV3==1 && IRV4==1){ //end of maze
-      Stop();
-      flag=0;
-    }
-    else {
-      while(IRV2==0 && IRV3==0 && IRV4==0){
-        IRV2=digitalRead(IR2);
-      IRV3=digitalRead(IR3);
-      IRV4=digitalRead(IR4);
-        Back();
-      }
-    }
+    // CheckEndGame();
+    // if(IRV2==1 && IRV3==1 && IRV4==1){ //end of maze
+    //   Stop();
+    //   flag=0;
+    // }
+    // else {
+    //   while(IRV2==0 && IRV3==0 && IRV4==0){
+    //     IRV2=digitalRead(IR2);
+    //   IRV3=digitalRead(IR3);
+    //   IRV4=digitalRead(IR4);
+    //     Back();
+    //   }
+    // }
     //T intersection or cross, turn left
     Left();
   }
