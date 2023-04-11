@@ -17,13 +17,15 @@ int currIdx;//Used in Second try when robot is walking on correct path
 
 int fullSpeed=254;
 
+bool flag=1;
+
 int ENA=10;
 int ENB=11;
 
 int IR1=2;
 int IR2=3;
-int IR3=4;
-int IR4=5;
+int IR3=5;
+int IR4=4;
 int IR5=6;
 
 int IRV1;
@@ -46,6 +48,12 @@ int motor_rB = 12;///connect IN4 with 12
 
 
 bool calculateShortestAgain=false;
+
+void CheckEndGame()
+{
+  Forward();
+  delay(50);
+}
 
 void Forward()
 {
@@ -78,8 +86,8 @@ void slightForward()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
   // delay(50);
 }
 
@@ -89,13 +97,13 @@ void Left()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
 
   IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
   IRV4 = digitalRead(IR4);
-  while(IRV3!=1 && IRV2!=0 && IRV4!=0){
+  while(IRV3!=1 || IRV2!=0 || IRV4!=0){   //Center
     
   IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
@@ -104,8 +112,8 @@ void Left()
     digitalWrite(motor_lB, 1);
     digitalWrite(motor_rA, 1);
     digitalWrite(motor_rB, 0);
-    analogWrite(ENA,fullSpeed/2.0);
-    analogWrite(ENB,fullSpeed/2.0);
+    analogWrite(ENA,fullSpeed/3.0);
+    analogWrite(ENB,fullSpeed/3.0);
   }
 
   // delay(1000);
@@ -117,13 +125,13 @@ void Right()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
 
 IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
   IRV4 = digitalRead(IR4);
-  while(IRV3!=1 && IRV2!=0 && IRV4!=0){
+  while(IRV3!=1 || IRV2!=0 || IRV4!=0){
     IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
   IRV4 = digitalRead(IR4);
@@ -131,8 +139,8 @@ IRV3 = digitalRead(IR3);
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
   }
 
   // delay(1000);
@@ -144,8 +152,19 @@ void U_Turn()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
+  while(IRV2!=0 || IRV3!=1 || IRV4!=0){
+    IRV2=digitalRead(IR2);
+    IRV3=digitalRead(IR3);
+    IRV4=digitalRead(IR4);
+    digitalWrite(motor_lA, 0);
+  digitalWrite(motor_lB, 1);
+  digitalWrite(motor_rA, 1);
+  digitalWrite(motor_rB, 0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
+  }
 
   // delay(5000);
 }
@@ -156,8 +175,8 @@ void Stop()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
 
   // delay(1000);
 }
@@ -170,8 +189,8 @@ void MiniLeft()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
 
   }
   // delay(100);
@@ -185,8 +204,8 @@ void MinIRVight()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/2.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
 
   }
   // delay(100);
@@ -369,33 +388,64 @@ void loop()
 
 
 
-  if(IRV2==0 && IRV3==1 && IRV4==0){
+// while(flag){
+
+  if(IRV2==0 && IRV3==1 && IRV4==0){        //Straight
     Forward();
   }
-  else if(IRV2==1 && IRV3==1 && IRV4==0){
+  else if(IRV2==1 && IRV3==1 && IRV4==0){   //Left
     Left();
   }
-  else if(IRV2==0 && IRV3==1 && IRV4==1){
-    Right();
-  }
-  else if(IRV2==1 && IRV3==0 && IRV4==0){
-    Left();
-  }
-  else if(IRV2==0 && IRV3==0 && IRV4==1){
-    Right();
-  }
-  else if(IRV2==1 && IRV3==1 && IRV4==1){
-    while(IRV2==1 && IRV3==1 && IRV4==1){
+  else if(IRV2==0 && IRV3==1 && IRV4==1){   //Right
+    //Check for a straight-right intersection
+    while(IRV2==0 && IRV3==1 && IRV4==1){
+      IRV2=digitalRead(IR2);
+      IRV3=digitalRead(IR3);
+      IRV4=digitalRead(IR4);
       Forward();
     }
-    if(IRV2==0 && IRV3==0 && IRV4==0){
+    if(IRV2==0 && IRV3==0 && IRV4==0){    //No intersection, just right
       while(IRV2==0 && IRV3==0 && IRV4==0){
+        IRV2=digitalRead(IR2);
+      IRV3=digitalRead(IR3);
+      IRV4=digitalRead(IR4);
         Back();
       }
-      Left();
+      Right();
+    }
+    else if(IRV2==0 && IRV3==1 && IRV4==0){   //Intersection, we go forward
+      Forward();
     }
   }
+  else if(IRV2==1 && IRV3==0 && IRV4==0){   //Left awy
+    Left();
+  }
+  else if(IRV2==0 && IRV3==0 && IRV4==1){   //Right awy
+    Right();
+  }
+  else if(IRV2==1 && IRV3==1 && IRV4==1){   //Intersection
+    //Check if end of maze
+    CheckEndGame();
+    if(IRV2==1 && IRV3==1 && IRV4==1){ //end of maze
+      Stop();
+      flag=0;
+    }
+    else {
+      while(IRV2==0 && IRV3==0 && IRV4==0){
+        IRV2=digitalRead(IR2);
+      IRV3=digitalRead(IR3);
+      IRV4=digitalRead(IR4);
+        Back();
+      }
+    }
+    //T intersection or cross, turn left
+    Left();
+  }
+  else if(IRV2==0 && IRV3==0 && IRV4==0){   //Dead End
+    U_Turn();
+  }
 
+// }
 
 
 
