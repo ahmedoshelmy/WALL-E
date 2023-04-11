@@ -62,8 +62,8 @@ void Forward()
   digitalWrite(motor_lB, 0);
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/4.0);
-  analogWrite(ENB,fullSpeed/4.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
   
 
   // delay(100);
@@ -75,8 +75,8 @@ void Back()
   digitalWrite(motor_lB, 1);
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/4.0);
-  analogWrite(ENB,fullSpeed/4.0);
+  analogWrite(ENA,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/3.0);
   // delay(50);
 }
 
@@ -98,7 +98,7 @@ void Left()
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
   analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/2.0);
 
   IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
@@ -124,7 +124,7 @@ void Right()
   digitalWrite(motor_rA, 0);
   digitalWrite(motor_rB, 1);
   analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/2.0);
 
 IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
@@ -149,7 +149,7 @@ void U_Turn()
   digitalWrite(motor_rA, 1);
   digitalWrite(motor_rB, 0);
   analogWrite(ENA,fullSpeed/2.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  analogWrite(ENB,fullSpeed/2.0);
   while(IRV2!=0 || IRV3!=1 || IRV4!=0){
     IRV2=digitalRead(IR2);
     IRV3=digitalRead(IR3);
