@@ -5,7 +5,8 @@
 //connect 10 to EnA
 //connect 11 to EnB
 
-
+double fwd_spd_factor = 1 / 4.0;
+double turn_spd_factor = 1 / 2.0;
 
 char path[50];   //Assuming number of operations won't exceed 50
 int actualSize;
@@ -19,20 +20,26 @@ int fullSpeed=254;
 
 bool flag=1;
 
-int ENA=10;
-int ENB=11;
+int turn_delay = 1000 ; 
+
+int ENA=9;
+int ENB=13;
 
 int IR1=2;
-int IR2=3;
-int IR3=5;
-int IR4=4;
+int IR2=11;
+int IR3=10;
+int IR4=6;
 int IR5=6;
 
 int IRV1;
-int IRV2;
-int IRV3;
-int IRV4;
+int IRV2=-1;
+int IRV3=-1;
+int IRV4=-1;
 int IRV5;
+
+int old2=2;
+int old3=3;
+int old4=4;
 
 
 // int IRV1Add=2;
@@ -46,37 +53,57 @@ int motor_lB = 8;
 int motor_rA = 9;
 int motor_rB = 12;///connect IN4 with 12
 
+int right_motor_front1 = 2; 
+int right_motor_front2 = 3; 
+int right_motor_back1  = 4; 
+int right_motor_back2  = 5; 
+int left_motor_front1  = 15; 
+int left_motor_front2  = 16; 
+int left_motor_back1   = 17; 
+int left_motor_back2   = 18; 
+
+
 
 bool calculateShortestAgain=false;
 
-void CheckEndGame()
+bool CheckEndGame()
 {
   Forward();
-  delay(50);
+  delay(100);
+  if(IRV2==1 && IRV3==1 && IRV4==1){
+    return true;
+  } //end of maze
+  return false;
 }
 
-void Forward()
-{
-  Serial.println("Forward");
-  digitalWrite(motor_lA, 1);
-  digitalWrite(motor_lB, 0);
-  digitalWrite(motor_rA, 1);
-  digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/4.0);
-  analogWrite(ENB,fullSpeed/4.0);
-  
+void Forward(){
 
-  // delay(100);
+  digitalWrite(right_motor_front1 ,HIGH);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,HIGH);
+  digitalWrite(right_motor_back2 ,LOW);
+  digitalWrite(left_motor_front1 ,HIGH);
+  digitalWrite(left_motor_front2 ,LOW);
+  digitalWrite(left_motor_back1 ,HIGH);
+  digitalWrite(left_motor_back2 ,LOW);
+  analogWrite(ENA, fullSpeed * fwd_spd_factor);
+  analogWrite(ENB, fullSpeed * fwd_spd_factor);
+
 }
+
 
 void Back()
 {
-  digitalWrite(motor_lA, 0);
-  digitalWrite(motor_lB, 1);
-  digitalWrite(motor_rA, 0);
-  digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/4.0);
-  analogWrite(ENB,fullSpeed/4.0);
+  digitalWrite(right_motor_front1 ,LOW);
+  digitalWrite(right_motor_front2 ,HIGH);
+  digitalWrite(right_motor_back1 ,LOW);
+  digitalWrite(right_motor_back2 ,HIGH);
+  digitalWrite(left_motor_front1 ,LOW);
+  digitalWrite(left_motor_front2 ,HIGH);
+  digitalWrite(left_motor_back1 ,LOW);
+  digitalWrite(left_motor_back2 ,HIGH);
+  analogWrite(ENA, fullSpeed * fwd_spd_factor);
+  analogWrite(ENB, fullSpeed * fwd_spd_factor);
   // delay(50);
 }
 
@@ -93,63 +120,103 @@ void slightForward()
 
 void Left()
 {
-  digitalWrite(motor_lA, 0);
-  digitalWrite(motor_lB, 1);
-  digitalWrite(motor_rA, 1);
-  digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  digitalWrite(right_motor_front1 ,HIGH);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,HIGH);
+  digitalWrite(right_motor_back2 ,LOW);
+  digitalWrite(left_motor_front1 ,LOW);
+  digitalWrite(left_motor_front2 ,HIGH);
+  digitalWrite(left_motor_back1 ,LOW);
+  digitalWrite(left_motor_back2 ,HIGH);
+  analogWrite(ENA, fullSpeed * turn_spd_factor);
+  analogWrite(ENB, fullSpeed * turn_spd_factor);
 
   IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
   IRV4 = digitalRead(IR4);
-  while(IRV3!=1 || IRV2!=0 || IRV4!=0){   //Center
-    
-  IRV3 = digitalRead(IR3);
-  IRV2 = digitalRead(IR2);
-  IRV4 = digitalRead(IR4);
-    digitalWrite(motor_lA, 0);
-    digitalWrite(motor_lB, 1);
-    digitalWrite(motor_rA, 1);
-    digitalWrite(motor_rB, 0);
-  }
+  
+  delay(turn_delay);
+  // while(IRV3!=1 || IRV2!=0 || IRV4!=0){   //Center
+  // IRV3 = digitalRead(IR3);
+  // IRV2 = digitalRead(IR2);
+  // IRV4 = digitalRead(IR4);
+  //   digitalWrite(right_motor_front1 ,HIGH);
+  //   digitalWrite(right_motor_front2 ,LOW);
+  //   digitalWrite(right_motor_back1 ,HIGH);
+  //   digitalWrite(right_motor_back2 ,LOW);
+  //   digitalWrite(left_motor_front1 ,LOW);
+  //   digitalWrite(left_motor_front2 ,HIGH);
+  //   digitalWrite(left_motor_back1 ,LOW);
+  //   digitalWrite(left_motor_back2 ,HIGH);
+  // }
 
   // delay(1000);
 }
 
+void Forward_The_Right(){
+  digitalWrite(right_motor_front1 ,HIGH);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,HIGH);
+  digitalWrite(right_motor_back2 ,LOW);
+}
+void Forward_The_Left(){
+  digitalWrite(right_motor_front1 ,HIGH);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,HIGH);
+  digitalWrite(right_motor_back2 ,LOW);
+}
+
+
+
 void Right()
 {
-  digitalWrite(motor_lA, 1);
-  digitalWrite(motor_lB, 0);
-  digitalWrite(motor_rA, 0);
-  digitalWrite(motor_rB, 1);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  digitalWrite(right_motor_front1 ,LOW);
+  digitalWrite(right_motor_front2 ,HIGH);
+  digitalWrite(right_motor_back1 ,LOW);
+  digitalWrite(right_motor_back2 ,HIGH);
+  digitalWrite(left_motor_front1 ,HIGH);
+  digitalWrite(left_motor_front2 ,LOW);
+  digitalWrite(left_motor_back1 ,HIGH);
+  digitalWrite(left_motor_back2 ,LOW);
+  analogWrite(ENA, fullSpeed * turn_spd_factor);
+  analogWrite(ENB, fullSpeed * turn_spd_factor);
 
 IRV3 = digitalRead(IR3);
   IRV2 = digitalRead(IR2);
   IRV4 = digitalRead(IR4);
-  while(IRV3!=1 || IRV2!=0 || IRV4!=0){
-    IRV3 = digitalRead(IR3);
-  IRV2 = digitalRead(IR2);
-  IRV4 = digitalRead(IR4);
-    digitalWrite(motor_lA, 1);
-  digitalWrite(motor_lB, 0);
-  digitalWrite(motor_rA, 0);
-  digitalWrite(motor_rB, 1);
-  }
+    delay(turn_delay); 
+    
+  // while(IRV3!=1 || IRV2!=0 || IRV4!=0){
+  //   IRV3 = digitalRead(IR3);
+  // IRV2 = digitalRead(IR2);
+  // IRV4 = digitalRead(IR4);
+  //  digitalWrite(right_motor_front1 ,LOW);
+  // digitalWrite(right_motor_front2 ,HIGH);
+  // digitalWrite(right_motor_back1 ,LOW);
+  // digitalWrite(right_motor_back2 ,HIGH);
+  // digitalWrite(left_motor_front1 ,LOW);
+  // digitalWrite(left_motor_front2 ,HIGH);
+  // digitalWrite(left_motor_back1 ,LOW);
+  // digitalWrite(left_motor_back2 ,HIGH);
+  // }
 
   // delay(1000);
 }
 
 void U_Turn()
 {
-  digitalWrite(motor_lA, 0);
-  digitalWrite(motor_lB, 1);
-  digitalWrite(motor_rA, 1);
-  digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/3.0);
-  analogWrite(ENB,fullSpeed/3.0);
+  digitalWrite(right_motor_front1 ,HIGH);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,HIGH);
+  digitalWrite(right_motor_back2 ,LOW);
+  digitalWrite(left_motor_front1 ,LOW);
+  digitalWrite(left_motor_front2 ,HIGH);
+  digitalWrite(left_motor_back1 ,LOW);
+  digitalWrite(left_motor_back2 ,HIGH);
+  analogWrite(ENA,fullSpeed * turn_spd_factor);
+  analogWrite(ENB,fullSpeed * turn_spd_factor);
+    
+    
   while(IRV2!=0 || IRV3!=1 || IRV4!=0){
     IRV2=digitalRead(IR2);
     IRV3=digitalRead(IR3);
@@ -165,12 +232,16 @@ void U_Turn()
 
 void Stop()
 {
-  digitalWrite(motor_lA, 0);
-  digitalWrite(motor_lB, 0);
-  digitalWrite(motor_rA, 0);
-  digitalWrite(motor_rB, 0);
-  analogWrite(ENA,fullSpeed/4.0);
-  analogWrite(ENB,fullSpeed/4.0);
+  digitalWrite(right_motor_front1 ,LOW);
+  digitalWrite(right_motor_front2 ,LOW);
+  digitalWrite(right_motor_back1 ,LOW);
+  digitalWrite(right_motor_back2 ,LOW);
+  digitalWrite(left_motor_front1 ,LOW);
+  digitalWrite(left_motor_front2 ,LOW);
+  digitalWrite(left_motor_back1 ,LOW);
+  digitalWrite(left_motor_back2 ,LOW);
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
 
   // delay(1000);
 }
@@ -331,10 +402,15 @@ void setup ()
   pinMode(IR5, INPUT);
 
   //DECLARING MOTORS AS OUTPUTS
-  pinMode(motor_lA, OUTPUT);
-  pinMode(motor_lB, OUTPUT);
-  pinMode(motor_rA, OUTPUT);
-  pinMode(motor_rB, OUTPUT);
+  pinMode(right_motor_front1, OUTPUT);
+  pinMode(right_motor_front2, OUTPUT);
+  pinMode(right_motor_back1, OUTPUT);
+  pinMode(right_motor_back2, OUTPUT);
+   pinMode(left_motor_front1, OUTPUT);
+  pinMode(left_motor_front2, OUTPUT);
+  pinMode(left_motor_back1, OUTPUT);
+  pinMode(left_motor_back2, OUTPUT);
+
 
 
   shortestPathCalculated=false;
@@ -366,52 +442,65 @@ void loop()
   // Forward();
 
   // Serial.print(digitalRead(IR1));
-  Serial.print(digitalRead(IR2));
-  Serial.print(digitalRead(IR3));
-  Serial.print(digitalRead(IR4));
-  // Serial.print(digitalRead(IR5));
-  Serial.println();
+  // if(IRV2!=old2 || IRV3!=old3 || IRV4!=old4){
+  // Serial.print(IRV2);
+  // Serial.print(IRV3);
+  // Serial.print(IRV4);
+  // Serial.println();
+  // old2=IRV2;old3=IRV3;old4=IRV4;
+  // }
+  // // Serial.print(digitalRead(IR5));
 
   // IRV1=digitalRead(IR1);
   IRV2=digitalRead(IR2);
   IRV3=digitalRead(IR3);
   IRV4=digitalRead(IR4);
   // IRV5=digitalRead(IR5);
+  // Forward();
   
   // Serial.println("---------------------");
   delay(15);
 
 
 
-// while(flag){
+if(flag){
+  Serial.println('B');
 
   if(IRV2==0 && IRV3==1 && IRV4==0){        //Straight
     Forward();
   }
   else if(IRV2==1 && IRV3==1 && IRV4==0){   //Left
+    // Serial.println('L');
     Left();
     delay(100);
+    // realPath[currRealIdx++]='L';
   }
   else if(IRV2==0 && IRV3==1 && IRV4==1){   //Right
     //Check for a straight-right intersection
-    while(IRV2==0 && IRV3==1 && IRV4==1){
-      IRV2=digitalRead(IR2);
-      IRV3=digitalRead(IR3);
-      IRV4=digitalRead(IR4);
-      Forward();
-    }
-    if(IRV2==0 && IRV3==0 && IRV4==0){    //No intersection, just right
-      while(IRV2==0 && IRV3==0 && IRV4==0){
-        IRV2=digitalRead(IR2);
-      IRV3=digitalRead(IR3);
-      IRV4=digitalRead(IR4);
-        Back();
-      }
-      Right();
+    // Serial.println('R');
+    // while(IRV2==0 && IRV3==1 && IRV4==1){
+    //   IRV2=digitalRead(IR2);
+    //   IRV3=digitalRead(IR3);
+    //   IRV4=digitalRead(IR4);
+    //   Forward();
+    //   // realPath[currRealIdx++]='S';
+    //   // Serial.println('S');
+    // }
+    // if(IRV2==0 && IRV3==0 && IRV4==0){    //No intersection, just right
+    //   while(IRV2==0 && IRV3==0 && IRV4==0){
+    //     IRV2=digitalRead(IR2);
+    //   IRV3=digitalRead(IR3);
+    //   IRV4=digitalRead(IR4);
+    //     Back();
+    //   }
+      Left();
       delay(100);
+      // realPath[currRealIdx++]='R';
     }
     else if(IRV2==0 && IRV3==1 && IRV4==0){   //Intersection, we go forward
       Forward();
+      // realPath[currRealIdx++]='S';
+      // Serial.println('S');
     }
   }
   else if(IRV2==1 && IRV3==0 && IRV4==0){   //Left awy
@@ -419,15 +508,17 @@ void loop()
     delay(100);
   }
   else if(IRV2==0 && IRV3==0 && IRV4==1){   //Right awy
+    
     Right();
     delay(100);
   }
   else if(IRV2==1 && IRV3==1 && IRV4==1){   //Intersection
-    //Check if end of maze
-    // CheckEndGame();
-    // if(IRV2==1 && IRV3==1 && IRV4==1){ //end of maze
+    // Check if end of maze
+    // bool endGame = CheckEndGame();
+    // if(endGame){ //end of maze
     //   Stop();
     //   flag=0;
+    //   CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
     // }
     // else {
     //   while(IRV2==0 && IRV3==0 && IRV4==0){
@@ -438,14 +529,42 @@ void loop()
     //   }
     // }
     //T intersection or cross, turn left
+    // Serial.println('L');
     Left();
     delay(100);
+    // realPath[currRealIdx++]='L';
   }
   else if(IRV2==0 && IRV3==0 && IRV4==0){   //Dead End
+    Serial.println('B');
     U_Turn();
     delay(100);
+    // realPath[currRealIdx++]='B';
   }
+  // delay(5000);
+}
 
+// if(!flag){
+//   if(IRV2==1 && IRV3==0 && IRV4==0){
+//     Left();
+//   }
+//   else if(IRV2==0 && IRV3==0 && IRV4==1){
+//     Right();
+//   }
+//   else if(currIdx==actualSize){
+//     Stop();
+//   }
+//   else if(!(IRV2==0 && IRV3==1 && IRV4==0)){  // Not Straight
+//     switch(path[currIdx++]){
+//       case 'L':
+//         Left();
+//       case 'R':
+//         Right();
+//       case 'S':
+//         Forward();
+//       case 'B':
+//         U_Turn();
+//     }
+//   }
 // }
 
 
@@ -537,7 +656,7 @@ void loop()
   
   // }
 
-}
+// }
 
 // void loop ()
 // {
