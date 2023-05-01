@@ -6,5 +6,6 @@
   C- Roller + Soccer DC Motor:18-21 
   
 2- Sensors: 
-
+  IR: 21--23 
 3- Servo Motors
+  - Shooting: 10 
