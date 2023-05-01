@@ -1,0 +1,8 @@
+1- Hbridges: 
+  A- Right Side DC Motors (IN1-->IN4) : 14--> 17 
+  B- Left Side DC Motors : 
+  C- Roller + Soccer DC Motor:18-21 
+  
+2- Sensors: 
+
+3- Servo Motors
