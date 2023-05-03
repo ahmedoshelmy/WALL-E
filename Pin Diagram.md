@@ -7,6 +7,7 @@
 
 2- Sensors: 
   - IR: 22--> 24
+  - Laser : 30
 
 3- Servo Motors
   - Soccer: 2
