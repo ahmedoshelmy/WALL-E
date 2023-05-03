@@ -4,9 +4,8 @@
   - Left Side DC Motors : 26 --> 29  
       - En : 9
   - Roller + Soccer DC Motor:18-21 
-  
 2- Sensors: 
-  - IR: 22--24
+  - IR: 22--> 24
 3- Servo Motors
   - Soccer: 2
   - Left Mobile : 3
