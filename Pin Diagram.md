@@ -1,11 +1,16 @@
 1- Hbridges: 
   A- Right Side DC Motors (IN1-->IN4) : 14--> 17 
   En : 8 
-  B- Left Side DC Motors : 
+  B- Left Side DC Motors : 26 --> 29  
   En : 9
   C- Roller + Soccer DC Motor:18-21 
   
 2- Sensors: 
-  IR: 21--23 
+  IR: 22--24
 3- Servo Motors
-  - Shooting: 10 
+  - Soccer: 2
+  - Left Mobile : 3
+  - Right Mobile: 4 
+  - Right Gun: 5
+  - Left Gun: 6
+  - Roof: 7
