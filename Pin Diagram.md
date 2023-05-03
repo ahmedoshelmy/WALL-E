@@ -5,7 +5,8 @@
       - En : 9
   - Roller + Soccer DC Motor:18-21 
 2- Sensors: 
-  - IR: 22--> 24 __
+  - IR: 22--> 24
+  <br />
 3- Servo Motors
   - Soccer: 2
   - Left Mobile : 3
