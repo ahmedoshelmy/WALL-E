@@ -1,6 +1,9 @@
 package uni.proj.rv.games;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 import org.opencv.android.Utils;
@@ -38,7 +41,7 @@ public class DefendingGame extends RobotGame {
     @Override
     public void onGameNotSelected() {
         //we don't need to do anything here
-        //because the newly selected game will tell the arduino to update
+        //because the newly selected game will tell the arduino ot update
         super.onGameNotSelected();
     }
 
@@ -72,10 +75,8 @@ public class DefendingGame extends RobotGame {
         // getSelectedColorHigh() -> the selected upper range color from the user (click the eye icon to view in-app)
         res = ImageProcessing.DetectColoredBalls(image , 5 , getSelectedColorLow() , getSelectedColorHigh());
 
-        //now do the processing we need on the results we just got
-        process_result();
 
-        //this game returns an image to the user because we enabled the displaying with enableCustomDisplay()
+        //this game returns a image to the user because we enabled the displaying with enableCustomDisplay()
         //so , I just get the type of preview the user want to see , then return it
         //almost every time you will take this code copy-paste
         switch (getCurrentPreview()) {
@@ -86,13 +87,13 @@ public class DefendingGame extends RobotGame {
             case 1 : Utils.matToBitmap(ImageProcessing.blur, previewBuffer); break;
 
             //copy the image after applying the hsv clipping
-            case 2 : Utils.matToBitmap(ImageProcessing.hsv, previewBuffer); break;
+            case 2 :Utils.matToBitmap(ImageProcessing.hsv, previewBuffer); break;
 
             //copy the image after converting it to a mask
             case 3 : Utils.matToBitmap(ImageProcessing.mask, previewBuffer); break;
 
             //copy the image after applying the dilate filter (tbh idk wtf does this filter do , but hay , it was on StackOverflow so why not)
-            case 4 : Utils.matToBitmap(ImageProcessing.dilate, previewBuffer); break;
+            case 4 :Utils.matToBitmap(ImageProcessing.dilate, previewBuffer); break;
 
             //copy the image after applying the erode filter
             case 5 : Utils.matToBitmap(ImageProcessing.erode, previewBuffer); break;
@@ -101,38 +102,90 @@ public class DefendingGame extends RobotGame {
             case 6 : Utils.matToBitmap(ImageProcessing.blob, previewBuffer); break;
         }
 
+        //now do the processing we need on the results we just got
+        process_result(previewBuffer);
+
         //return the selected image
         return previewBuffer;
     }
 
 
-    private void process_result(){
+    private void process_result(Bitmap image){
 
         //defending game should only see one ball
         if (res.size() > 1){
             print("ERROR: in a defending game we shouldn't have more than one result\n");
         }
 
+        float center_line = -0.1f; //put it with negative value if you want to shift the center line left
+        //positive for right
+        //zero for no shift
+        //range : [-0.5 , 0.5]
+
+        float acceptable_range = 0.1f; //of screen width , 0.5 means the hole screen will be in the acceptable range
+		
+		//use a Canvas object to draw on the screen (image that will be displayed on the screen)
+        Canvas canv = new Canvas(image);
+
+        //center line position in coords
+        float width2 = height() / 2.0f + height() * center_line; //again , width and height are switched
+
+        Paint paint = new Paint();
+        paint.setStrokeWidth(10);
+		
+		//draw the center line
+        paint.setColor(Color.RED);
+        paint.setAlpha(200);
+        canv.drawLine(0 , width2 , width() , width2 , paint);
+		
+		//draw the right range indicator
+        paint.setColor(Color.GREEN);
+        paint.setAlpha(200);
+        canv.drawLine(0 , width2 + acceptable_range * height() , width() , width2 + acceptable_range * height() , paint);
+		
+		//draw the left range indicator
+        paint.setColor(Color.GREEN);
+        paint.setAlpha(200);
+        canv.drawLine(0 , width2 - acceptable_range * height() , width() , width2 - acceptable_range * height() , paint);
+
+
         //move according to the first detected ball
         if (res.size() >= 1){ //not the best way to do it .. but Im too lazy to think of something else
             RectF ball = res.get(0); //get the first result
-            float cx = (ball.top + ball.bottom) / 2; //notice the phone is in landscape , so X and Y are switched
 
+            float cx = (ball.top + ball.bottom); //notice the phone is in landscape , so X and Y are switched
 
-            float acceptable_range = 0.2f / 2.0f;
-
-            //width / 2
-            float width2 = height() / 2.0f; //again , width and height are switched
-
-            if (cx > width2 * (1 + acceptable_range)){
+            if (cx > width2 + acceptable_range * height()){
                 print("Robot should move right\n");
                 //TODO: send the "move right" command to the arduino
-            } else if (cx < width2 * (1 - acceptable_range)){
+                //Ex:
+//                try {
+//                    sendCommand(Command.fromString("move{direction = 1}"));
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+                //but we didn't agree on commands yet ..
+
+            } else if (cx < width2 - acceptable_range * height()){
                 print("Robot should move left\n");
-                //TODO: send the "move right" command to the arduino
+                //TODO: send the "move left" command to the arduino
+                //Ex:
+//                try {
+//                    sendCommand(Command.fromString("move{direction = -1}"));
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+
             } else {
                 print("Robot should stand still\n");
                 //TODO: send the "stop" command to the arduino
+                //Ex:
+//                try {
+//                    sendCommand(Command.fromString("move{direction = 0}"));
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+
             }
         }
     }
