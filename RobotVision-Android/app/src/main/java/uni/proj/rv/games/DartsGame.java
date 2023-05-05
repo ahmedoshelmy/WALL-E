@@ -76,140 +76,138 @@ public class DartsGame extends RobotGame {
         // getSelectedColorHigh() -> the selected upper range color from the user (click the eye icon to view in-app)
         blueResult = ImageProcessing.DetectColoredBalls(image, 5, BLUE_LOW, BLUE_HIGH);
 
-        float center_line = 0.0f;
-        float noise_margin = 0.01f;
-        final double centerX = height() / 2.0f + height() * center_line;
+        if (ACK) {
 
-        if (blueResult.size() > 0 && !stopped) {
-            while (!ACK) ;
-            try {
-                // stop car rotation and turn on laser
-                sendCommand(Command.fromString(String.format("STOP{}")));
-                stopped = true;
-                ACK = false;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else if (stopped && !laserON) {
-            RectF point = blueResult.get(0);
-            double X = (point.top + point.bottom) / 2.0f;
-            // in the center
-            if (Math.abs(X - centerX) <= noise_margin) {
-                // turn on the laser and stop servo movement
-                laserON = true;
-                while (!ACK) ;
+            float center_line = 0.0f;
+            float noise_margin = 0.01f;
+            final double centerX = height() / 2.0f + height() * center_line;
+
+            if (blueResult.size() > 0 && !stopped) {
                 try {
-                    sendCommand(Command.fromString(String.format("LO{}"))); // laser on
+                    // stop car rotation and turn on laser
+                    sendCommand(Command.fromString(String.format("STOP{}")));
+                    stopped = true;
                     ACK = false;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+            } else if (blueResult.size() > 0 && stopped && !laserON) {
+                RectF point = blueResult.get(0);
+                double X = (point.top + point.bottom) / 2.0f;
+                // in the center
+                if (Math.abs(X - centerX) <= noise_margin) {
+                    // turn on the laser and stop servo movement
+                    laserON = true;
+                    try {
+                        sendCommand(Command.fromString(String.format("LO{}"))); // laser on
+                        ACK = false;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                // the bull eye is on left
+                else if (X < centerX) {
+                    // rotate left the servo by 1 deg
+                    try {
+                        sendCommand(Command.fromString(String.format("RSL{}"))); // rotate servo left
+                        ACK = false;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                // the bull eye is on right
+                else if (X > centerX) {
+                    //rotate servo right by 1 deg
+                    try {
+                        sendCommand(Command.fromString(String.format("RSR{}"))); // rotate servo right
+                        ACK = false;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
-            // the bull eye is on left
-            else if (X < centerX) {
-                // rotate left the servo by 1 deg
-                while (!ACK) ;
+            // align laser x
+            else if (blueResult.size() > 0 && blueResult.size() > 0 && laserON && !laserXdone) {
+                redResult = ImageProcessing.DetectColoredBalls(image, 5, RED_LOW, RED_HIGH);
+                if (redResult.size() > 0) {
+                    RectF blue_point = blueResult.get(0);
+                    RectF red_point = redResult.get(0);
+                    double blueX = (blue_point.top + blue_point.bottom) / 2.0f;
+                    double redX = (red_point.top + red_point.bottom) / 2.0f;
+                    // in the center
+                    if (Math.abs(redX - blueX) <= noise_margin) {
+                        // x is adjusted
+                        laserXdone = true;
+                    }
+                    // the red is on left
+                    else if (redX < blueX) {
+                        // rotate left the servo by 1 deg
+                        try {
+                            sendCommand(Command.fromString(String.format("RSL{}")));
+                            ACK = false;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    // the red is on right
+                    else if (redX > blueX) {
+                        try {
+                            sendCommand(Command.fromString(String.format("RSR{}")));
+                            ACK = false;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+            //align laser y
+            else if (blueResult.size() > 0 && laserYdone) {
+                redResult = ImageProcessing.DetectColoredBalls(image, 5, RED_LOW, RED_HIGH);
+                if (redResult.size() > 0) {
+                    RectF blue_point = blueResult.get(0);
+                    RectF red_point = redResult.get(0);
+                    double blueY = (blue_point.left + blue_point.right) / 2.0f;
+                    double redY = (red_point.left + red_point.right) / 2.0f;
+                    // in the center
+                    if (Math.abs(redY - blueY) <= noise_margin) {
+                        // y is adjusted
+                        laserYdone = true;
+                    }
+                    // the red is on below
+                    else if (redY < blueY) {
+                        // rotate up the servo by 1 deg
+                        try {
+                            sendCommand(Command.fromString(String.format("RGU{}")));
+                            ACK = false;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    // the red is on above
+                    else if (redY > blueY) {
+                        // rotate down the servo by 1 deg
+                        try {
+                            sendCommand(Command.fromString(String.format("RGD{}")));
+                            ACK = false;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+                // alignment done
+            } else if (laserXdone && laserYdone && !shot) {
                 try {
-                    sendCommand(Command.fromString(String.format("RSL{}"))); // rotate servo left
+                    sendCommand(Command.fromString(String.format("SHOT{}")));
                     ACK = false;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+                stopped = false;
+                laserON = false;
+                laserXdone = false;
+                laserYdone = false;
+                shot = true;
             }
-            // the bull eye is on right
-            else if (X > centerX) {
-                //rotate servo right by 1 deg
-                while (!ACK) ;
-                try {
-                    sendCommand(Command.fromString(String.format("RSR{}"))); // rotate servo right
-                    ACK = false;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        // align laser x
-        else if (laserON && !laserXdone) {
-            redResult = ImageProcessing.DetectColoredBalls(image, 5, RED_LOW, RED_HIGH);
-            RectF blue_point = blueResult.get(0);
-            RectF red_point = redResult.get(0);
-            double blueX = (blue_point.top + blue_point.bottom) / 2.0f;
-            double redX = (red_point.top + red_point.bottom) / 2.0f;
-            // in the center
-            if (Math.abs(redX - blueX) <= noise_margin) {
-                // x is adjusted
-                laserXdone = true;
-            }
-            // the red is on left
-            else if (redX < blueX) {
-                // rotate left the servo by 1 deg
-                try {
-                    while (!ACK) ;
-                    sendCommand(Command.fromString(String.format("RSL{}")));
-                    ACK = false;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            // the red is on right
-            else if (redX > blueX) {
-                try {
-                    while (!ACK) ;
-                    sendCommand(Command.fromString(String.format("RSR{}")));
-                    ACK = false;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        //align laser y
-        else if (laserYdone) {
-            redResult = ImageProcessing.DetectColoredBalls(image, 5, RED_LOW, RED_HIGH);
-            RectF blue_point = blueResult.get(0);
-            RectF red_point = redResult.get(0);
-            double blueY = (blue_point.left + blue_point.right) / 2.0f;
-            double redY = (red_point.left + red_point.right) / 2.0f;
-            // in the center
-            if (Math.abs(redY - blueY) <= noise_margin) {
-                // y is adjusted
-                laserYdone = true;
-            }
-            // the red is on below
-            else if (redY < blueY) {
-                // rotate up the servo by 1 deg
-                try {
-                    while (!ACK) ;
-                    sendCommand(Command.fromString(String.format("RGU{}")));
-                    ACK = false;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            // the red is on above
-            else if (redY > blueY) {
-                // rotate down the servo by 1 deg
-                try {
-                    while (!ACK) ;
-                    sendCommand(Command.fromString(String.format("RGD{}")));
-                    ACK = false;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            // alignment done
-        } else if (laserXdone && laserYdone && !shot) {
-            try {
-                while (!ACK) ;
-                sendCommand(Command.fromString(String.format("SHOT{}")));
-                ACK = false;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            stopped = false;
-            laserON = false;
-            laserXdone = false;
-            laserYdone = false;
-            shot = true;
         }
 
         //this game returns a image to the user because we enabled the displaying with enableCustomDisplay()
@@ -263,10 +261,10 @@ public class DartsGame extends RobotGame {
     public LinkedList<RectF> getDetectionResult() {
         return null;
     }
-    
+
     @Override
     public void onStop() {
-        while (!ACK) ;
+
         try {
             sendCommand(Command.fromString(String.format("SHOT{}")));
             ACK = false;
@@ -274,6 +272,7 @@ public class DartsGame extends RobotGame {
             throw new RuntimeException(e);
         }
         shot = false;
+        super.onStop();
     }
 
     @Override
