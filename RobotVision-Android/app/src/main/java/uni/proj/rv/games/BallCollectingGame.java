@@ -23,7 +23,6 @@ public class BallCollectingGame extends RobotGame {
         }catch (Exception e){
             e.printStackTrace();
             Toast.makeText(getContext() , "Error:" + e.getMessage() , Toast.LENGTH_SHORT).show();
-
         }
     }
 
