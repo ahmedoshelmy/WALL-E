@@ -1,0 +1,191 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3    ~ Copyright 2022 The TensorFlow Authors. All Rights Reserved.
+4    ~
+5    ~ Licensed under the Apache License, Version 2.0 (the "License");
+6    ~ you may not use this file except in compliance with the License.
+7    ~ You may obtain a copy of the License at
+8    ~
+9    ~       http://www.apache.org/licenses/LICENSE-2.0
+10    ~
+11    ~ Unless required by applicable law or agreed to in writing, software
+12    ~ distributed under the License is distributed on an "AS IS" BASIS,
+13    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14    ~ See the License for the specific language governing permissions and
+15    ~ limitations under the License.
+16-->
+17<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+18    xmlns:dist="http://schemas.android.com/apk/distribution"
+19    package="uni.proj.rv"
+20    android:versionCode="1"
+21    android:versionName="1.0.0" >
+22
+23    <uses-sdk
+24        android:minSdkVersion="21"
+24-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml
+25        android:targetSdkVersion="33" />
+25-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml
+26
+27    <!-- Enable instant app support -->
+28    <dist:module dist:instant="true" />
+28-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:23:5-40
+28-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:23:18-37
+29
+30    <!-- Declare features -->
+31    <uses-feature android:name="android.hardware.camera" />
+31-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:26:5-60
+31-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:26:19-57
+32
+33    <!-- Declare permissions -->
+34    <uses-permission android:name="android.permission.CAMERA" />
+34-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:29:5-65
+34-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:29:22-62
+35
+36    <permission
+36-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+37        android:name="uni.proj.rv.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+37-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+38        android:protectionLevel="signature" />
+38-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+39
+40    <uses-permission android:name="uni.proj.rv.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+40-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+40-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+41    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+42    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+43    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+44
+45    <application
+45-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:31:5-58:19
+46        android:allowBackup="true"
+46-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:34:9-35
+47        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+47-->[androidx.core:core:1.9.0] C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+48        android:debuggable="true"
+49        android:icon="@drawable/ic_launcher"
+49-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:32:9-45
+50        android:label="@string/app_name" >
+50-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:33:9-41
+51        <activity
+51-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:37:9-56:20
+52            android:name="uni.proj.rv.MainActivity"
+52-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:38:13-52
+53            android:clearTaskOnLaunch="true"
+53-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:39:13-45
+54            android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize"
+54-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:44:13-91
+55            android:exported="true"
+55-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:41:13-36
+56            android:resizeableActivity="true"
+56-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:43:13-46
+57            android:rotationAnimation="seamless"
+57-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:42:13-49
+58            android:theme="@style/AppTheme" >
+58-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:40:13-44
+59
+60            <!-- Main app intent filter -->
+61            <intent-filter>
+61-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:48:13-51:29
+62                <action android:name="android.intent.action.MAIN" />
+62-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:49:17-69
+62-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:49:25-66
+63
+64                <category android:name="android.intent.category.LAUNCHER" />
+64-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:50:17-77
+64-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:50:27-74
+65            </intent-filter>
+66
+67            <!-- Declare notch support -->
+68            <meta-data
+68-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:54:13-83
+69                android:name="android.notch_support"
+69-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:54:24-60
+70                android:value="true" />
+70-->C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\AndroidManifest.xml:54:61-81
+71        </activity>
+72
+73        <service
+73-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:24:9-33:19
+74            android:name="androidx.camera.core.impl.MetadataHolderService"
+74-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:25:13-75
+75            android:enabled="false"
+75-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:26:13-36
+76            android:exported="false" >
+76-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:27:13-37
+77            <meta-data
+77-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:30:13-32:89
+78                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+78-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:31:17-103
+79                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
+79-->[androidx.camera:camera-camera2:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\AndroidManifest.xml:32:17-86
+80        </service>
+81
+82        <uses-library
+82-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:23:9-25:40
+83            android:name="androidx.window.extensions"
+83-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:24:13-54
+84            android:required="false" />
+84-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:25:13-37
+85        <uses-library
+85-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:26:9-28:40
+86            android:name="androidx.window.sidecar"
+86-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:27:13-51
+87            android:required="false" />
+87-->[androidx.window:window:1.1.0-alpha06] C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\AndroidManifest.xml:28:13-37
+88
+89        <provider
+89-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+90            android:name="androidx.startup.InitializationProvider"
+90-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+91            android:authorities="uni.proj.rv.androidx-startup"
+91-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+92            android:exported="false" >
+92-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+93            <meta-data
+93-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+94                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+94-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+95                android:value="androidx.startup" />
+95-->[androidx.emoji2:emoji2:1.2.0] C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+96            <meta-data
+96-->[androidx.lifecycle:lifecycle-process:2.6.0] C:\Users\AOZ\.gradle\caches\transforms-3\de59ea555e8012e602599921710191e2\transformed\jetified-lifecycle-process-2.6.0\AndroidManifest.xml:29:13-31:52
+97                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+97-->[androidx.lifecycle:lifecycle-process:2.6.0] C:\Users\AOZ\.gradle\caches\transforms-3\de59ea555e8012e602599921710191e2\transformed\jetified-lifecycle-process-2.6.0\AndroidManifest.xml:30:17-78
+98                android:value="androidx.startup" />
+98-->[androidx.lifecycle:lifecycle-process:2.6.0] C:\Users\AOZ\.gradle\caches\transforms-3\de59ea555e8012e602599921710191e2\transformed\jetified-lifecycle-process-2.6.0\AndroidManifest.xml:31:17-49
+99            <meta-data
+99-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:30:13-32:52
+100                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+100-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:31:17-85
+101                android:value="androidx.startup" />
+101-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:32:17-49
+102        </provider>
+103
+104        <receiver
+104-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:35:9-47:20
+105            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+105-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:36:13-76
+106            android:directBootAware="false"
+106-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:37:13-44
+107            android:enabled="true"
+107-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:38:13-35
+108            android:exported="true"
+108-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:39:13-36
+109            android:permission="android.permission.DUMP" >
+109-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:40:13-57
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:41:13-43:29
+111                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+111-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:42:17-91
+111-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:42:25-88
+112            </intent-filter>
+113            <intent-filter>
+113-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:44:13-46:29
+114                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+114-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:45:17-85
+114-->[androidx.profileinstaller:profileinstaller:1.2.1] C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\AndroidManifest.xml:45:25-82
+115            </intent-filter>
+116        </receiver>
+117    </application>
+118
+119</manifest>

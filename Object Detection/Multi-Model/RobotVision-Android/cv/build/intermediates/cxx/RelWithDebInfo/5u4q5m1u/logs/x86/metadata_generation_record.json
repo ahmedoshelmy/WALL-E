@@ -1,0 +1,170 @@
+[
+  {
+    "level_": 0,
+    "message_": "Start JSON generation. Platform version: 21 min SDK version: x86",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1120511481
+  },
+  {
+    "level_": 0,
+    "message_": "rebuilding JSON C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\\android_gradle_build.json due to:",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1240221731
+  },
+  {
+    "level_": 0,
+    "message_": "- expected json C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\\android_gradle_build.json file is not present, will remove stale json folder",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1811250987
+  },
+  {
+    "level_": 0,
+    "message_": "- missing previous command file C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\\metadata_generation_command.txt, will remove stale json folder",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -138819735
+  },
+  {
+    "level_": 0,
+    "message_": "- command changed from previous, will remove stale json folder",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1340618147
+  },
+  {
+    "level_": 0,
+    "message_": "created folder \u0027C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\u0027",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1945621157
+  },
+  {
+    "level_": 0,
+    "message_": "executing cmake @echo off\n\"C:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.18.1\\\\bin\\\\cmake.exe\" ^\n  \"-HC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\libcxx_helper\" ^\n  \"-DCMAKE_SYSTEM_NAME\u003dAndroid\" ^\n  \"-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\" ^\n  \"-DCMAKE_SYSTEM_VERSION\u003d21\" ^\n  \"-DANDROID_PLATFORM\u003dandroid-21\" ^\n  \"-DANDROID_ABI\u003dx86\" ^\n  \"-DCMAKE_ANDROID_ARCH_ABI\u003dx86\" ^\n  \"-DANDROID_NDK\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\" ^\n  \"-DCMAKE_ANDROID_NDK\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\" ^\n  \"-DCMAKE_TOOLCHAIN_FILE\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\\\\build\\\\cmake\\\\android.toolchain.cmake\" ^\n  \"-DCMAKE_MAKE_PROGRAM\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.18.1\\\\bin\\\\ninja.exe\" ^\n  \"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\build\\\\intermediates\\\\cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\obj\\\\x86\" ^\n  \"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\build\\\\intermediates\\\\cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\obj\\\\x86\" ^\n  \"-DCMAKE_BUILD_TYPE\u003dRelWithDebInfo\" ^\n  \"-BC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\.cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\x86\" ^\n  -GNinja ^\n  \"-DANDROID_STL\u003dc++_shared\"\n",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 2077423408
+  },
+  {
+    "level_": 0,
+    "message_": "@echo off\n\"C:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.18.1\\\\bin\\\\cmake.exe\" ^\n  \"-HC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\libcxx_helper\" ^\n  \"-DCMAKE_SYSTEM_NAME\u003dAndroid\" ^\n  \"-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\" ^\n  \"-DCMAKE_SYSTEM_VERSION\u003d21\" ^\n  \"-DANDROID_PLATFORM\u003dandroid-21\" ^\n  \"-DANDROID_ABI\u003dx86\" ^\n  \"-DCMAKE_ANDROID_ARCH_ABI\u003dx86\" ^\n  \"-DANDROID_NDK\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\" ^\n  \"-DCMAKE_ANDROID_NDK\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\" ^\n  \"-DCMAKE_TOOLCHAIN_FILE\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\ndk\\\\23.1.7779620\\\\build\\\\cmake\\\\android.toolchain.cmake\" ^\n  \"-DCMAKE_MAKE_PROGRAM\u003dC:\\\\Users\\\\AOZ\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\cmake\\\\3.18.1\\\\bin\\\\ninja.exe\" ^\n  \"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\build\\\\intermediates\\\\cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\obj\\\\x86\" ^\n  \"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\build\\\\intermediates\\\\cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\obj\\\\x86\" ^\n  \"-DCMAKE_BUILD_TYPE\u003dRelWithDebInfo\" ^\n  \"-BC:\\\\Users\\\\AOZ\\\\Desktop\\\\Our-Ultimate-Robot\\\\Object Detection\\\\Multi-Model\\\\RobotVision-Android\\\\cv\\\\.cxx\\\\RelWithDebInfo\\\\5u4q5m1u\\\\x86\" ^\n  -GNinja ^\n  \"-DANDROID_STL\u003dc++_shared\"\n",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -106609937
+  },
+  {
+    "level_": 0,
+    "message_": "Exiting generation of C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\\compile_commands.json.bin normally",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1798209839
+  },
+  {
+    "level_": 0,
+    "message_": "done executing cmake",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": 1028271896
+  },
+  {
+    "level_": 0,
+    "message_": "write command file C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\.cxx\\RelWithDebInfo\\5u4q5m1u\\x86\\metadata_generation_command.txt",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -366197651
+  },
+  {
+    "level_": 0,
+    "message_": "JSON generation completed without problems",
+    "file_": "C:\\Users\\AOZ\\Desktop\\Our-Ultimate-Robot\\Object Detection\\Multi-Model\\RobotVision-Android\\cv\\libcxx_helper\\CMakeLists.txt",
+    "tag_": "release|x86",
+    "diagnosticCode_": 0,
+    "memoizedIsInitialized": 1,
+    "unknownFields": {
+      "fields": {},
+      "fieldsDescending": {}
+    },
+    "memoizedSize": -1,
+    "memoizedHashCode": -1328622316
+  }
+]

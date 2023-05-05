@@ -1,0 +1,106 @@
+[
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_visibility_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_visibility_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_play_arrow_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_play_arrow_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_bk_rounded_25.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/bk_rounded_25.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_round.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_round.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_drag_handle_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_drag_handle_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_spinner_background.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/spinner_background.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_trans_ripple.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_trans_ripple.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/layout_fragment_camera_controller.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/layout/fragment_camera_controller.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/layout_info_bottom_sheet.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/layout/info_bottom_sheet.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_chat_bubble_outline_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_chat_bubble_outline_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_keyboard_arrow_down_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_keyboard_arrow_down_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_launcher.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_launcher.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_app_icon.png.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/app_icon.png"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/layout_fragment_camera.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/layout/fragment_camera.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_keyboard_double_arrow_right_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_keyboard_double_arrow_right_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/layout_activity_main.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/layout/activity_main.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_plus.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_plus.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_arrow_forward_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_arrow_forward_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_chat_bubble_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_chat_bubble_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/color_selector_ic.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/color/selector_ic.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/navigation_nav_graph.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_pause_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_pause_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_send_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_send_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_visibility_off_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_visibility_off_24.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_minus.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_minus.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-merged_res-57:/drawable_ic_baseline_auto_mode_24.xml.flat",
+        "source": "uni.proj.rv.app-main-59:/drawable/ic_baseline_auto_mode_24.xml"
+    }
+]

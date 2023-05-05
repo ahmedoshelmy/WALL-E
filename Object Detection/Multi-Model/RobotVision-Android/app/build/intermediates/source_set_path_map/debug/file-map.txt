@@ -1,0 +1,60 @@
+uni.proj.rv.app-fragment-1.5.4-0 C:\Users\AOZ\.gradle\caches\transforms-3\03eef1cfa3cfd38b4ae5b1f67fd5cc4d\transformed\fragment-1.5.4\res
+uni.proj.rv.app-navigation-runtime-ktx-2.5.3-1 C:\Users\AOZ\.gradle\caches\transforms-3\044ff03fd8c9bd633d9bc5ab059c7b5f\transformed\navigation-runtime-ktx-2.5.3\res
+uni.proj.rv.app-databinding-adapters-7.3.1-2 C:\Users\AOZ\.gradle\caches\transforms-3\04897c2a398c60f93161221efcda63da\transformed\databinding-adapters-7.3.1\res
+uni.proj.rv.app-jetified-lifecycle-runtime-ktx-2.6.0-3 C:\Users\AOZ\.gradle\caches\transforms-3\05b454759825d00f525e8de2f80ce5b3\transformed\jetified-lifecycle-runtime-ktx-2.6.0\res
+uni.proj.rv.app-lifecycle-livedata-core-2.6.0-4 C:\Users\AOZ\.gradle\caches\transforms-3\12f13f186e43c704b425aff1a279c26e\transformed\lifecycle-livedata-core-2.6.0\res
+uni.proj.rv.app-drawerlayout-1.1.1-5 C:\Users\AOZ\.gradle\caches\transforms-3\17421f917ce30d922642a38014a537d8\transformed\drawerlayout-1.1.1\res
+uni.proj.rv.app-jetified-core-1.0.0-alpha01-6 C:\Users\AOZ\.gradle\caches\transforms-3\1b81ec0d0a413f85de8f4e8efc2bac2b\transformed\jetified-core-1.0.0-alpha01\res
+uni.proj.rv.app-navigation-fragment-2.5.3-7 C:\Users\AOZ\.gradle\caches\transforms-3\2daf32750e467f973aa996cbd9546cc3\transformed\navigation-fragment-2.5.3\res
+uni.proj.rv.app-jetified-annotation-experimental-1.3.0-8 C:\Users\AOZ\.gradle\caches\transforms-3\363d214a32f6acfbda392d6db0111f17\transformed\jetified-annotation-experimental-1.3.0\res
+uni.proj.rv.app-jetified-lifecycle-viewmodel-ktx-2.6.0-9 C:\Users\AOZ\.gradle\caches\transforms-3\37be29db96d28a86fd265eb5e9e8c072\transformed\jetified-lifecycle-viewmodel-ktx-2.6.0\res
+uni.proj.rv.app-databinding-runtime-7.3.1-10 C:\Users\AOZ\.gradle\caches\transforms-3\38ab9cf3a2a24dd1f8611321cd59a5ba\transformed\databinding-runtime-7.3.1\res
+uni.proj.rv.app-jetified-camera-camera2-1.2.1-11 C:\Users\AOZ\.gradle\caches\transforms-3\3a8efa5076f0f1f794fa51c5dcdf27ae\transformed\jetified-camera-camera2-1.2.1\res
+uni.proj.rv.app-coordinatorlayout-1.1.0-12 C:\Users\AOZ\.gradle\caches\transforms-3\403b65205a6c4b398377b7e8fdf6da8c\transformed\coordinatorlayout-1.1.0\res
+uni.proj.rv.app-navigation-common-2.5.3-13 C:\Users\AOZ\.gradle\caches\transforms-3\4b8a09be2a508bd57be8f4d3770d859c\transformed\navigation-common-2.5.3\res
+uni.proj.rv.app-core-1.9.0-14 C:\Users\AOZ\.gradle\caches\transforms-3\4e3d0e3a231aac8cfbe5126772ce3dc0\transformed\core-1.9.0\res
+uni.proj.rv.app-jetified-profileinstaller-1.2.1-15 C:\Users\AOZ\.gradle\caches\transforms-3\4ff8ad3bea87f542dff6aa12239806a1\transformed\jetified-profileinstaller-1.2.1\res
+uni.proj.rv.app-constraintlayout-2.1.4-16 C:\Users\AOZ\.gradle\caches\transforms-3\5cebceff6de32ddfd95c674cc3aab377\transformed\constraintlayout-2.1.4\res
+uni.proj.rv.app-jetified-lifecycle-service-2.6.0-17 C:\Users\AOZ\.gradle\caches\transforms-3\6372bf431469811e5d35317b2563cfab\transformed\jetified-lifecycle-service-2.6.0\res
+uni.proj.rv.app-cardview-1.0.0-18 C:\Users\AOZ\.gradle\caches\transforms-3\692615500236bc02bcec859ec80bd089\transformed\cardview-1.0.0\res
+uni.proj.rv.app-lifecycle-runtime-2.6.0-19 C:\Users\AOZ\.gradle\caches\transforms-3\6a8c2d094097045922ec289fa9a015df\transformed\lifecycle-runtime-2.6.0\res
+uni.proj.rv.app-jetified-window-1.1.0-alpha06-20 C:\Users\AOZ\.gradle\caches\transforms-3\6bc052f2ce878e3272c8ee74ec0cb832\transformed\jetified-window-1.1.0-alpha06\res
+uni.proj.rv.app-navigation-ui-2.5.3-21 C:\Users\AOZ\.gradle\caches\transforms-3\6d7a9c9b7b496ec5531da9a87c87c9a5\transformed\navigation-ui-2.5.3\res
+uni.proj.rv.app-jetified-emoji2-views-helper-1.2.0-22 C:\Users\AOZ\.gradle\caches\transforms-3\7191fb270b8c83882af521b4e9ab3df2\transformed\jetified-emoji2-views-helper-1.2.0\res
+uni.proj.rv.app-transition-1.4.1-23 C:\Users\AOZ\.gradle\caches\transforms-3\725f54b8739fadd2fe7ea56e124da36a\transformed\transition-1.4.1\res
+uni.proj.rv.app-navigation-common-ktx-2.5.3-24 C:\Users\AOZ\.gradle\caches\transforms-3\778ca78506b513504f99b1a6399d7b11\transformed\navigation-common-ktx-2.5.3\res
+uni.proj.rv.app-lifecycle-livedata-2.6.0-25 C:\Users\AOZ\.gradle\caches\transforms-3\851948db1c3c3045dc113c5a9d82eae8\transformed\lifecycle-livedata-2.6.0\res
+uni.proj.rv.app-jetified-lifecycle-viewmodel-savedstate-2.6.0-26 C:\Users\AOZ\.gradle\caches\transforms-3\856baa24dd4adb48f48cab3cdabb7759\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.0\res
+uni.proj.rv.app-jetified-viewpager2-1.0.0-27 C:\Users\AOZ\.gradle\caches\transforms-3\8a56a020d20fcff9c4b46f3ffd342683\transformed\jetified-viewpager2-1.0.0\res
+uni.proj.rv.app-material-1.8.0-28 C:\Users\AOZ\.gradle\caches\transforms-3\98aa855b7476f5804eca16161b7999d1\transformed\material-1.8.0\res
+uni.proj.rv.app-jetified-camera-view-1.2.1-29 C:\Users\AOZ\.gradle\caches\transforms-3\990a0a5a6e37cf1519e4eae151aa7329\transformed\jetified-camera-view-1.2.1\res
+uni.proj.rv.app-navigation-ui-ktx-2.5.3-30 C:\Users\AOZ\.gradle\caches\transforms-3\9922d8577417b1a75eab8e2ada432821\transformed\navigation-ui-ktx-2.5.3\res
+uni.proj.rv.app-navigation-fragment-ktx-2.5.3-31 C:\Users\AOZ\.gradle\caches\transforms-3\9945ca3b015b4a07d46ed17e20f1bac2\transformed\navigation-fragment-ktx-2.5.3\res
+uni.proj.rv.app-jetified-activity-1.6.0-32 C:\Users\AOZ\.gradle\caches\transforms-3\a1614907f03eaf03c9f73242ed4f4d41\transformed\jetified-activity-1.6.0\res
+uni.proj.rv.app-slidingpanelayout-1.2.0-33 C:\Users\AOZ\.gradle\caches\transforms-3\b3c6d66adee6f888e7c1001fed9ea8e5\transformed\slidingpanelayout-1.2.0\res
+uni.proj.rv.app-localbroadcastmanager-1.1.0-34 C:\Users\AOZ\.gradle\caches\transforms-3\bf1a9251816fda7e56efaa70641d811f\transformed\localbroadcastmanager-1.1.0\res
+uni.proj.rv.app-jetified-fragment-ktx-1.5.4-35 C:\Users\AOZ\.gradle\caches\transforms-3\c309cc2fc5257cc718cee8375e81603d\transformed\jetified-fragment-ktx-1.5.4\res
+uni.proj.rv.app-core-runtime-2.2.0-36 C:\Users\AOZ\.gradle\caches\transforms-3\c49a576ce257e8adede979a1a5d18b49\transformed\core-runtime-2.2.0\res
+uni.proj.rv.app-navigation-runtime-2.5.3-37 C:\Users\AOZ\.gradle\caches\transforms-3\cb9628e755f7bf53aadbb17de77f24c2\transformed\navigation-runtime-2.5.3\res
+uni.proj.rv.app-jetified-emoji2-1.2.0-38 C:\Users\AOZ\.gradle\caches\transforms-3\cdd7dd91da4aeb01c52b6e2ad0a57d30\transformed\jetified-emoji2-1.2.0\res
+uni.proj.rv.app-jetified-savedstate-1.2.0-39 C:\Users\AOZ\.gradle\caches\transforms-3\cfc24dd0f0f122e498b0fe89380731e4\transformed\jetified-savedstate-1.2.0\res
+uni.proj.rv.app-jetified-activity-ktx-1.6.0-40 C:\Users\AOZ\.gradle\caches\transforms-3\d2299da00238afa1f015376c12e3fe27\transformed\jetified-activity-ktx-1.6.0\res
+uni.proj.rv.app-jetified-startup-runtime-1.1.1-41 C:\Users\AOZ\.gradle\caches\transforms-3\d49813ba484672634b17d4b2eea9b482\transformed\jetified-startup-runtime-1.1.1\res
+uni.proj.rv.app-jetified-lifecycle-livedata-core-ktx-2.6.0-42 C:\Users\AOZ\.gradle\caches\transforms-3\da25d52a8ffa20a24670c3c0a1b3f101\transformed\jetified-lifecycle-livedata-core-ktx-2.6.0\res
+uni.proj.rv.app-jetified-appcompat-resources-1.6.1-43 C:\Users\AOZ\.gradle\caches\transforms-3\db13c63629bf2267aa7eb1f23df878ad\transformed\jetified-appcompat-resources-1.6.1\res
+uni.proj.rv.app-jetified-lifecycle-process-2.6.0-44 C:\Users\AOZ\.gradle\caches\transforms-3\de59ea555e8012e602599921710191e2\transformed\jetified-lifecycle-process-2.6.0\res
+uni.proj.rv.app-lifecycle-viewmodel-2.6.0-45 C:\Users\AOZ\.gradle\caches\transforms-3\e7df6b11968e7b0f98ce23f63d51517f\transformed\lifecycle-viewmodel-2.6.0\res
+uni.proj.rv.app-recyclerview-1.1.0-46 C:\Users\AOZ\.gradle\caches\transforms-3\ed76181000ba1c79ad1219d0e872e0cc\transformed\recyclerview-1.1.0\res
+uni.proj.rv.app-jetified-core-ktx-1.9.0-47 C:\Users\AOZ\.gradle\caches\transforms-3\ee06a325033d2c1e1fd3ad53e12e66d5\transformed\jetified-core-ktx-1.9.0\res
+uni.proj.rv.app-jetified-savedstate-ktx-1.2.0-48 C:\Users\AOZ\.gradle\caches\transforms-3\f04db2c7a2cc95af41eb1bb8c44a95df\transformed\jetified-savedstate-ktx-1.2.0\res
+uni.proj.rv.app-jetified-camera-lifecycle-1.2.1-49 C:\Users\AOZ\.gradle\caches\transforms-3\f52515ad6b83bc1a8f2400f05c6ce73e\transformed\jetified-camera-lifecycle-1.2.1\res
+uni.proj.rv.app-jetified-camera-core-1.2.1-50 C:\Users\AOZ\.gradle\caches\transforms-3\f553b25a92fdea661d43c77916fffbf2\transformed\jetified-camera-core-1.2.1\res
+uni.proj.rv.app-appcompat-1.6.1-51 C:\Users\AOZ\.gradle\caches\transforms-3\f73e49497a393733ecb62f9bc6b9b1e4\transformed\appcompat-1.6.1\res
+uni.proj.rv.app-pngs-52 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\generated\res\pngs\debug
+uni.proj.rv.app-resValues-53 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\generated\res\resValues\debug
+uni.proj.rv.app-rs-54 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\generated\res\rs\debug
+uni.proj.rv.app-mergeDebugResources-55 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+uni.proj.rv.app-mergeDebugResources-56 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+uni.proj.rv.app-merged_res-57 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\build\intermediates\merged_res\debug
+uni.proj.rv.app-debug-58 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\debug\res
+uni.proj.rv.app-main-59 C:\Users\AOZ\Desktop\Our-Ultimate-Robot\Object Detection\Multi-Model\RobotVision-Android\app\src\main\res

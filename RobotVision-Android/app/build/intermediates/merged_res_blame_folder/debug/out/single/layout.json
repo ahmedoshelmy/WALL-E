@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "uni.proj.rv.app-mergeDebugResources-56:/layout/fragment_camera.xml",
+        "source": "uni.proj.rv.app-main-59:/layout/fragment_camera.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-mergeDebugResources-56:/layout/activity_main.xml",
+        "source": "uni.proj.rv.app-main-59:/layout/activity_main.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-mergeDebugResources-56:/layout/info_bottom_sheet.xml",
+        "source": "uni.proj.rv.app-main-59:/layout/info_bottom_sheet.xml"
+    },
+    {
+        "merged": "uni.proj.rv.app-mergeDebugResources-56:/layout/fragment_camera_controller.xml",
+        "source": "uni.proj.rv.app-main-59:/layout/fragment_camera_controller.xml"
+    }
+]
