@@ -202,10 +202,6 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         return fragmentCameraBinding.root
     }
 
-    private fun onCommand(cmd : Command){ //execute command form arduino
-
-    }
-
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -531,8 +527,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
         fragmentCameraBinding.control.controlCommandSubmit.setOnClickListener {
             if (!General.communication.isConnected){
                 Toast.makeText(context , "Not connected" , Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 val text = fragmentCameraBinding.control.controlCommandInput.text.toString();
                 try {
                     val cmd = Command.fromString(text)
@@ -857,6 +852,26 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     var selectedColorLow : Scalar = Scalar(0.0,0.0,0.0)
     var selectedColorHigh : Scalar = Scalar(0.0,0.0,0.0)
+
+    public fun getController(): FragmentCameraBinding {
+        return fragmentCameraBinding;
+    }
+
+    fun setColorLow(value : Scalar){
+        activity?.runOnUiThread {
+            fragmentCameraBinding.control.controlHsvHFrom.progress = value.`val`[0].toInt();
+            fragmentCameraBinding.control.controlHsvSFrom.progress = value.`val`[1].toInt();
+            fragmentCameraBinding.control.controlHsvVFrom.progress = value.`val`[2].toInt();
+        }
+    }
+
+    fun setColorHigh(value : Scalar){
+        activity?.runOnUiThread {
+            fragmentCameraBinding.control.controlHsvHTo.progress = value.`val`[0].toInt();
+            fragmentCameraBinding.control.controlHsvSTo.progress = value.`val`[1].toInt();
+            fragmentCameraBinding.control.controlHsvVTo.progress = value.`val`[2].toInt();
+        }
+    }
 
 
 }

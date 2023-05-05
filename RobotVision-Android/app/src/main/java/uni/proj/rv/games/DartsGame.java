@@ -6,6 +6,7 @@ import android.graphics.RectF;
 import java.util.LinkedList;
 
 import uni.proj.ec.Command;
+import uni.proj.rv.ImageProcessing;
 import uni.proj.rv.RobotGame;
 import uni.proj.rv.fragments.CameraFragment;
 

@@ -57,6 +57,7 @@ public class DefendingGame extends RobotGame {
     //received a frame , now we need to process it
     Bitmap previewBuffer;
     LinkedList<RectF> res;
+
     @Override
     public Bitmap onCameraFeed(Bitmap image) {
 
@@ -74,7 +75,6 @@ public class DefendingGame extends RobotGame {
         // getSelectedColorLow() -> the selected lower range color from the user (click the eye icon to view in-app)
         // getSelectedColorHigh() -> the selected upper range color from the user (click the eye icon to view in-app)
         res = ImageProcessing.DetectColoredBalls(image , 5 , getSelectedColorLow() , getSelectedColorHigh());
-
 
         //this game returns a image to the user because we enabled the displaying with enableCustomDisplay()
         //so , I just get the type of preview the user want to see , then return it
@@ -117,14 +117,14 @@ public class DefendingGame extends RobotGame {
             print("ERROR: in a defending game we shouldn't have more than one result\n");
         }
 
-        float center_line = -0.1f; //put it with negative value if you want to shift the center line left
         //positive for right
         //zero for no shift
         //range : [-0.5 , 0.5]
 
+        float center_line = -0.1f; //put it with negative value if you want to shift the center line left
+
         float acceptable_range = 0.1f; //of screen width , 0.5 means the hole screen will be in the acceptable range
-		
-		//use a Canvas object to draw on the screen (image that will be displayed on the screen)
+
         Canvas canv = new Canvas(image);
 
         //center line position in coords
@@ -132,18 +132,15 @@ public class DefendingGame extends RobotGame {
 
         Paint paint = new Paint();
         paint.setStrokeWidth(10);
-		
-		//draw the center line
+
         paint.setColor(Color.RED);
         paint.setAlpha(200);
         canv.drawLine(0 , width2 , width() , width2 , paint);
-		
-		//draw the right range indicator
+
         paint.setColor(Color.GREEN);
         paint.setAlpha(200);
         canv.drawLine(0 , width2 + acceptable_range * height() , width() , width2 + acceptable_range * height() , paint);
-		
-		//draw the left range indicator
+
         paint.setColor(Color.GREEN);
         paint.setAlpha(200);
         canv.drawLine(0 , width2 - acceptable_range * height() , width() , width2 - acceptable_range * height() , paint);
@@ -153,7 +150,7 @@ public class DefendingGame extends RobotGame {
         if (res.size() >= 1){ //not the best way to do it .. but Im too lazy to think of something else
             RectF ball = res.get(0); //get the first result
 
-            float cx = (ball.top + ball.bottom); //notice the phone is in landscape , so X and Y are switched
+            float cx = (ball.top + ball.bottom) / 2.0f; //notice the phone is in landscape , so X and Y are switched
 
             if (cx > width2 + acceptable_range * height()){
                 print("Robot should move right\n");

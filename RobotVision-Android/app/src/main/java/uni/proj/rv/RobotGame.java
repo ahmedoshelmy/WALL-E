@@ -20,8 +20,6 @@ import uni.proj.rv.fragments.CameraFragment;
  * */
 public abstract class RobotGame {
 
-
-
     private final CameraFragment context;
     private boolean running = false;
     private boolean selected = false;
@@ -121,6 +119,7 @@ public abstract class RobotGame {
     }
 
 
+
     /**
      * return the screen width
      * notice that we will use the phone in a 90 deg rotation
@@ -131,7 +130,7 @@ public abstract class RobotGame {
     }
 
     /**
-     * return the screen Hight
+     * return the screen Height
      * */
     public int height(){
         return context.rotatedBuffer.getHeight();
@@ -145,7 +144,6 @@ public abstract class RobotGame {
         context.requireActivity().runOnUiThread(() -> {
                 context.printSerial(str);
         });
-
     }
 
     /**
