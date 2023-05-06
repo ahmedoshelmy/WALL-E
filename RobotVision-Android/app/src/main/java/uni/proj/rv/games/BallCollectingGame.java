@@ -1,12 +1,11 @@
 package uni.proj.rv.games;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.opencv.android.Utils;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 
 import java.util.LinkedList;
@@ -16,7 +15,30 @@ import uni.proj.rv.ImageProcessing;
 import uni.proj.rv.RobotGame;
 import uni.proj.rv.fragments.CameraFragment;
 
+
 public class BallCollectingGame extends RobotGame {
+
+    enum  Color {
+        RED,
+        BLUE
+    }
+
+    enum  DIRECTION {
+        FRONT,
+        LEFT,
+        RIGHT
+    }
+
+    enum ACTIONS {
+        NOTHING,
+        TK_FORWARD,
+        TK_RIGHT,
+        TK_LEFT,
+        AVD_FROWARD
+    }
+
+
+
     Bitmap previewBuffer;
     private final Scalar RED_BALL_LOW = new Scalar(0, 70, 50);
     private final Scalar RED_BALL_HIGH = new Scalar(10, 255, 255);
@@ -25,13 +47,59 @@ public class BallCollectingGame extends RobotGame {
     LinkedList<RectF> res_red;
     LinkedList<RectF> res_blue;
 
-    String prev_comm ;
-    String curr_comm ;
+
+    private float cx_screen; // (cx_screen, cy_screen) = center of screen
+    private float cy_screen;
+    //TODO: choose proper value for acceptable_range
+    private final float acceptable_range = 0.5f;
+    private float right_border;
+    private float left_border;
+
+    private ACTIONS curr_action;
+    private ACTIONS prev_action;
+    private class PingBall {
+        public RectF ball;
+        public Color color;
+        public float cx  ;
+        public float cy ;
+
+        public PingBall(RectF bd, Color c) {
+            ball = bd;
+            color = c;
+            cx = (ball.top + ball.bottom) / 2; // notice the phone is in landscape, so X and Y are switched
+            cy = (ball.right + ball.left) / 2; // notice the phone is in landscape, so X and Y are switched
+        }
+        public float getDistanceFromCenterScreen() {
+            float dx = cx - cx_screen;
+            float dy = cy - cy_screen;
+            return (float) Math.sqrt(dx * dx + dy * dy);
+        }
+
+        public DIRECTION getDirection() {
+            if (cx > right_border) { //right
+                return DIRECTION.RIGHT;
+            } else if (cx < left_border) { // left
+                return DIRECTION.LEFT;
+
+            } else { //forward
+                return DIRECTION.FRONT;
+            }
+        }
+
+        public String toString() {
+
+            return "Ball \t" + color.toString() + "\t" + getDirection().toString() + "\n";
+        }
+
+    }
+
+
 
     public BallCollectingGame(CameraFragment context) {
         super(context);
-        prev_comm = "";
-        curr_comm = "";
+
+        curr_action = ACTIONS.NOTHING;
+        prev_action = ACTIONS.NOTHING;
     }
     @Override
     public void onGameSelected() {
@@ -39,7 +107,7 @@ public class BallCollectingGame extends RobotGame {
         print("Test: onGameStarted\n");
 
         try {
-            sendCommand(Command.fromString("set_game{g=-1}"));
+            sendCommand(Command.fromString("set_game{g=0}"));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -71,25 +139,20 @@ public class BallCollectingGame extends RobotGame {
             }
         }
 
-        //do a color detection on the image from the camera
-        //the blur value is just here to make the image smoother
-        // getSelectedColorLow() -> the selected lower range color from the user (click the eye icon to view in-app)
-        // getSelectedColorHigh() -> the selected upper range color from the user (click the eye icon to view in-app)
-        // ======= BLUE =========
-        //res_blue = ImageProcessing.DetectColoredBalls(image, 5, new Scalar(0,1,59), new Scalar(255,174,156));
-        //  process_result(true);
+
+        cx_screen = height() / 2.0f; // (cx_screen, cy_screen) = center of screen
+        cy_screen = 0;
+
+        left_border = cx_screen * (1 - acceptable_range);
+        right_border  = cx_screen * (1 + acceptable_range);
+
+
+        DrawLine(image);
+
+        res_blue = ImageProcessing.DetectColoredBalls(image, 5, BLUE_BALL_LOW, BLUE_BALL_HIGH);
         res_red = ImageProcessing.DetectColoredBalls(image, 5, RED_BALL_LOW, RED_BALL_HIGH);
-        process_result(false);
-        //now do the processing we need on the results we just got
+        process_result();
 
-        //res = ImageProcessing.DetectColoredBalls(image, 5, new Scalar(0.0,53,75), new Scalar(254, 181,255));
-
-        //res = ImageProcessing.DetectColoredBalls(image, 5, new Scalar(0,18,44), new Scalar(247, 233,201));
-
-        //process_result(false);
-
-        //this game returns a image to the user because we enabled the displaying with enableCustomDisplay()
-        //so , I just get the type of preview the user want to see , then return it
         //almost every time you will take this code copy-paste
         switch (getCurrentPreview()) {
             //copy the input image
@@ -119,52 +182,138 @@ public class BallCollectingGame extends RobotGame {
     }
 
 
-    private void process_result(boolean taken_or_not) {
-        RectF nearest_ball = null;
-        float nearest_distance = Float.MAX_VALUE;
-        float cx_screen = height() / 2.0f; // (cx_screen, cy_screen) = center of screen
-        float cy_screen = width() / 2.0f;
-        float acceptable_range = 0.3f;     //
+    private void process_result() {
+        float [] mx_dist = {Float.MAX_VALUE, Float.MAX_VALUE}; // {front, left_or_right}
+        PingBall [] nearest_balls = {null, null};// {front, left_or_right}
 
-        for (RectF ball : res_red) {
-            float cx_ball = (ball.top + ball.bottom) / 2; // notice the phone is in landscape, so X and Y are switched
-            float cy_ball = (ball.right + ball.left) / 2; // notice the phone is in landscape, so X and Y are switched
-            float dx = cx_ball - cx_screen;
-            float dy = cy_ball - cy_screen;
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        getNearestBall(mx_dist, nearest_balls, res_red, Color.RED);
+        getNearestBall(mx_dist, nearest_balls, res_blue, Color.BLUE);
 
-            if (distance < nearest_distance) {
-                nearest_ball = ball;
-                nearest_distance = distance;
+        //* The priority goes to OUR FRONT
+        if(nearest_balls[DIRECTION.FRONT.ordinal()] != null) {
+            switch (nearest_balls[DIRECTION.FRONT.ordinal()].color) {
+                case RED:
+                    curr_action = ACTIONS.AVD_FROWARD;
+                    break;
+                case BLUE:
+                    curr_action = ACTIONS.TK_FORWARD;
+                    break;
             }
         }
-
-        try {
-
-            if (nearest_ball != null) {
-                float cx_nearest = (nearest_ball.top + nearest_ball.bottom) / 2;
-                float cy_nearest = (nearest_ball.right + nearest_ball.left) / 2;
-
-                if (cx_nearest > cx_screen * (1 + acceptable_range)) { //right
-                    curr_comm = "set_dir{d=1}";
-                } else if (cx_nearest < cx_screen * (1 - acceptable_range)) { // left
-                    curr_comm = "set_dir{d=2}";
-                } else { //forward
-                    curr_comm = "set_dir{d=3}";
-                }
-            } else {
-                curr_comm = "set_dir{d=0}";
-            }
-
-            if(!curr_comm.equals(prev_comm)) {
-                print("java c: " + curr_comm + "\n");
-                sendCommand(Command.fromString(curr_comm));
-                prev_comm=curr_comm;
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        else if(nearest_balls[1] != null && nearest_balls[1].color == Color.BLUE) {
+            curr_action =  (nearest_balls[1].getDirection() == DIRECTION.LEFT) ?
+                        ACTIONS.TK_LEFT : ACTIONS.TK_RIGHT;
         }
+        else {
+            curr_action = ACTIONS.NOTHING;
+        }
+       // print("Curr action = " + curr_action + "\n");
+        //print("prev action = " + prev_action + "\n");
+        if(curr_action != prev_action) {
+
+            switch (curr_action) {
+                case AVD_FROWARD:
+                    print("Avoid Forward\n");
+                    break;
+                case TK_FORWARD:
+                    print("Move Forward\n");
+                    break;
+                case TK_RIGHT:
+                    print("Move Right\n");
+                    break;
+                case TK_LEFT:
+                    print("Move Left\n");
+                    break;
+                default:
+                    print("nothing\n");
+                    break;
+            }
+
+            try {
+                sendCommand(Command.fromString("set_act={a="+curr_action.ordinal()+"}"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            prev_action = curr_action;
+        }
+
+//
+//        try {
+//
+//            if (nearest_ball != null) {
+//                float cx_nearest = (nearest_ball.top + nearest_ball.bottom) / 2;
+//
+//                if (cx_nearest > cx_screen * (1 + acceptable_range)) { //right
+//                    curr_comm = "set_dir{d=1}";
+//                } else if (cx_nearest < cx_screen * (1 - acceptable_range)) { // left
+//                    curr_comm = "set_dir{d=2}";
+//                } else { //forward
+//                    curr_comm = "set_dir{d=3}";
+//                }
+//            } else {
+//                curr_comm = "set_dir{d=0}";
+//            }
+//
+//            if(!curr_comm.equals(prev_comm)) {
+//                print("java c: " + curr_comm + "\n");
+//                sendCommand(Command.fromString(curr_comm));
+//                prev_comm=curr_comm;
+//            }
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+    private void getNearestBall(float [] mx_dist, PingBall [] nearest_balls, LinkedList<RectF> res, Color color) {
+        for (RectF ball : res) {
+            PingBall tmp = new PingBall(ball, color);
+            print(tmp.toString());
+            float dist = tmp.getDistanceFromCenterScreen();
+            //as i need left & right = 1
+            int index = tmp.getDirection() == DIRECTION.FRONT ? DIRECTION.FRONT.ordinal() : DIRECTION.LEFT.ordinal();
+            if(dist < mx_dist[index] || (dist == mx_dist[index] && color == Color.RED) ) {
+                mx_dist[index] = dist;
+                nearest_balls[index] = tmp;
+            }
+        }
+    }
+
+    private void DrawLine(Bitmap image){
+        Canvas canv = new Canvas(image);
+
+        //center line position in coords
+
+        Paint paint = new Paint();
+        paint.setStrokeWidth(10);
+
+        paint.setColor(android.graphics.Color.RED);
+        paint.setAlpha(200);
+        canv.drawLine(0 , left_border , width() , left_border , paint);
+
+        paint.setColor(android.graphics.Color.GREEN);
+        paint.setAlpha(200);
+        canv.drawLine(0 , right_border , width() , right_border , paint);
+
+        drawSquare(canv, cx_screen, cy_screen, 50);
+
+
+    }
+
+    public void drawSquare(Canvas canvas, float cx, float cy, float size) {
+        Paint paint = new Paint();
+        paint.setColor(android.graphics.Color.BLUE);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+
+        float left = cy - size / 2;
+        float top = cx - size / 2;
+        float right = cy + size / 2;
+        float bottom = cx + size / 2;
+
+        RectF rect = new RectF(left, top, right, bottom);
+        canvas.drawRect(rect, paint);
     }
 
     //return the detection results to view it
