@@ -2,7 +2,7 @@
 #include <MPU9250.h>
 
 // ==== motor driver pins
-int ENR = 3;
+/* int ENR = 3;
 int ENL = 4; // Enable Left
 int right_motor_front1 = 36;
 int right_motor_front2 = 37;
@@ -11,7 +11,7 @@ int right_motor_back2 = 39;
 int left_motor_front1 = 26;
 int left_motor_front2 = 27;
 int left_motor_back1 = 28;
-int left_motor_back2 = 29;
+int left_motor_back2 = 29; */
 
 void pinModeMotors()
 {
@@ -28,7 +28,10 @@ void pinModeMotors()
 void Forward(float l_speed, float r_speed)
 {
 
-    digitalWrite(right_motor_front1, HIGH);
+    Serial.println("== Move Forward =");
+    Serial.println(l_speed);
+    Serial.println(r_speed);
+    /* digitalWrite(right_motor_front1, HIGH);
     digitalWrite(right_motor_front2, LOW);
     digitalWrite(right_motor_back1, HIGH);
     digitalWrite(right_motor_back2, LOW);
@@ -37,9 +40,9 @@ void Forward(float l_speed, float r_speed)
     digitalWrite(left_motor_back1, HIGH);
     digitalWrite(left_motor_back2, LOW);
     analogWrite(ENL, l_speed);
-    analogWrite(ENR, r_speed);
+    analogWrite(ENR, r_speed); */
 }
-
+/*
 void Back(float speed)
 {
     digitalWrite(right_motor_front1, LOW);
@@ -131,9 +134,10 @@ void Stop()
     analogWrite(ENR, 0);
 }
 
-MPU9250 IMU(Wire, 0x68); // MPU9250 is a class and "IMU" is a object, we need to pass parameter to the object "IMU". wire is used for I2C communication,
-                         // second parameter is for I2C address, we left the ADO pin unconnected so its set to low, 0x68 is address,
-                         // if it was high then the address is 0x69
+M */
+PU9250 IMU(Wire, 0x68); // MPU9250 is a class and "IMU" is a object, we need to pass parameter to the object "IMU". wire is used for I2C communication,
+                        // second parameter is for I2C address, we left the ADO pin unconnected so its set to low, 0x68 is address,
+                        // if it was high then the address is 0x69
 
 // PID parameters
 const float Kp = 1;

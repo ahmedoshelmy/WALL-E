@@ -57,7 +57,8 @@ public class DefendingGame extends RobotGame {
     //received a frame , now we need to process it
     Bitmap previewBuffer;
     LinkedList<RectF> res;
-
+    int new_direction = 0;
+    int direction = 0;
     @Override
     public Bitmap onCameraFeed(Bitmap image) {
 
@@ -114,7 +115,7 @@ public class DefendingGame extends RobotGame {
 
         //defending game should only see one ball
         if (res.size() > 1){
-            print("ERROR: in a defending game we shouldn't have more than one result\n");
+            //print("ERROR: in a defending game we shouldn't have more than one result\n");
         }
 
         //positive for right
@@ -153,36 +154,49 @@ public class DefendingGame extends RobotGame {
             float cx = (ball.top + ball.bottom) / 2.0f; //notice the phone is in landscape , so X and Y are switched
 
             if (cx > width2 + acceptable_range * height()){
-                print("Robot should move right\n");
                 //TODO: send the "move right" command to the arduino
                 //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = 1}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                new_direction = 1;
+
+                if(new_direction == direction)
+                    return;
+                direction = 1;
+                try {
+                    sendCommand(Command.fromString("move{direction = 1}"));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                print("Robot should move right\n");
                 //but we didn't agree on commands yet ..
 
             } else if (cx < width2 - acceptable_range * height()){
-                print("Robot should move left\n");
                 //TODO: send the "move left" command to the arduino
                 //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = -1}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                new_direction = -1;
+
+                if(new_direction == direction)
+                    return;
+                direction = -1;
+                try {
+                    sendCommand(Command.fromString("move{direction = -1}"));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                print("Robot should move left\n");
 
             } else {
-                print("Robot should stand still\n");
                 //TODO: send the "stop" command to the arduino
-                //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = 0}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                new_direction = 0;
 
+                if(new_direction == direction)
+                    return;
+                direction = 0;
+                try {
+                    sendCommand(Command.fromString("move{direction = 0}"));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                print("Robot should stand still\n");
             }
         }
     }
