@@ -215,6 +215,7 @@ void setup() {
   Serial.println("start Ball Collecting");
 }
 bool ReadFromDetection = false;
+int ultraReading;
 void loop() {
 
   if (c.read()) {
@@ -230,11 +231,12 @@ void loop() {
     print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
   }
   //Menna :TODO: put the ultrasonic code and ultraReading will be the distance
-  int ultraReading = 5;
+   ultraReading = 5;
   //the robot start and will walk until the wall then turn
   while (ultraReading > d1 && FirstTime) {
-    Forwoard();
+    Forward();
   }
+  if (FirstTime)
   first_round();
   if (ReadFromDetection) {
     //Assuming that it will move in slow motion till the action is not right
@@ -243,17 +245,17 @@ void loop() {
     }
     if (action_bc == 3)  // if it faces a ball that it has to avoid
       Forward_The_Left();
-      if (action_bc==1) //Move forward 
+    if (action_bc==1) //Move forward 
       Forward();
   }
   //Menna :TODO: put the ultrasonic code and ultraReading will be the distance
-  int ultraReading = 5;
+   ultraReading = 5;
   if (ultraReading <= d1) {
     finish_round();
   }
   if (round_no == all_rounds) {
     while (ultraReading > GoalDist) {
-      Forwoard();
+      Forward();
     }
    //Menna:TODO: the robot must round like in the first round but in the opposite direction
   //We have to call firstround here 
