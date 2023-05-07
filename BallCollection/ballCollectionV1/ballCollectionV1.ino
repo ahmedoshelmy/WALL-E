@@ -14,11 +14,11 @@ Command c;
 // TODO : Set Ultrasonic pin
 #define ULTRA_SONIC_PIN 5
 
-int game_mode = 0; // for switch between game modes
+int game_mode = 0;  // for switch between game modes
 
-Servo rotating_servo; // for the up servo
-Servo camera_right;   // for camera
-Servo camera_left;    // for camera
+Servo rotating_servo;  // for the up servo
+Servo camera_right;    // for camera
+Servo camera_left;     // for camera
 
 //? I think we should use it
 #define fwd_spd_factor 1 / 4.0
@@ -31,7 +31,7 @@ int old3 = 3;
 int old4 = 4;
 
 #define ENR 3
-#define ENL 4 // ENLble adjustLeft
+#define ENL 4  // ENLble adjustLeft
 #define right_motor_back1 36
 #define right_motor_back2 37
 #define right_motor_front1 39
@@ -41,6 +41,7 @@ int old4 = 4;
 #define left_motor_back1 29
 #define left_motor_back2 28
 
+
 // ====== Ball Collection Variables
 //* action_bc:
 //* 0 => mean nothing
@@ -48,75 +49,71 @@ int old4 = 4;
 //* 2 => mean take right
 //* 3 => mean take left
 //* 4 => avoid forward
-int action_bc = 0; // for taken action for Ball Collecting
+int action_bc = 0;  // for taken action for Ball Collecting
 
-int round_no = 0; // round number taken by robot
+int round_no = 0;  // round number taken by robot
+const int all_rounds = 5;
+const int GoalDist = 40;
 
-int last_turn_dir = 1; //* right  = 1 | left = -1
-bool is_bet_balls = 0; //* is balls in front of WallE
+int last_turn_dir = 1;  //* right  = 1 | left = -1
+bool is_bet_balls = 0;  //* is balls in front of WallE
 // TODO: refactor better names
 // TODO: set values
 //* taken from pic
 #define d1 65
 #define d4 65
 #define dd = 30
+bool FirstTime = true;
 int d2 = 65;
 int d3 = 65;
 
 // ====== Defending Variables
-int direction = 0; // for detect the direction of Defend
+int direction = 0;  // for detect the direction of Defend
 
 //===================== END: Variables =====================
 //===================== Start: Methods =====================
 
-void Forward_The_Right()
-{
+void Forward_The_Right() {
   digitalWrite(right_motor_front1, HIGH);
   digitalWrite(right_motor_front2, LOW);
   digitalWrite(right_motor_back1, HIGH);
   digitalWrite(right_motor_back2, LOW);
 }
-void Forward_The_Left()
-{
+void Forward_The_Left() {
   digitalWrite(left_motor_front1, HIGH);
   digitalWrite(left_motor_front2, LOW);
   digitalWrite(left_motor_back1, HIGH);
   digitalWrite(left_motor_back2, LOW);
 }
 
-void Reverse_The_Right()
-{
+void Reverse_The_Right() {
   digitalWrite(right_motor_front1, LOW);
   digitalWrite(right_motor_front2, HIGH);
   digitalWrite(right_motor_back1, LOW);
   digitalWrite(right_motor_back2, HIGH);
 }
-void Reverse_The_Left()
-{
+void Reverse_The_Left() {
   digitalWrite(left_motor_front1, LOW);
   digitalWrite(left_motor_front2, HIGH);
   digitalWrite(left_motor_back1, LOW);
   digitalWrite(left_motor_back2, HIGH);
 }
 
-void Stop_The_Left()
-{
+void Stop_The_Left() {
   digitalWrite(left_motor_front1, LOW);
   digitalWrite(left_motor_front2, LOW);
   digitalWrite(left_motor_back1, LOW);
   digitalWrite(left_motor_back2, LOW);
 }
 
-void Stop_The_Right()
-{
+void Stop_The_Right() {
   digitalWrite(right_motor_front1, LOW);
   digitalWrite(right_motor_front2, LOW);
   digitalWrite(right_motor_back1, LOW);
   digitalWrite(right_motor_back2, LOW);
 }
 
-void adjustRight()
-{
+void adjustRight() {
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Forward_The_Left();
@@ -126,8 +123,7 @@ void adjustRight()
   // }
 }
 
-void turnLeft()
-{
+void turnLeft() {
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed * turn_spd_factor);
   Stop();
@@ -137,8 +133,7 @@ void turnLeft()
   delay(400);
 }
 
-void turnRight()
-{
+void turnRight() {
   analogWrite(ENR, fullSpeed * turn_spd_factor);
   analogWrite(ENL, fullSpeed);
 
@@ -150,31 +145,27 @@ void turnRight()
   delay(400);
 }
 
-void Forward()
-{
+void Forward() {
   analogWrite(ENL, fullSpeed /* * fwd_spd_factor */);
   analogWrite(ENR, fullSpeed /* * fwd_spd_factor */);
   Forward_The_Right();
   Forward_The_Left();
 }
 
-void Back()
-{
+void Back() {
   analogWrite(ENR, fullSpeed * fwd_spd_factor);
   analogWrite(ENL, fullSpeed * fwd_spd_factor);
   Reverse_The_Left();
   Reverse_The_Right();
 }
-void adjustLeft()
-{
+void adjustLeft() {
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Forward_The_Right();
   Stop_The_Left();
 }
 
-void U_Turn()
-{
+void U_Turn() {
 
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed /* * turn_spd_factor */);
@@ -185,25 +176,21 @@ void U_Turn()
   delay(500);
   // adjustRight();
 }
-void Stop()
-{
+void Stop() {
 
   Stop_The_Left();
   Stop_The_Right();
 }
-// I Don't What it do But I found it im defending code
-void RotateCamera()
-{
-  for (int i = -45; i <= 45; i++)
-  {
+// I Don't What it do But I found it in defending code
+void RotateCamera() {
+  for (int i = -45; i <= 45; i++) {
     camera_right.write(90 + i);
     camera_left.write(90 - i);
     delay(15);
   }
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(31250);
   // TODO : Found the right values
   camera_right.attach(15);
@@ -227,11 +214,11 @@ void setup()
 
   Serial.println("start Ball Collecting");
 }
+bool ReadFromDetection = false;
+void loop() {
 
-void loop()
-{
-  if (c.read())
-  {
+  if (c.read()) {
+    ReadFromDetection = true;
     // if (c == "set_game")
     // {
     //     game_mode = c["g"].get<int>();
@@ -242,17 +229,45 @@ void loop()
     commands++;
     print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
   }
-
+  //Menna :TODO: put the ultrasonic code and ultraReading will be the distance
+  int ultraReading = 5;
+  //the robot start and will walk until the wall then turn
+  while (ultraReading > d1 && FirstTime) {
+    Forwoard();
+  }
+  first_round();
+  if (ReadFromDetection) {
+    //Assuming that it will move in slow motion till the action is not right
+    if (action_bc == 2) {
+      Forward_The_Right();
+    }
+    if (action_bc == 3)  // if it faces a ball that it has to avoid
+      Forward_The_Left();
+      if (action_bc==1) //Move forward 
+      Forward();
+  }
+  //Menna :TODO: put the ultrasonic code and ultraReading will be the distance
+  int ultraReading = 5;
+  if (ultraReading <= d1) {
+    finish_round();
+  }
+  if (round_no == all_rounds) {
+    while (ultraReading > GoalDist) {
+      Forwoard();
+    }
+   //Menna:TODO: the robot must round like in the first round but in the opposite direction
+  //We have to call firstround here 
+  }
   // TODO : Menna
-  // delay(50);
+  delay(50);
 }
 
-void finish_round()
-{
+void finish_round() {
+  round_no++;
   // TODO : Sara
 }
 
-void first_round()
-{
+void first_round() {
+  FirstTime = false;
   // TODO : Sara
 }
