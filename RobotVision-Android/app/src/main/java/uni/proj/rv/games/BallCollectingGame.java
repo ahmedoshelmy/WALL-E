@@ -8,7 +8,9 @@ import android.graphics.RectF;
 import org.opencv.android.Utils;
 import org.opencv.core.Scalar;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import uni.proj.ec.Command;
 import uni.proj.rv.ImageProcessing;
@@ -322,8 +324,13 @@ public class BallCollectingGame extends RobotGame {
         return res_red;
     }
 
-
-
+    float last_d = 0;
+    public void showDegree(int d1) {
+        print("o1 = " + d1 + "\t     " + (d1 - last_d) + "\n");
+        //print("o2 = " + d2 + "\t");
+        //print("o3 = " + d3+ "\n");
+        last_d = d1;
+    }
     @Override
     public void onStop() {
         print("Test: onStop\n");

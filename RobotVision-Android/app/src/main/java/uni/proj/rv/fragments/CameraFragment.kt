@@ -17,11 +17,16 @@ package uni.proj.rv.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.RectF
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
@@ -30,16 +35,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.camera.core.*
 import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.get
-import androidx.core.graphics.set
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import org.opencv.android.Utils
@@ -61,12 +63,10 @@ import uni.proj.rv.games.ShootingGame
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.collections.ArrayList
-import kotlin.jvm.internal.Intrinsics.Kotlin
 import kotlin.math.*
 
 
-class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
+class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener, SensorEventListener {
 
     private val TAG = "ObjectDetection"
 
@@ -97,9 +97,53 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     private var registeredGames: ArrayList<RobotGame> = ArrayList()
     private var currentGame = 0
+    private var mSensorManager: SensorManager? = null
+    private var mSensor: Sensor? = null
+
+
+    private var mLastTime: Long = 0
+    private var mCurrentRotation = 0f
 
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
+
+//    override fun onSensorChanged(event: SensorEvent?) {
+//        if (event?.sensor?.type == Sensor.TYPE_ROTATION_VECTOR) {
+//            val rotationMatrix = FloatArray(9)
+//            SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+//            SensorManager.getOrientation(rotationMatrix, orientation)
+//            // apply low-pass filter to orientation readings
+//            filteredOrientation[0] = alpha * filteredOrientation[0] + (1 - alpha) * orientation[0]
+//            filteredOrientation[1] = alpha * filteredOrientation[1] + (1 - alpha) * orientation[1]
+//            filteredOrientation[2] = alpha * filteredOrientation[2] + (1 - alpha) * orientation[2]
+//
+//            val degree = Math.toDegrees(orientation[0].toDouble()).toFloat()
+//            if (registeredGames[currentGame] is BallCollectingGame) {
+//                (registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(filteredOrientation[0].toDouble()).toInt())
+//                //(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[1].toDouble()).toFloat())
+//                //a(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[2].toDouble()).toFloat())
+//            }
+//        }
+//    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_GYROSCOPE) {
+            val timeDelta: Long = event.timestamp - mLastTime
+            mLastTime = event.timestamp
+            val angularSpeed = event.values[0]
+            val deltaRotation = angularSpeed * timeDelta / 1000000000.0f
+            mCurrentRotation += deltaRotation
+            if (registeredGames[currentGame] is BallCollectingGame) {
+                (registeredGames[currentGame] as BallCollectingGame).showDegree((mCurrentRotation * 180 / Math.PI).toInt())
+//                //(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[1].toDouble()).toFloat())
+//                //a(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[2].toDouble()).toFloat())
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        //TODO("Not yet implemented")
+    }
 
     override fun onResume() {
         super.onResume()
@@ -109,6 +153,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_container)
                 .navigate(CameraFragmentDirections.actionCameraToPermissions())
         }
+        mSensorManager?.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL)
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mSensorManager?.unregisterListener(this)
     }
 
     override fun onDestroyView() {
@@ -124,6 +175,9 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
       container: ViewGroup?,
       savedInstanceState: Bundle?
     ): View {
+        val context = inflater.context
+        mSensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        mSensor = mSensorManager?.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
 
         General.communication = SerialCommunication(
@@ -199,6 +253,8 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                 }
             })
 
+
+
         return fragmentCameraBinding.root
     }
 
@@ -270,13 +326,14 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
     }
 
     private fun updateHSVtv(){
-        fragmentCameraBinding.control.controlHsvView.text = String.format("[%d , %d , %d] > [%d , %d , %d]" ,
-            fragmentCameraBinding.control.controlHsvHFrom.progress,
-            fragmentCameraBinding.control.controlHsvSFrom.progress,
-            fragmentCameraBinding.control.controlHsvVFrom.progress,
-            fragmentCameraBinding.control.controlHsvHTo.progress,
-            fragmentCameraBinding.control.controlHsvSTo.progress,
-            fragmentCameraBinding.control.controlHsvVTo.progress,
+        fragmentCameraBinding.control.controlHsvView.text = String.format(
+                "[%d , %d , %d] > [%d , %d , %d]",
+                fragmentCameraBinding.control.controlHsvHFrom.progress,
+                fragmentCameraBinding.control.controlHsvSFrom.progress,
+                fragmentCameraBinding.control.controlHsvVFrom.progress,
+                fragmentCameraBinding.control.controlHsvHTo.progress,
+                fragmentCameraBinding.control.controlHsvSTo.progress,
+                fragmentCameraBinding.control.controlHsvVTo.progress,
         )
     }
 

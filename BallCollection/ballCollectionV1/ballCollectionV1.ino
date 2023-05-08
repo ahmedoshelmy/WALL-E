@@ -321,17 +321,17 @@ bool ReadFromDetection = false;
 void loop()
 {
   
-  Serial.println("Arduino: Turn Right");
+  // Serial.println("Arduino: Turn Right");
   
-  analogWrite(ENR, fullSpeed );
-  analogWrite(ENL, fullSpeed);
-  Forward_The_Left();
-  Reverse_The_Right();
-  delay(2000);
+  // analogWrite(ENR, fullSpeed );
+  // analogWrite(ENL, fullSpeed);
+  // Forward_The_Left();
+  // Reverse_The_Right();
+  // delay(2000);
   
 
-  Stop();
-  delay(500);
+  // Stop();
+  // delay(500);
 
   
   //Serial.println(ReadUS());
@@ -348,19 +348,36 @@ void loop()
   // Stop();
   // // ;  ReadUS();
 
-    // if (c.read())
-    // {
-    //   ReadFromDetection = true;
-    //   // if (c == "set_game")
-    //   // {-
-    //   //     game_mode = c["g"].get<int>();
-    //   // }
+    if (c.read())
+    {
+      ReadFromDetection = true;
+      if (c == "set_game")
+      {
+          game_mode = c["g"].get<int>();
+      }
 
-    //   if (c == "set_act")
-    //     action_bc = c["a"].get<int>();
-    //   commands++;
-    //   print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
-    // }
+      if (c == "set_act")
+        action_bc = c["a"].get<int>();
+      commands++;
+      print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
+            switch (action_bc) {
+                case 4:
+                    print("Arduino: Avoid Forward\n");
+                    break;
+                case 1:
+                    print("Arduino: Move Forward\n");
+                    break;
+                case 2:
+                    print("Arduino: Move Right\n");
+                    break;
+                case 3:
+                    print("Arduino: Move Left\n");
+                    break;
+                default:
+                    print("Arduino: nothing\n");
+                    break;
+            }
+    }
     // // // Menna :TODO: put the ultrasonic code and ultraReading will be the distance
     // // // the robot start and will walk until the wall then turn
 
