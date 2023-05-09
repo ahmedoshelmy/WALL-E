@@ -1,0 +1,200 @@
+#include<Servo.h>
+
+Servo camera_right;
+Servo camera_left;
+Servo gun_right;
+Servo gun_left;  // 3 servos declaration
+Servo shoot;
+Servo bigservo;
+bool check=true;
+
+int IN1=2;
+int IN2=3;    // dc motor pins
+//int pwm=8;
+
+void initialize()
+{
+  pinMode(IN1,OUTPUT);
+  pinMode(IN2,OUTPUT);    // dc motor
+  //pinMode(pwm,OUTPUT);
+  //analogWrite(pwm,255);
+
+  shoot.attach(11);
+  gun_right.attach(12);      // 3 servos
+  gun_left.attach(10);
+  camera_right.attach(15);
+  camera_left.attach(16);
+  bigservo.attach(17);
+  
+  shoot.write(0);
+  camera_right.write(90);
+  gun_right.write(90);
+  camera_left.write(90);     // initialize servos
+  gun_left.write(90);
+  bigservo.write(0);
+
+  pinMode(9,OUTPUT);
+
+}
+
+void test_camera(int d)
+{
+  for(int i=-90; i<=90; i++){
+    camera_right.write(90+i);
+    camera_left.write(90-i);
+    delay(d);
+  }
+
+  for(int i=90; i>=-90; i--){
+    camera_right.write(90+i);
+    camera_left.write(90-i);
+    delay(d);
+  }
+}
+
+void test_gun_vertical_mov(int d)
+{
+  for(int i=-50; i<=20; i++){
+    gun_right.write(90+i);
+    gun_left.write(90-i);
+    delay(d);
+  }
+
+  for(int i=20; i>=-50; i--){
+    gun_right.write(90+i);
+    gun_left.write(90-i);
+    delay(d);
+  }
+
+}
+
+void test_gun(int d)   
+{
+  shoot.write(0);
+  delay(200);
+
+  for(int i=1;i<=60;i++){
+    gun_right.write(120-i);       // up for -- sec
+    gun_left.write(60+i);
+    delay(d); 
+  }          
+
+  delay(200);
+  digitalWrite(IN1,0);
+  digitalWrite(IN2,1);         // bys7b for -- sec
+  delay(6300);
+
+  digitalWrite(IN1,1);
+  digitalWrite(IN2,1);        // stops for -- sec
+  delay(1000);
+
+  for(int i=1;i<=60;i++){
+    gun_right.write(60+i);
+    gun_left.write(120-i);        // down for -- sec
+    delay(d);
+  }
+  
+  delay(200);
+
+  digitalWrite(IN1,1);
+  digitalWrite(IN2,0);
+  delay(5800);                // byseeb for -- sec
+                               
+  digitalWrite(IN1,1);
+  digitalWrite(IN2,1);       // stops for -- sec
+  delay(1000);    
+
+  shoot.write(60); 
+  delay(300);         // pew pew pew
+
+  // plswrk    
+}
+
+void test_all(int d)
+{
+digitalWrite(9,HIGH);
+  for(int i=0; i<=90; i++){
+    bigservo.write(i);
+    delay(d);
+  } 
+ 
+  test_camera(d);
+  delay(1000);
+  test_gun_vertical_mov(d);
+  
+
+  delay(3000);
+  for(int i=90; i<=180; i++){
+    bigservo.write(i);
+    delay(d);
+  } 
+
+  test_camera(d);
+  delay(1000);
+  test_gun_vertical_mov(d);
+
+  delay(3000);
+  for(int i=180; i>=90; i--){
+    bigservo.write(i);
+    delay(d);
+  } 
+digitalWrite(9,LOW);
+
+  test_camera(d);
+  delay(1000);
+  test_gun_vertical_mov(d);
+
+
+  delay(3000);
+  for(int i=90; i>=0; i--){
+    bigservo.write(i);
+    delay(d);
+  } 
+
+  test_camera(d);
+  delay(1000);
+  test_gun_vertical_mov(d);
+
+  delay(3000);  
+}
+
+void setup() {
+
+  Serial.begin(9600);
+ 
+  initialize();
+
+  delay(5000);
+}
+
+void loop() {
+  //put your main code here, to run repeatedly:
+  
+  //delay(3000);
+  
+  // bigservo.write(0);
+  // Serial.print("0\n");
+  // delay(1000);
+  //   bigservo.write(90);
+  //   Serial.print("90\n");
+  // delay(1000);
+  //   bigservo.write(180);
+  //   Serial.print("180\n");
+  // delay(1000);
+  //   bigservo.write(90);
+  //   Serial.print("90\n");
+  // delay(1000);
+
+  
+
+  int del = 15;
+  test_all(del);
+  if(check){
+  shoot.write(60); 
+  delay(300);
+    shoot.write(0);
+    check = false; 
+
+ }     
+
+ }
