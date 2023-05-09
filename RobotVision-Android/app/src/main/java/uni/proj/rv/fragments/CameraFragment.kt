@@ -125,7 +125,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener, Sensor
 //            }
 //        }
 //    }
-
+    // TODO : orientation
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_GYROSCOPE) {
             val timeDelta: Long = event.timestamp - mLastTime
@@ -134,7 +134,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener, Sensor
             val deltaRotation = angularSpeed * timeDelta / 1000000000.0f
             mCurrentRotation += deltaRotation
             if (registeredGames[currentGame] is BallCollectingGame) {
-                (registeredGames[currentGame] as BallCollectingGame).showDegree((mCurrentRotation * 180 / Math.PI).toInt())
+                (registeredGames[currentGame] as BallCollectingGame).handelDegree((mCurrentRotation * 180 / Math.PI).toFloat())
 //                //(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[1].toDouble()).toFloat())
 //                //a(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[2].toDouble()).toFloat())
             }
@@ -175,6 +175,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener, Sensor
       container: ViewGroup?,
       savedInstanceState: Bundle?
     ): View {
+        // TODO : orientation add multi sensor to inc. accuracy
         val context = inflater.context
         mSensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensor = mSensorManager?.getDefaultSensor(Sensor.TYPE_GYROSCOPE)

@@ -8,9 +8,7 @@ import android.graphics.RectF;
 import org.opencv.android.Utils;
 import org.opencv.core.Scalar;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import uni.proj.ec.Command;
 import uni.proj.rv.ImageProcessing;
@@ -36,7 +34,9 @@ public class BallCollectingGame extends RobotGame {
         TK_FORWARD,
         TK_RIGHT,
         TK_LEFT,
-        AVD_FROWARD
+        AVD_FROWARD,
+
+        STP_TURN
     }
 
 
@@ -49,6 +49,10 @@ public class BallCollectingGame extends RobotGame {
     LinkedList<RectF> res_red;
     LinkedList<RectF> res_blue;
 
+    // TODO : orientation  adding more parameter to enhance
+    private boolean is_turning ;
+    private float prev_turn_deg;
+
 
     private float cx_screen; // (cx_screen, cy_screen) = center of screen
     private float cy_screen;
@@ -59,6 +63,8 @@ public class BallCollectingGame extends RobotGame {
 
     private ACTIONS curr_action;
     private ACTIONS prev_action;
+
+
     private class PingBall {
         public RectF ball;
         public Color color;
@@ -99,7 +105,7 @@ public class BallCollectingGame extends RobotGame {
 
     public BallCollectingGame(CameraFragment context) {
         super(context);
-
+        is_turning = false;
         curr_action = ACTIONS.NOTHING;
         prev_action = ACTIONS.NOTHING;
     }
@@ -232,7 +238,7 @@ public class BallCollectingGame extends RobotGame {
             }
 
             try {
-                sendCommand(Command.fromString("set_act={a="+curr_action.ordinal()+"}"));
+                sendCommand(Command.fromString("set_act{a="+curr_action.ordinal()+"}"));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -240,38 +246,12 @@ public class BallCollectingGame extends RobotGame {
             prev_action = curr_action;
         }
 
-//
-//        try {
-//
-//            if (nearest_ball != null) {
-//                float cx_nearest = (nearest_ball.top + nearest_ball.bottom) / 2;
-//
-//                if (cx_nearest > cx_screen * (1 + acceptable_range)) { //right
-//                    curr_comm = "set_dir{d=1}";
-//                } else if (cx_nearest < cx_screen * (1 - acceptable_range)) { // left
-//                    curr_comm = "set_dir{d=2}";
-//                } else { //forward
-//                    curr_comm = "set_dir{d=3}";
-//                }
-//            } else {
-//                curr_comm = "set_dir{d=0}";
-//            }
-//
-//            if(!curr_comm.equals(prev_comm)) {
-//                print("java c: " + curr_comm + "\n");
-//                sendCommand(Command.fromString(curr_comm));
-//                prev_comm=curr_comm;
-//            }
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     private void getNearestBall(float [] mx_dist, PingBall [] nearest_balls, LinkedList<RectF> res, Color color) {
         for (RectF ball : res) {
             PingBall tmp = new PingBall(ball, color);
-            print(tmp.toString());
+            //print(tmp.toString());
             float dist = tmp.getDistanceFromCenterScreen();
             //as i need left & right = 1
             int index = tmp.getDirection() == DIRECTION.FRONT ? DIRECTION.FRONT.ordinal() : DIRECTION.LEFT.ordinal();
@@ -324,12 +304,25 @@ public class BallCollectingGame extends RobotGame {
         return res_red;
     }
 
-    float last_d = 0;
-    public void showDegree(int d1) {
-        print("o1 = " + d1 + "\t     " + (d1 - last_d) + "\n");
-        //print("o2 = " + d2 + "\t");
-        //print("o3 = " + d3+ "\n");
-        last_d = d1;
+
+    // TODO : orientation
+    public void handelDegree(float deg) {
+        if(is_turning) {
+            print("deg: " + (deg-prev_turn_deg));
+        }
+        if(is_turning && Math.abs( deg - prev_turn_deg) >= 90) {
+            try {
+                sendCommand(Command.fromString("set_act{a="+ 5+"}"));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            is_turning = false;
+        }
+
+        if(!is_turning ){
+            prev_turn_deg = deg;
+        }
     }
     @Override
     public void onStop() {
@@ -337,8 +330,19 @@ public class BallCollectingGame extends RobotGame {
     }
 
 
+
     @Override
     public void onCommand(Command c) {
-        print("<< " + c.toString() + "\n");
+        // TODO : orientation set prev_deg with it 
+        /*if(c.cmd.equals("start_moving")) {
+
+         }*/
+        // if arduino send start turning
+        // set it true
+        if(c.cmd.equals("start_turn")) {
+            is_turning = true;
+        }
+        print("<< " + c.toString()  + "\n");
+
     }
 }
