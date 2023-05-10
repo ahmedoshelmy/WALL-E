@@ -7,16 +7,16 @@
 // connect 10 to EnA
 // connect 11 to EnB
 
-double fwd_spd_factor = 1.0/2.0;
+double fwd_spd_factor = 1.0 / 2.0;
 double turn_spd_factor = 1 / 1.0;
 
-char path[50]; // Assuming number of operations won't exceed 50
+char path[50];  // Assuming number of operations won't exceed 50
 int actualSize;
 bool shortestPathCalculated;
 char realPath[100];
-int currRealIdx; // used in fIRVst try when robot is solving the maze
+int currRealIdx;  // used in fIRVst try when robot is solving the maze
 
-int currIdx; // Used in Second try when robot is walking on correct path
+int currIdx;  // Used in Second try when robot is walking on correct path
 
 int fullSpeed = 255;
 int turn_delay = 1000;
@@ -42,9 +42,9 @@ int precenterReading = -1;
 int prenearRightReading = -1;
 int prefarRightReading;
 
-int old2 = 2;
-int old3 = 3;
-int old4 = 4;
+// int old2 = 2;
+// int old3 = 3;
+// int old4 = 4;
 
 // int IRV1Add=2;
 // int IRV2Add=3;
@@ -55,20 +55,21 @@ int old4 = 4;
 int motor_lA = 7;
 int motor_lB = 8;
 int motor_rA = 9;
-int motor_rB = 12; /// connect IN4 with 12
+int motor_rB = 12;  /// connect IN4 with 12
 
 int ENR = 3;
-int ENL = 4; // ENLble adjustLeft
-int right_motor_back1 = 39;
-int right_motor_back2 = 38;
-int right_motor_front1 = 36;
-int right_motor_front2 = 37;
+int ENL = 4;  // ENLble adjustLeft
+int right_motor_back1 = 36;
+int right_motor_back2 = 37;
+int right_motor_front1 = 39;
+int right_motor_front2 = 38;
 int left_motor_front1 = 26;
 int left_motor_front2 = 27;
 int left_motor_back1 = 29;
 int left_motor_back2 = 28;
 
 bool calculateShortestAgain = false;
+bool isTurningAround = false;
 
 void Stop_The_Left();
 void Stop_The_Right();
@@ -76,20 +77,17 @@ void CALCULATE_SHORTEST_PATH(char *, int);
 void readSensors();
 void GOT_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY);
 
-void Stop()
-{
+void Stop() {
 
   Stop_The_Left();
   Stop_The_Right();
 }
 
-bool isCenter()
-{
+bool isCenter() {
   return !farLeftReading && !nearLeftReading && centerReading && !nearRightReading && !farRightReading;
 }
 
-void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
-{
+void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY) {
   /*ONCE THE ROBOT COMPLETES THE MAZE THE FINAL SHORTEST PATH CALCULATED
     IS STORED IN THE ROBOT MEMORY.THIS SHORTEST PATH IS USED TO COMPLETE
     THE SAME MAZE IN SHORTEST AMOUNT OF TIME.(L :LEFT, R:RIGHT, B:BACK,S:STRAIGHT)
@@ -103,53 +101,45 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
     SBS = B
     LBL = S */
   char ACTION;
-  for (int i = 0; i <= SIZE_OF_ARRAY - 2; i++)
-  {
+  for (int i = 0; i <= SIZE_OF_ARRAY - 2; i++) {
     ACTION = MAZE_ARRAY[i];
-    if (ACTION == 'B')
-    {
-      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'R')
-      {
+    if (ACTION == 'B') {
+      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'R') {
         MAZE_ARRAY[i] = 'B';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
         // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
         continue;
       }
-      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'S')
-      {
+      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'S') {
         MAZE_ARRAY[i] = 'R';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
         // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
         continue;
       }
-      if (MAZE_ARRAY[i - 1] == 'R' && MAZE_ARRAY[i + 1] == 'L')
-      {
+      if (MAZE_ARRAY[i - 1] == 'R' && MAZE_ARRAY[i + 1] == 'L') {
         MAZE_ARRAY[i] = 'B';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
         // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
         continue;
       }
-      if (MAZE_ARRAY[i - 1] == 'S' && MAZE_ARRAY[i + 1] == 'L')
-      {
+      if (MAZE_ARRAY[i - 1] == 'S' && MAZE_ARRAY[i + 1] == 'L') {
         MAZE_ARRAY[i] = 'R';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
         // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
         continue;
       }
-      if (MAZE_ARRAY[i - 1] == 'S' && MAZE_ARRAY[i + 1] == 'S')
-      {
+      if (MAZE_ARRAY[i - 1] == 'S' && MAZE_ARRAY[i + 1] == 'S') {
         MAZE_ARRAY[i] = 'B';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
         // REARRANGE(MAZE_ARRAY,SIZE_OF_ARRAY,i-1,i,i+1);
         continue;
       }
-      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'L')
-      {
+      if (MAZE_ARRAY[i - 1] == 'L' && MAZE_ARRAY[i + 1] == 'L') {
         MAZE_ARRAY[i] = 'S';
         MAZE_ARRAY[i - 1] = 0;
         MAZE_ARRAY[i + 1] = 0;
@@ -165,76 +155,64 @@ void CALCULATE_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
   GOT_SHORTEST_PATH(MAZE_ARRAY, SIZE_OF_ARRAY);
 }
 
-void GOT_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY)
-{
+void GOT_SHORTEST_PATH(char MAZE_ARRAY[], int SIZE_OF_ARRAY) {
   int pIndex = 0;
-  for (int i = 0; i < SIZE_OF_ARRAY; i++)
-  {
-    if (MAZE_ARRAY[i] != 0)
-    {
+  for (int i = 0; i < SIZE_OF_ARRAY; i++) {
+    if (MAZE_ARRAY[i] != 0) {
       path[pIndex++] = MAZE_ARRAY[i];
     }
-    if (!calculateShortestAgain && MAZE_ARRAY[i] == 'B')
-    {
+    if (!calculateShortestAgain && MAZE_ARRAY[i] == 'B') {
       calculateShortestAgain = true;
     }
   }
   actualSize = pIndex;
   // This part was added due to this example [SLBSLLBLBLBLLRBLLBLLL]
-  if (calculateShortestAgain)
-  {
+  if (calculateShortestAgain) {
     CALCULATE_SHORTEST_PATH(path, actualSize);
   }
 }
 
-void Forward_The_Right()
-{
+void Forward_The_Right() {
   digitalWrite(right_motor_front1, HIGH);
   digitalWrite(right_motor_front2, LOW);
   digitalWrite(right_motor_back1, HIGH);
   digitalWrite(right_motor_back2, LOW);
 }
-void Forward_The_Left()
-{
+void Forward_The_Left() {
   digitalWrite(left_motor_front1, HIGH);
   digitalWrite(left_motor_front2, LOW);
   digitalWrite(left_motor_back1, HIGH);
   digitalWrite(left_motor_back2, LOW);
 }
 
-void Reverse_The_Right()
-{
+void Reverse_The_Right() {
   digitalWrite(right_motor_front1, LOW);
   digitalWrite(right_motor_front2, HIGH);
   digitalWrite(right_motor_back1, LOW);
   digitalWrite(right_motor_back2, HIGH);
 }
-void Reverse_The_Left()
-{
+void Reverse_The_Left() {
   digitalWrite(left_motor_front1, LOW);
   digitalWrite(left_motor_front2, HIGH);
   digitalWrite(left_motor_back1, LOW);
   digitalWrite(left_motor_back2, HIGH);
 }
 
-void Stop_The_Left()
-{
+void Stop_The_Left() {
   digitalWrite(left_motor_front1, LOW);
   digitalWrite(left_motor_front2, LOW);
   digitalWrite(left_motor_back1, LOW);
   digitalWrite(left_motor_back2, LOW);
 }
 
-void Stop_The_Right()
-{
+void Stop_The_Right() {
   digitalWrite(right_motor_front1, LOW);
   digitalWrite(right_motor_front2, LOW);
   digitalWrite(right_motor_back1, LOW);
   digitalWrite(right_motor_back2, LOW);
 }
 
-void adjustRight()
-{
+void adjustRight() {
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Forward_The_Left();
@@ -244,33 +222,33 @@ void adjustRight()
   // }
 }
 
-void smothStop(int f)
-{
-  while(f!=0)
-  {
+void adjustBackRight() {
+  analogWrite(ENR, fullSpeed*turn_spd_factor);
+  analogWrite(ENL, fullSpeed);
+  Reverse_The_Left();
+  Forward_The_Right();
+}
 
-    f=f/2;
+void smothStop(int f) {
+  while (f != 0) {
+
+    f = f / 2;
 
     analogWrite(ENR, f);
     analogWrite(ENL, f);
 
     Forward();
     delay(100);
-
-    
-
   }
-  
 }
 
-void turnLeft()
-{
+void turnLeft() {
   Serial.println("Inside turnLeft ..");
   realPath[currRealIdx++] = 'L';
 
 
   analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed);
+  analogWrite(ENL, fullSpeed );
   Stop();
   // smothStop(fullSpeed);
 
@@ -279,13 +257,13 @@ void turnLeft()
   Forward_The_Right();
   Reverse_The_Left();
   // Stop_The_Left();
-  delay(1000);
+  
+  delay(900);
 
   // delay(3500);
-  while (!isCenter())
-  {
-    readSensors();
-  }
+  // while (!isCenter()) {
+  //   readSensors();
+  // }
 
   // delay(500)
   //  while (!isCenter()) {
@@ -293,71 +271,73 @@ void turnLeft()
   // }
 }
 
-void turnRight()
-{
+void turnRight() {
   Serial.println("Inside turnRight ..");
   realPath[currRealIdx++] = 'R';
 
-  analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed);
+  // analogWrite(ENR, fullSpeed  );
+  // analogWrite(ENL, fullSpeed);
 
 
   // smothStop(fullSpeed);
 
-  Stop();
-  delay(500);
+  // Stop();
+  // delay(500);
 
-  Forward_The_Left();
+  // Forward_The_Left();
   // Stop_The_Right();
 
-  Reverse_The_Right();
-  delay(900);
+  // Reverse_The_Right();
+  // delay(900);
 
-  while (!isCenter())
-  {
-    readSensors();
-  }
-}
+  // while (!isCenter()) {
+  //   readSensors();
+  // }
 
-bool isNearLeft()
-{
+while(true){
+  digitalWrite(right_motor_front1, LOW);
+    digitalWrite(right_motor_front2, HIGH);
+    digitalWrite(right_motor_back1, LOW);
+    digitalWrite(right_motor_back2, HIGH);
+    digitalWrite(left_motor_front1, HIGH);
+    digitalWrite(left_motor_front2, LOW);
+    digitalWrite(left_motor_back1, HIGH);
+    digitalWrite(left_motor_back2, LOW);
+    analogWrite(ENL, fullSpeed);
+    analogWrite(ENR, fullSpeed);
+}}
+
+bool isNearLeft() {
   return !farLeftReading && nearLeftReading && centerReading && !nearRightReading && !farRightReading;
 }
 
-bool isNearRight()
-{
+bool isNearRight() {
   return !farLeftReading && !nearLeftReading && centerReading && nearRightReading && !farRightReading;
 }
 
-bool isLeftTurn()
-{
+bool isLeftTurn() {
 
   return farLeftReading && !farRightReading && nearLeftReading;
 }
 
-bool isRightTurn()
-{
+bool isRightTurn() {
 
   return farRightReading && !farLeftReading && nearRightReading;
 }
 
-bool isIntersection()
-{
+bool isIntersection() {
   return farLeftReading && nearLeftReading && centerReading && nearRightReading && farRightReading;
 }
 
-bool isDeadEnd()
-{
+bool isDeadEnd() {
   return !farLeftReading && !nearLeftReading && !centerReading && !nearRightReading && !farRightReading;
 }
 
-bool isEndGame()
-{
+bool isEndGame() {
   return !farLeftReading && nearLeftReading && !centerReading && nearRightReading && !farRightReading;
 }
 
-void readSensors()
-{
+void readSensors() {
   farLeftReading = digitalRead(IR1);
   nearLeftReading = digitalRead(IR2);
   centerReading = digitalRead(IR3);
@@ -365,8 +345,7 @@ void readSensors()
   farRightReading = digitalRead(IR5);
 }
 
-void Forward()
-{
+void Forward() {
 
   analogWrite(ENL, fullSpeed * fwd_spd_factor);
   analogWrite(ENR, fullSpeed * fwd_spd_factor);
@@ -374,15 +353,13 @@ void Forward()
   Forward_The_Left();
 }
 
-void Back()
-{
+void Back() {
   analogWrite(ENR, fullSpeed * fwd_spd_factor);
   analogWrite(ENL, fullSpeed * fwd_spd_factor);
   Reverse_The_Left();
   Reverse_The_Right();
 }
-void adjustLeft()
-{
+void adjustLeft() {
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Forward_The_Right();
@@ -392,8 +369,15 @@ void adjustLeft()
   // }
 }
 
-void U_Turn()
-{
+void adjustBackLeft() {
+  analogWrite(ENR, fullSpeed);
+  analogWrite(ENL, fullSpeed*turn_spd_factor);
+  Reverse_The_Right();
+  // Stop_The_Left();
+  Forward_The_Left();
+}
+
+void U_Turn() {
   Serial.println("Inside U_Turn ..");
 
   realPath[currRealIdx++] = 'B';
@@ -405,15 +389,13 @@ void U_Turn()
   Forward_The_Right();
   Reverse_The_Left();
   // Stop_The_Left();
-  
+
   // adjustRight();
-  while (!isCenter())
-  {
+  while (!isCenter()) {
     readSensors();
   }
 }
-void setup()
-{
+void setup() {
   // DECLARING farLeftReading nearLeftReading centerReading nearRightReading AND farRightReading AS INPUTS
   Serial.begin(9600);
 
@@ -457,17 +439,14 @@ void setup()
 
 // الاسود وحايد
 
-void loop()
-{
+void loop() {
 
-  // turnRight();
-  // delay(1000);
+  // Forward();
   // if (!flag)
   {
 
     readSensors();
-    if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading)
-    {
+    if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
       Serial.print(farLeftReading);
       Serial.print(" ");
       Serial.print(nearLeftReading);
@@ -486,74 +465,81 @@ void loop()
       prenearRightReading = nearRightReading;
     }
 
-    if (isLeftTurn())
-    {
-      turnLeft();
-    }
-    else if (isCenter())
-    { // Straight
-      Forward();
-    }
-    else if (isRightTurn())
-    {
-      Forward();
-      delay(250);
-      readSensors();
-      if (isCenter())
-      { // Straight
-        realPath[currRealIdx++] = 'S';
+    if (isTurningAround) {
+      if (isDeadEnd()) {
+        isTurningAround = false;
+        Stop();
+        delay(250);
         Forward();
+        delay(1000);
       }
-      else if (isNearLeft())
-      { // adjustLeft
-        realPath[currRealIdx++] = 'S';
-
-        adjustLeft();
-      }
-      else if (isNearRight())
-      { // adjustRight
-        realPath[currRealIdx++] = 'S';
-
-        adjustRight();
-      }
-      else
-      {
+      else if(isRightTurn()){
+        isTurningAround = false;
         turnRight();
       }
-    }
-    else if (isNearLeft())
-    { // adjustLeft
-      adjustLeft();
-    }
-    else if (isNearRight())
-    { // adjustRight
-      adjustRight();
-    }
-    else if (isIntersection())
-    { // Intersection
-      turnLeft();
-    }
-    else if (isDeadEnd())
-    { // Dead End
-      delay(500);
-      readSensors();
-      if (isDeadEnd())
-        ;
-      U_Turn();
-    }
-    else if (isEndGame())
-    {
-      Serial.println("ENNNNNNNNNNNNNNNNNND");
-      CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
-      flag=1;
-
-      while(!isCenter())
-      {
-        readSensors();
+      else if(isNearRight()){
+        adjustBackRight();
       }
-
-      Stop();
+      else if(isNearLeft()){
+        adjustBackLeft();
+      }
+      else{
+        Back();
+      }
     }
+    else{
+      if (isLeftTurn()) {
+        turnLeft();
+      } else if (isCenter()) {  // Straight
+        Forward();
+      } else if (isRightTurn()) {
+        Forward();
+        delay(450);
+        readSensors();
+        if (isCenter()) {  // Straight
+          realPath[currRealIdx++] = 'S';
+          Forward();
+        } else if (isNearLeft()) {  // adjustLeft
+          realPath[currRealIdx++] = 'S';
+
+          adjustLeft();
+        } else if (isNearRight()) {  // adjustRight
+          realPath[currRealIdx++] = 'S';
+
+          adjustRight();
+        } else {
+          turnRight();
+        }
+      } else if (isNearLeft()) {  // adjustLeft
+        adjustLeft();
+      } else if (isNearRight()) {  // adjustRight
+        adjustRight();
+      } else if (isIntersection()) {  // Intersection
+        turnLeft();
+      } else if (isDeadEnd()) {  // Dead End
+        // delay(500);
+        // readSensors();
+        // if (isDeadEnd())
+        //   ;
+        // U_Turn();
+        isTurningAround = true;
+        Stop();
+        delay(450);
+        Back();
+        delay(1000);
+      } else if (isEndGame()) {
+        Serial.println("ENNNNNNNNNNNNNNNNNND");
+        CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
+        flag = 1;
+
+        while (!isCenter()) {
+          readSensors();
+        }
+
+        Stop();
+      }
+    }
+
   }
   // else
   // {
