@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 import uni.proj.ec.Command;
 import uni.proj.rv.ImageProcessing;
+import uni.proj.rv.MovementControlUnit;
 import uni.proj.rv.RobotGame;
 import uni.proj.rv.fragments.CameraFragment;
 
@@ -64,7 +65,7 @@ public class BallCollectingGame extends RobotGame {
     private ACTIONS curr_action;
     private ACTIONS prev_action;
 
-
+    public MovementControlUnit movementControlUnit;
     private class PingBall {
         public RectF ball;
         public Color color;
@@ -108,6 +109,7 @@ public class BallCollectingGame extends RobotGame {
         is_turning = false;
         curr_action = ACTIONS.NOTHING;
         prev_action = ACTIONS.NOTHING;
+        movementControlUnit = new MovementControlUnit(this);
     }
     @Override
     public void onGameSelected() {
@@ -307,9 +309,10 @@ public class BallCollectingGame extends RobotGame {
 
     // TODO : orientation
     public void handelDegree(float deg) {
-        if(is_turning) {
-            print("deg: " + (deg-prev_turn_deg));
-        }
+
+        //if(Math.abs( deg - prev_turn_deg) >= 2) {
+            print("deg: " + Math.ceil(deg) + "\n");
+//        }
         if(is_turning && Math.abs( deg - prev_turn_deg) >= 90) {
             try {
                 sendCommand(Command.fromString("set_act{a="+ 5+"}"));
@@ -332,17 +335,19 @@ public class BallCollectingGame extends RobotGame {
 
 
     @Override
-    public void onCommand(Command c) {
-        // TODO : orientation set prev_deg with it 
+    public void onCommand(Command c) throws Exception {
+        // TODO : orientation set prev_deg with it
         /*if(c.cmd.equals("start_moving")) {
 
          }*/
         // if arduino send start turning
         // set it true
-        if(c.cmd.equals("start_turn")) {
-            is_turning = true;
-        }
-        print("<< " + c.toString()  + "\n");
+//        if(c.cmd.equals("start_turn")) {
+//            is_turning = true;
+//        }
+//        print("<< " + c.toString()  + "\n");
 
+        movementControlUnit.onCommand(c);
+        //print("Ball << " + c.toString()  + "\n");
     }
 }

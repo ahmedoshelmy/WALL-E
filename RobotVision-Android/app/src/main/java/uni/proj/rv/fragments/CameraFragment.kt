@@ -134,7 +134,7 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener, Sensor
             val deltaRotation = angularSpeed * timeDelta / 1000000000.0f
             mCurrentRotation += deltaRotation
             if (registeredGames[currentGame] is BallCollectingGame) {
-                (registeredGames[currentGame] as BallCollectingGame).handelDegree((mCurrentRotation * 180 / Math.PI).toFloat())
+                (registeredGames[currentGame] as BallCollectingGame).movementControlUnit.handelDegreeChange((mCurrentRotation * 180 / Math.PI).toInt())
 //                //(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[1].toDouble()).toFloat())
 //                //a(registeredGames[currentGame] as BallCollectingGame).showDegree(Math.toDegrees(orientation[2].toDouble()).toFloat())
             }

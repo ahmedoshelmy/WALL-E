@@ -75,7 +75,7 @@ public abstract class RobotGame {
     /**
      * will be called when a command is received form arduino
      * */
-    public abstract void onCommand(Command c);
+    public abstract void onCommand(Command c) throws Exception;
 
     /**
      * returns if arduino is currently connected or not

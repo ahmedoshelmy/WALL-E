@@ -435,72 +435,72 @@ void loop()
   // Stop();
   // // ;  ReadUS();
 
-    if (c.read())
-    {
-      ReadFromDetection = true;
-      if (c == "set_game")
-      {
-          game_mode = c["g"].get<int>();
-      }
+    // if (c.read())
+    // {
+    //   ReadFromDetection = true;
+    //   if (c == "set_game")
+    //   {
+    //       game_mode = c["g"].get<int>();
+    //   }
 
-      if (c == "set_act")
-        action_bc = c["a"].get<int>();
-      commands++;
-      print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
-             switch (action_bc) {
-                case 4:
-                    print("Arduino: Avoid Forward\n");
-                    break;
-                case 1:
-                    print("Arduino: Move Forward\n");
-                    break;
-                case 2:
-                    print("Arduino: Move Right\n");
-                    break;
-                case 3:
-                    print("Arduino: Move Left\n");
-                    break;
-                default:
-                    print("Arduino: nothing\n");
-                    break;
-            }
-    }
+    //   if (c == "set_act")
+    //     action_bc = c["a"].get<int>();
+    //   commands++;
+    //   print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
+    //          switch (action_bc) {
+    //             case 4:
+    //                 print("Arduino: Avoid Forward\n");
+    //                 break;
+    //             case 1:
+    //                 print("Arduino: Move Forward\n");
+    //                 break;
+    //             case 2:
+    //                 print("Arduino: Move Right\n");
+    //                 break;
+    //             case 3:
+    //                 print("Arduino: Move Left\n");
+    //                 break;
+    //             default:
+    //                 print("Arduino: nothing\n");
+    //                 break;
+    //         }
+    // }
     // // // Menna :TODO: put the ultrasonic code and ultraReading will be the distance
     // // // the robot start and will walk until the wall then turn
 
     // if (FirstTime)
     //   first_round();
 
-    if (ReadFromDetection)
-    {
-      ReadFromDetection = false;
-      // Assuming that it will move in slow motion till the action is not right
-      if (action_bc == 2 && last_turn_dir != 1)
-      {
-        is_bet_balls = !is_bet_balls;
-        last_turn_dir = 1;
-        Right(255);
-      }
-      if (action_bc == 3 && last_turn_dir != -1)
-      { // if it faces a ball that it has to avoid
+    // if (ReadFromDetection)
+    // {
+    //   ReadFromDetection = false;
+    //   // Assuming that it will move in slow motion till the action is not right
+    //   if (action_bc == 2 && last_turn_dir != 1)
+    //   {
+    //     is_bet_balls = !is_bet_balls;
+    //     last_turn_dir = 1;
+    //     Right(255);
+    //   }
+    //   if (action_bc == 3 && last_turn_dir != -1)
+    //   { // if it faces a ball that it has to avoid
 
-        is_bet_balls = !is_bet_balls;
-        last_turn_dir = -1;
-        Left(255);
-      }
-      if (action_bc == 1)
-      { // Move forward
-        last_turn_dir = 0;
-        Forward(255, 255);
-      }
-      if(action_bc == 4 ) //avoid forward
-       {if (last_turn_dir==1) // if the last dir is right turn left
-            Left(255);
-            else if (last_turn_dir==-1) //if the last dir is left turn right
-            Right(255);
+    //     is_bet_balls = !is_bet_balls;
+    //     last_turn_dir = -1;
+    //     Left(255);
+    //   }
+    //   if (action_bc == 1)
+    //   { // Move forward
+    //     last_turn_dir = 0;
+    //     Forward(255, 255);
+    //   }
+    //   if(action_bc == 4 ) //avoid forward
+    //    {if (last_turn_dir==1) // if the last dir is right turn left
+    //         Left(255);
+    //         else if (last_turn_dir==-1) //if the last dir is left turn right
+    //         Right(255);
 
-      }
-    }
+    //   }
+    // }
     // // Menna :TODO: put the ultrasonic code and ultraReading will be the distance
     // if (ReadUS() <= d1)
     // {
