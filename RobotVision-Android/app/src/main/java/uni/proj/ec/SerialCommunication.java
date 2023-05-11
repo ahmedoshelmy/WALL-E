@@ -62,7 +62,7 @@ public class SerialCommunication {
                                 serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
                                 serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                                 serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                                serialPort.read(mReadCallback); //
+                                serialPort.read(mReadCallback); //may need to add more options
                                 mSCL.onConnected();
                             } else {
                                 Log.w(TAG, "onReceive: failed to open port");

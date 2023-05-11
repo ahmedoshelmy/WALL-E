@@ -10,6 +10,7 @@ import org.opencv.core.Core;
 import org.opencv.core.KeyPoint;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.features2d.SimpleBlobDetector;
@@ -98,6 +99,70 @@ public class ImageProcessing {
 
         return ret;
     }
+
+    public static LinkedList<RectF> DetectColoredBalls(Bitmap map , int blur , Scalar hsv_min , Scalar hsv_max , int min_area , int max_area){
+        Utils.bitmapToMat(map, src);
+        Imgproc.blur(src , ImageProcessing.blur , new Size(blur , blur));
+        Imgproc.cvtColor(ImageProcessing.blur , hsv , Imgproc.COLOR_RGB2HSV);
+        Core.inRange(hsv , hsv_min, hsv_max , mask);
+        Imgproc.dilate(mask , dilate , Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT , new Size(3 , 3)));
+        Imgproc.erode(dilate , erode , Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT , new Size(3 , 3)));
+
+
+        SimpleBlobDetector_Params params = new SimpleBlobDetector_Params();
+
+        params.set_minThreshold(0);
+        params.set_maxThreshold(100);
+
+        params.set_filterByArea(true);
+
+        params.set_minArea(min_area);
+        params.set_maxArea(max_area);
+
+        params.set_filterByCircularity(true);
+        params.set_minCircularity(0.4f); //0.4 , 0.5 , 0.2 -> best results for green
+
+        params.set_filterByConvexity(true);
+        params.set_minConvexity(0.5f);
+
+        params.set_filterByInertia(true);
+        params.set_minInertiaRatio(0.2f);
+
+        SimpleBlobDetector detector = SimpleBlobDetector.create();
+        detector.setParams(params);
+
+        Core.bitwise_not(erode , blob);
+
+        MatOfKeyPoint keys = new MatOfKeyPoint();
+        detector.detect(blob , keys);
+        List<KeyPoint> kl = keys.toList();
+        LinkedList<RectF> ret = new LinkedList<>();
+        for (int i = 0;i < kl.size();i++){
+            RectF r = new RectF();
+            KeyPoint k = kl.get(i);
+            r.left = (float) k.pt.x - (float) k.size / 2;
+            r.top  = (float) k.pt.y - (float) k.size / 2;
+            r.right = r.left + (float) k.size ;
+            r.bottom = r.top + (float) k.size ;
+            ret.add(r);
+        }
+
+        return ret;
+    }
+
+    public static Point DetectLaser(Bitmap map){
+        Utils.bitmapToMat(map, src);
+        Imgproc.blur(src , ImageProcessing.blur , new Size(1 , 1));
+        Imgproc.cvtColor(ImageProcessing.blur , hsv , Imgproc.COLOR_RGB2HSV);
+        Core.inRange(hsv , new Scalar(123,0,255) , new Scalar(195 ,255 ,255) , mask);
+        Imgproc.dilate(mask , dilate , Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT , new Size(3 , 3)));
+        Imgproc.erode(dilate , erode , Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT , new Size(3 , 3)));
+
+        Core.MinMaxLocResult result = Core.minMaxLoc(mask);
+        return result.maxLoc;
+    }
+
+
 
     public static void hsv_clip(Bitmap map , Scalar hsv_min , Scalar hsv_max){
         Utils.bitmapToMat(map, src);

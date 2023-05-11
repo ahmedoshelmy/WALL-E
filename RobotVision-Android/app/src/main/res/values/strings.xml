@@ -51,6 +51,8 @@
         <item>Defending</item>
         <item>Maze</item>
         <item>Shooting</item>
+        <item>Testing Game</item>
+
     </string-array>
 
     <string-array name="models_spinner_titles">

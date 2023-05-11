@@ -53,11 +53,7 @@ import uni.proj.rv.ObjectDetectorHelper
 import uni.proj.rv.R
 import uni.proj.rv.RobotGame
 import uni.proj.rv.databinding.FragmentCameraBinding
-import uni.proj.rv.games.BallCollectingGame
-import uni.proj.rv.games.DartsGame
-import uni.proj.rv.games.DefendingGame
-import uni.proj.rv.games.MazeGame
-import uni.proj.rv.games.ShootingGame
+import uni.proj.rv.games.*
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -229,11 +225,13 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
 
     private fun loadGames(){
         //TODO: add your games here
+
         registeredGames.add(BallCollectingGame(this))
         registeredGames.add(DartsGame(this))
         registeredGames.add(DefendingGame(this))
         registeredGames.add(MazeGame(this))
         registeredGames.add(ShootingGame(this))
+        registeredGames.add(TestingGame(this))
 
         registeredGames[currentGame].onGameSelected()
 
@@ -733,11 +731,15 @@ class CameraFragment : Fragment(), ObjectDetectorHelper.DetectorListener {
                     String.format("%d ms", System.currentTimeMillis() - inferenceTime)
 
                 // Pass necessary information to OverlayView for drawing on the canvas
-                fragmentCameraBinding.overlay.setResults(
-                    registeredGames[currentGame].detectionResult,
-                    rotatedBuffer.height,
-                    rotatedBuffer.width
-                )
+                if (rotatedBuffer != null) {
+                    fragmentCameraBinding.overlay.setResults(
+                        registeredGames[currentGame].detectionResult,
+                        rotatedBuffer.height,
+                        rotatedBuffer.width
+                    )
+                }else{
+                    Toast.makeText(context , "ERROR: while updating the ui , rotated buffer was null" , Toast.LENGTH_SHORT).show()
+                }
                 // Force a redraw
                 fragmentCameraBinding.overlay.invalidate()
 

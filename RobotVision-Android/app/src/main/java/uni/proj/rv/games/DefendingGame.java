@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Scalar;
 
 import java.util.LinkedList;
 
@@ -58,9 +59,19 @@ public class DefendingGame extends RobotGame {
     Bitmap previewBuffer;
     LinkedList<RectF> res;
 
+    private final Scalar colorLow   = new Scalar(0,0,0);
+    private final Scalar colorHigh  = new Scalar(0,0,0);
+
+    private final long StopDelay = 100; //in ms
+    private long _mDelayCounter = 0;
+
+    private long _startTime = -1;
+
     @Override
     public Bitmap onCameraFeed(Bitmap image) {
-
+        if (_startTime == -1){
+            _startTime = System.currentTimeMillis();
+        }
         //if this is the first frame ever , then create a bitmap matching the source
         if (previewBuffer == null){
             previewBuffer = Bitmap.createBitmap(image);
@@ -74,7 +85,7 @@ public class DefendingGame extends RobotGame {
         //the blur value is just here to make the image smoother
         // getSelectedColorLow() -> the selected lower range color from the user (click the eye icon to view in-app)
         // getSelectedColorHigh() -> the selected upper range color from the user (click the eye icon to view in-app)
-        res = ImageProcessing.DetectColoredBalls(image , 5 , getSelectedColorLow() , getSelectedColorHigh());
+        res = ImageProcessing.DetectColoredBalls(image , 5 , colorLow , colorHigh);
 
         //this game returns a image to the user because we enabled the displaying with enableCustomDisplay()
         //so , I just get the type of preview the user want to see , then return it
@@ -106,9 +117,13 @@ public class DefendingGame extends RobotGame {
         process_result(previewBuffer);
 
         //return the selected image
+
+        _startTime = System.currentTimeMillis();
+
         return previewBuffer;
     }
 
+    private Command _lastCommand;
 
     private void process_result(Bitmap image){
 
@@ -152,37 +167,36 @@ public class DefendingGame extends RobotGame {
 
             float cx = (ball.top + ball.bottom) / 2.0f; //notice the phone is in landscape , so X and Y are switched
 
+            Command c = null;
+            String msg = null;
+
             if (cx > width2 + acceptable_range * height()){
-                print("Robot should move right\n");
-                //TODO: send the "move right" command to the arduino
-                //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = 1}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-                //but we didn't agree on commands yet ..
-
+                msg = "Robot should move right\n";
+                c = Command.s_fromString("move{direction = 1}"); //I use s_fromString cuz Im sure my command will compile
             } else if (cx < width2 - acceptable_range * height()){
-                print("Robot should move left\n");
-                //TODO: send the "move left" command to the arduino
-                //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = -1}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-
+                msg = "Robot should move left\n";
+                c = Command.s_fromString("move{direction = -1}");
             } else {
-                print("Robot should stand still\n");
-                //TODO: send the "stop" command to the arduino
-                //Ex:
-//                try {
-//                    sendCommand(Command.fromString("move{direction = 0}"));
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                msg = "Robot should stand still\n";
+                c = Command.s_fromString("move{direction = 0}");
+            }
 
+            _mDelayCounter = StopDelay;
+
+            assert c != null; //to make the compiler happy ..
+
+            if (!c.equals(_lastCommand)){
+                _lastCommand = c;
+                sendCommand(c);
+                print(msg);
+            }
+        }else{
+            long delta = System.currentTimeMillis() - _startTime;
+            _mDelayCounter -= delta;
+            if (_mDelayCounter < 0){
+                _mDelayCounter = Long.MAX_VALUE;
+                sendCommand(Command.s_fromString("move{direction = 0}"));
+                //send a stop command if we didn't detect anything for 100ms
             }
         }
     }

@@ -177,7 +177,7 @@
                         android:layout_height="wrap_content"/>
                     <androidx.appcompat.widget.AppCompatSeekBar
                         android:id="@+id/control_hsv_h_from"
-                        android:progress="46"
+                        android:progress="132"
                         android:max="255"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"/>
@@ -194,7 +194,7 @@
                         android:layout_height="wrap_content"/>
                     <androidx.appcompat.widget.AppCompatSeekBar
                         android:id="@+id/control_hsv_s_from"
-                        android:progress="63"
+                        android:progress="51"
                         android:max="255"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"/>
@@ -206,12 +206,12 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:textColor="@color/bottom_sheet_text_color"
-                        android:text="V"
+                        android:text="B"
                         android:layout_width="15dp"
                         android:layout_height="wrap_content"/>
                     <androidx.appcompat.widget.AppCompatSeekBar
                         android:id="@+id/control_hsv_v_from"
-                        android:progress="134"
+                        android:progress="87"
                         android:max="255"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"/>
@@ -235,14 +235,14 @@
 
                 <androidx.appcompat.widget.AppCompatSeekBar
                     android:id="@+id/control_hsv_h_to"
-                    android:progress="85"
+                    android:progress="251"
                     android:max="255"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatSeekBar
                     android:id="@+id/control_hsv_s_to"
-                    android:progress="255"
+                    android:progress="173"
                     android:max="255"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"/>

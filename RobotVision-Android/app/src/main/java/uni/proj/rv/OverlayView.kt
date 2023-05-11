@@ -28,7 +28,7 @@ import java.util.LinkedList
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    private var results: MutableList<RectF> = LinkedList<RectF>()
+    private var results: LinkedList<RectF> = LinkedList<RectF>()
     private var boxPaint = Paint()
     private var textBackgroundPaint = Paint()
     private var textPaint = Paint()
@@ -69,8 +69,6 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
 
-
-
         for (result in results) {
 
             val top = result.top * iscaleX + ioffsetY
@@ -86,17 +84,18 @@ class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     }
 
     fun setResults(
-      detectionResults: MutableList<RectF>?,
+      detectionResults: List<RectF>?,
       imageHeight: Int,
       imageWidth: Int,
     ) {
 
+        results.clear()
+
         if (detectionResults == null){
-            results.clear()
             return
         }
 
-        results = detectionResults
+        results.addAll(detectionResults);
 
         // PreviewView is in FILL_START mode. So we need to scale up the bounding box to match with
         // the size that the captured images will be displayed.
