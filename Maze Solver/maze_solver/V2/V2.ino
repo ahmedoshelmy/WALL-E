@@ -7,9 +7,9 @@
 // connect 10 to EnA
 // connect 11 to EnB
 
-double fwd_spd_factor = 1.0 / 3.0;
-double turn_for_spd_factor = 1 / 2.0;
-double turn_rev_spd_factor = 1 / 1.5;
+double fwd_spd_factor = 1 / 3.0;
+double turn_spd_factor = 1 / 1.0;
+double turn_rev_spd_factor = 1 / 2.0;
 
 char path[50];  // Assuming number of operations won't exceed 50
 int actualSize;
@@ -215,7 +215,7 @@ void Stop_The_Right() {
 
 void adjustRight() {
   analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed);
+  analogWrite(ENL, fullSpeed * 0.5);
   Forward_The_Left();
   Stop_The_Right();
   // while (!isCenter()) {
@@ -224,7 +224,7 @@ void adjustRight() {
 }
 
 void adjustBackRight() {
-  analogWrite(ENR, fullSpeed*turn_spd_factor);
+  analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Reverse_The_Left();
   Forward_The_Right();
@@ -248,21 +248,49 @@ void turnLeft() {
   realPath[currRealIdx++] = 'L';
 
 
-  analogWrite(ENR, fullSpeed * turn_for_spd_factor);
-  analogWrite(ENL, fullSpeed * turn_rev_spd_factor);
   Stop();
   // smothStop(fullSpeed);
 
-  delay(500);
+  delay(350);
+  
+  Back();
+  delay(400);
+  // Stop();
+  // delay(500);
+
+  analogWrite(ENR, fullSpeed * 1/2.0);
+  analogWrite(ENL, fullSpeed * 1/4.0);
 
   Forward_The_Right();
   Reverse_The_Left();
-  // Stop_The_Left();
+  //Stop_The_Left();
   
   delay(900);
 
+  readSensors();
+
+  if(farRightReading || nearRightReading)
+{
+  Serial.println("tets");
+  analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
+  analogWrite(ENL, fullSpeed);
+
+  Forward_The_Left();
+  Stop_The_Right();
+
+    while (!isCenterReading()) {
+     readSensors();
+  }
+}
+
+  // analogWrite(ENR, fullSpeed * 1/2.0);
+  // analogWrite(ENL, fullSpeed * 1/4.0);
+
+  // Forward_The_Right();
+  // Reverse_The_Left();
+
   // delay(3500);
-  while (!isCenter()) {
+  while (!isCenterReading()) {
     readSensors();
   }
 
@@ -276,22 +304,35 @@ void turnRight() {
   Serial.println("Inside turnRight ..");
   realPath[currRealIdx++] = 'R';
 
-  analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
-  analogWrite(ENL, fullSpeed * turn_for_spd_factor);
-
-
   // smothStop(fullSpeed);
 
   Stop();
-  delay(500);
+  delay(400);
+  if (isTurningAround){
+    Forward();
+    delay(450);
+  }
+  else{
+    // Serial.println("here");
+    // while(!isCenterReading()){
+    //   Back();
+    //   readSensors();
+    // }
+
+    Back();
+    delay(500);
+  }
+
+  analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
+  analogWrite(ENL, fullSpeed);
 
   Forward_The_Left();
   // Stop_The_Right();
 
   Reverse_The_Right();
-  delay(900);
+  //delay(1500);
 
-  while (!isCenter()) {
+  while (!isCenterReading()) {
     readSensors();
   }
 
@@ -328,7 +369,7 @@ bool isRightTurn() {
 }
 
 bool isIntersection() {
-  return farLeftReading && nearLeftReading && centerReading && nearRightReading && farRightReading;
+  return farLeftReading && centerReading && farRightReading;
 }
 
 bool isDeadEnd() {
@@ -337,6 +378,10 @@ bool isDeadEnd() {
 
 bool isEndGame() {
   return !farLeftReading && nearLeftReading && !centerReading && nearRightReading && !farRightReading;
+}
+
+bool isCenterReading(){
+  return centerReading;
 }
 
 void readSensors() {
@@ -362,7 +407,7 @@ void Back() {
   Reverse_The_Right();
 }
 void adjustLeft() {
-  analogWrite(ENR, fullSpeed);
+  analogWrite(ENR, fullSpeed * 0.5);
   analogWrite(ENL, fullSpeed);
   Forward_The_Right();
   Stop_The_Left();
@@ -373,7 +418,7 @@ void adjustLeft() {
 
 void adjustBackLeft() {
   analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed*turn_spd_factor);
+  analogWrite(ENL, fullSpeed);
   Reverse_The_Right();
   // Stop_The_Left();
   Forward_The_Left();
@@ -449,7 +494,7 @@ void loop() {
   {
 
     readSensors();
-    // if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
+    if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
       Serial.print(farLeftReading);
       Serial.print(" ");
       Serial.print(nearLeftReading);
@@ -466,7 +511,7 @@ void loop() {
       prenearLeftReading = nearLeftReading;
       prefarRightReading = farRightReading;
       prenearRightReading = nearRightReading;
-    // }
+    }
 
     if (isTurningAround) {
       if (isDeadEnd()) {
@@ -480,12 +525,12 @@ void loop() {
         isTurningAround = false;
         turnRight();
       }
-      else if(isNearRight()){
-        adjustBackRight();
-      }
-      else if(isNearLeft()){
-        adjustBackLeft();
-      }
+      // else if(isNearRight()){
+      //   adjustBackRight();
+      // }
+      // else if(isNearLeft()){
+      //   adjustBackLeft();
+      // }
       else{
         Back();
       }
@@ -495,9 +540,12 @@ void loop() {
         turnLeft();
       } else if (isCenter()) {  // Straight
         Forward();
+      } else if (isIntersection()) {  // Intersection
+      Serial.println("Found Intersection...");
+        turnLeft();
       } else if (isRightTurn()) {
         Forward();
-        delay(450);
+        delay(250);
         readSensors();
         if (isCenter()) {  // Straight
           realPath[currRealIdx++] = 'S';
@@ -511,14 +559,14 @@ void loop() {
 
           adjustRight();
         } else {
+          // Back();
+          // delay(450);
           turnRight();
         }
       } else if (isNearLeft()) {  // adjustLeft
         adjustLeft();
       } else if (isNearRight()) {  // adjustRight
         adjustRight();
-      } else if (isIntersection()) {  // Intersection
-        turnLeft();
       } else if (isDeadEnd()) {  // Dead End
         // delay(500);
         // readSensors();
@@ -529,6 +577,7 @@ void loop() {
         readSensors();
         delay(50);
         if(isDeadEnd()){
+          Serial.println("Found DEADEND...");
           isTurningAround = true;
           Stop();
           delay(450);
@@ -601,6 +650,112 @@ void loop() {
   //     flag = 0;
   //     currIdx = 0;
   //     currRealIdx = 0;
+  //   }
+  // }
+
+
+  // RIGHT FOLLOWER
+  // readSensors();
+  // if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
+  //   Serial.print(farLeftReading);
+  //   Serial.print(" ");
+  //   Serial.print(nearLeftReading);
+  //   Serial.print(" ");
+  //   Serial.print(centerReading);
+  //   Serial.print(" ");
+  //   Serial.print(nearRightReading);
+  //   Serial.print(" ");
+  //   Serial.print(farRightReading);
+  //   Serial.println();
+
+  //   precenterReading = centerReading;
+  //   prefarLeftReading = farLeftReading;
+  //   prenearLeftReading = nearLeftReading;
+  //   prefarRightReading = farRightReading;
+  //   prenearRightReading = nearRightReading;
+  // }
+
+  // if (isTurningAround) {
+  //   if (isDeadEnd()) {
+  //     isTurningAround = false;
+  //     Stop();
+  //     delay(250);
+  //     Forward();
+  //     delay(1000);
+  //   }
+  //   else if(isRightTurn()){
+  //     isTurningAround = false;
+  //     turnRight();
+  //   }
+  //   // else if(isNearRight()){
+  //   //   adjustBackRight();
+  //   // }
+  //   // else if(isNearLeft()){
+  //   //   adjustBackLeft();
+  //   // }
+  //   else{
+  //     Back();
+  //   }
+  // }
+  // else{
+  //   if (isRightTurn()) {
+  //     turnRight();
+  //   } else if (isCenter()) {  // Straight
+  //     Forward();
+  //   } else if (isIntersection()) {  // Intersection
+  //     Serial.println("Found Intersection...");
+  //     turnRight();
+  //   } else if (isLeftTurn()) {
+  //     Forward();
+  //     delay(250);
+  //     readSensors();
+  //     if (isCenter()) {  // Straight
+  //       realPath[currRealIdx++] = 'S';
+  //       Forward();
+  //     } else if (isNearLeft()) {  // adjustLeft
+  //       realPath[currRealIdx++] = 'S';
+
+  //       adjustLeft();
+  //     } else if (isNearRight()) {  // adjustRight
+  //       realPath[currRealIdx++] = 'S';
+
+  //       adjustRight();
+  //     } else {
+  //       // Back();
+  //       // delay(450);
+  //       turnLeft();
+  //     }
+  //   } else if (isNearLeft()) {  // adjustLeft
+  //     adjustLeft();
+  //   } else if (isNearRight()) {  // adjustRight
+  //     adjustRight();
+  //   } else if (isDeadEnd()) {  // Dead End
+  //     // delay(500);
+  //     // readSensors();
+  //     // if (isDeadEnd())
+  //     //   ;
+  //     // U_Turn();
+  //     delay(100);
+  //     readSensors();
+  //     delay(50);
+  //     if(isDeadEnd()){
+  //       Serial.println("Found DEADEND...");
+  //       isTurningAround = true;
+  //       Stop();
+  //       delay(450);
+  //       Back();
+  //       delay(1000);
+  //     }
+  //   } else if (isEndGame()) {
+  //     Serial.println("ENNNNNNNNNNNNNNNNNND");
+  //     CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
+  //     flag = 1;
+
+  //     while (!isCenter()) {
+  //       readSensors();
+  //     }
+
+  //     Stop();
   //   }
   // }
 }
