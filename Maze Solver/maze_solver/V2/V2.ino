@@ -10,6 +10,7 @@
 double fwd_spd_factor = 1 / 3.0;
 double turn_spd_factor = 1 / 1.0;
 double turn_rev_spd_factor = 1 / 2.0;
+double adjust_turn_factor = 1 / 2.0;
 
 char path[50];  // Assuming number of operations won't exceed 50
 int actualSize;
@@ -214,8 +215,9 @@ void Stop_The_Right() {
 }
 
 void adjustRight() {
+  //Serial.println("Adjusting right");
   analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed * 0.5);
+  analogWrite(ENL, fullSpeed * adjust_turn_factor);
   Forward_The_Left();
   Stop_The_Right();
   // while (!isCenter()) {
@@ -252,36 +254,35 @@ void turnLeft() {
   // smothStop(fullSpeed);
 
   delay(350);
-  
+
   Back();
   delay(400);
   // Stop();
   // delay(500);
 
-  analogWrite(ENR, fullSpeed * 1/2.0);
-  analogWrite(ENL, fullSpeed * 1/4.0);
+  analogWrite(ENR, fullSpeed * 1 / 2.0);
+  analogWrite(ENL, fullSpeed * 1 / 4.0);
 
   Forward_The_Right();
   Reverse_The_Left();
   //Stop_The_Left();
-  
+
   delay(900);
 
   readSensors();
 
-  if(farRightReading || nearRightReading)
-{
-  Serial.println("tets");
-  analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
-  analogWrite(ENL, fullSpeed);
+  if (farRightReading || nearRightReading) {
+    Serial.println("tets");
+    analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
+    analogWrite(ENL, fullSpeed * turn_rev_spd_factor);
 
-  Forward_The_Left();
-  Stop_The_Right();
+    Forward_The_Left();
+    Stop_The_Right();
 
     while (!isCenterReading()) {
-     readSensors();
+      readSensors();
+    }
   }
-}
 
   // analogWrite(ENR, fullSpeed * 1/2.0);
   // analogWrite(ENL, fullSpeed * 1/4.0);
@@ -308,17 +309,7 @@ void turnRight() {
 
   Stop();
   delay(400);
-  if (isTurningAround){
-    Forward();
-    delay(450);
-  }
-  else{
-    // Serial.println("here");
-    // while(!isCenterReading()){
-    //   Back();
-    //   readSensors();
-    // }
-
+  if (!isTurningAround) {
     Back();
     delay(500);
   }
@@ -336,18 +327,18 @@ void turnRight() {
     readSensors();
   }
 
-// while(true){
-//   digitalWrite(right_motor_front1, LOW);
-//     digitalWrite(right_motor_front2, HIGH);
-//     digitalWrite(right_motor_back1, LOW);
-//     digitalWrite(right_motor_back2, HIGH);
-//     digitalWrite(left_motor_front1, HIGH);
-//     digitalWrite(left_motor_front2, LOW);
-//     digitalWrite(left_motor_back1, HIGH);
-//     digitalWrite(left_motor_back2, LOW);
-//     analogWrite(ENL, fullSpeed);
-//     analogWrite(ENR, fullSpeed);
-// }
+  // while(true){
+  //   digitalWrite(right_motor_front1, LOW);
+  //     digitalWrite(right_motor_front2, HIGH);
+  //     digitalWrite(right_motor_back1, LOW);
+  //     digitalWrite(right_motor_back2, HIGH);
+  //     digitalWrite(left_motor_front1, HIGH);
+  //     digitalWrite(left_motor_front2, LOW);
+  //     digitalWrite(left_motor_back1, HIGH);
+  //     digitalWrite(left_motor_back2, LOW);
+  //     analogWrite(ENL, fullSpeed);
+  //     analogWrite(ENR, fullSpeed);
+  // }
 }
 
 bool isNearLeft() {
@@ -380,7 +371,7 @@ bool isEndGame() {
   return !farLeftReading && nearLeftReading && !centerReading && nearRightReading && !farRightReading;
 }
 
-bool isCenterReading(){
+bool isCenterReading() {
   return centerReading;
 }
 
@@ -394,8 +385,8 @@ void readSensors() {
 
 void Forward() {
 
-  analogWrite(ENL, fullSpeed * fwd_spd_factor);
-  analogWrite(ENR, fullSpeed * fwd_spd_factor);
+  analogWrite(ENL, fullSpeed * 1 / 2.0);
+  analogWrite(ENR, fullSpeed * 1 / 2.0);
   Forward_The_Right();
   Forward_The_Left();
 }
@@ -407,7 +398,8 @@ void Back() {
   Reverse_The_Right();
 }
 void adjustLeft() {
-  analogWrite(ENR, fullSpeed * 0.5);
+  //Serial.println("Adjusting left");
+  analogWrite(ENR, fullSpeed * adjust_turn_factor);
   analogWrite(ENL, fullSpeed);
   Forward_The_Right();
   Stop_The_Left();
@@ -429,15 +421,12 @@ void U_Turn() {
 
   realPath[currRealIdx++] = 'B';
 
-  analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed );
-  Stop();
-  delay(500);
-  Forward_The_Right();
-  Reverse_The_Left();
-  // Stop_The_Left();
+  analogWrite(ENR, fullSpeed * 0.75);
+  analogWrite(ENL, fullSpeed * 0.75);
 
-  // adjustRight();
+  Reverse_The_Right();
+  Forward_The_Left();
+
   while (!isCenter()) {
     readSensors();
   }
@@ -467,7 +456,7 @@ void setup() {
 
   shortestPathCalculated = false;
   actualSize = 0;
-  realPath[0]='S';
+  realPath[0] = 'S';
   currRealIdx = 1;
   currIdx = 0;
 
@@ -513,90 +502,67 @@ void loop() {
       prenearRightReading = nearRightReading;
     }
 
-    if (isTurningAround) {
-      if (isDeadEnd()) {
-        isTurningAround = false;
-        Stop();
-        delay(250);
-        Forward();
-        delay(1000);
-      }
-      else if(isRightTurn()){
-        isTurningAround = false;
-        turnRight();
-      }
-      // else if(isNearRight()){
-      //   adjustBackRight();
-      // }
-      // else if(isNearLeft()){
-      //   adjustBackLeft();
-      // }
-      else{
-        Back();
-      }
-    }
-    else{
-      if (isLeftTurn()) {
-        turnLeft();
-      } else if (isCenter()) {  // Straight
-        Forward();
-      } else if (isIntersection()) {  // Intersection
+    if (isLeftTurn()) {
+      turnLeft();
+    } else if (isCenter()) {  // Straight
+      Forward();
+    } else if (isIntersection()) {  // Intersection
       Serial.println("Found Intersection...");
-        turnLeft();
-      } else if (isRightTurn()) {
+      turnLeft();
+    } else if (isRightTurn()) {
+      Forward();
+      delay(250);
+      readSensors();
+      if (isCenter()) {  // Straight
+        realPath[currRealIdx++] = 'S';
         Forward();
-        delay(250);
-        readSensors();
-        if (isCenter()) {  // Straight
-          realPath[currRealIdx++] = 'S';
-          Forward();
-        } else if (isNearLeft()) {  // adjustLeft
-          realPath[currRealIdx++] = 'S';
-
-          adjustLeft();
-        } else if (isNearRight()) {  // adjustRight
-          realPath[currRealIdx++] = 'S';
-
-          adjustRight();
-        } else {
-          // Back();
-          // delay(450);
-          turnRight();
-        }
       } else if (isNearLeft()) {  // adjustLeft
+        realPath[currRealIdx++] = 'S';
+
         adjustLeft();
       } else if (isNearRight()) {  // adjustRight
+        realPath[currRealIdx++] = 'S';
+
         adjustRight();
-      } else if (isDeadEnd()) {  // Dead End
-        // delay(500);
-        // readSensors();
-        // if (isDeadEnd())
-        //   ;
-        // U_Turn();
-        delay(100);
-        readSensors();
-        delay(50);
-        if(isDeadEnd()){
-          Serial.println("Found DEADEND...");
-          isTurningAround = true;
-          Stop();
-          delay(450);
-          Back();
-          delay(1000);
-        }
-      } else if (isEndGame()) {
-        Serial.println("ENNNNNNNNNNNNNNNNNND");
-        CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
-        flag = 1;
-
-        while (!isCenter()) {
-          readSensors();
-        }
-
-        Stop();
+      } else {
+        // Back();
+        // delay(450);
+        turnRight();
       }
-    }
+    } else if (isNearLeft()) {  // adjustLeft
+      adjustLeft();
+    } else if (isNearRight()) {  // adjustRight
+      adjustRight();
+    } else if (isDeadEnd()) {  // Dead End
+      delay(100);
+      readSensors();
+      if (isDeadEnd()) {
+        Stop();
+        delay(500);
+        U_Turn();
+      }
+      // delay(100);
+      // readSensors();
+      // delay(50);
+      // if(isDeadEnd()){
+      //   Serial.println("Found DEADEND...");
+      //   isTurningAround = true;
+      //   Stop();
+      //   delay(450);
+      //   Back();
+      //   delay(1000);
+      // }
+    } else if (isEndGame()) {
+      Serial.println("ENNNNNNNNNNNNNNNNNND");
+      CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
+      flag = 1;
 
+      while (!isCenter()) {
+        readSensors();
+      }
+
+      Stop();
+    }
   }
   // else
   // {
