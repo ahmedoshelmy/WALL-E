@@ -305,10 +305,9 @@ void turnRight() {
   Serial.println("Inside turnRight ..");
   realPath[currRealIdx++] = 'R';
 
-  // smothStop(fullSpeed);
-
   Stop();
   delay(400);
+
   if (!isTurningAround) {
     Back();
     delay(500);
@@ -318,27 +317,12 @@ void turnRight() {
   analogWrite(ENL, fullSpeed);
 
   Forward_The_Left();
-  // Stop_The_Right();
 
   Reverse_The_Right();
-  //delay(1500);
 
   while (!isCenterReading()) {
     readSensors();
   }
-
-  // while(true){
-  //   digitalWrite(right_motor_front1, LOW);
-  //     digitalWrite(right_motor_front2, HIGH);
-  //     digitalWrite(right_motor_back1, LOW);
-  //     digitalWrite(right_motor_back2, HIGH);
-  //     digitalWrite(left_motor_front1, HIGH);
-  //     digitalWrite(left_motor_front2, LOW);
-  //     digitalWrite(left_motor_back1, HIGH);
-  //     digitalWrite(left_motor_back2, LOW);
-  //     analogWrite(ENL, fullSpeed);
-  //     analogWrite(ENR, fullSpeed);
-  // }
 }
 
 bool isNearLeft() {
