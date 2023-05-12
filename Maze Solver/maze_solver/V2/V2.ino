@@ -283,7 +283,7 @@ void turnLeft() {
     while (!isCenterReading()) {
       readSensors();
     }
-    
+
   }
 
   // analogWrite(ENR, fullSpeed * 1/2.0);
@@ -319,7 +319,7 @@ void turnRight() {
   Forward_The_Left();
   Reverse_The_Right();
 
-  delay(900);
+  delay(1200);
   readSensors();
 
   if (farLeftReading || nearLeftReading) {
@@ -329,6 +329,7 @@ void turnRight() {
 
     Forward_The_Right();
     Stop_The_Left();
+
 
     while (!isCenterReading()) {
       readSensors();
@@ -504,7 +505,7 @@ void lsrb() {
     turnLeft();
   } else if (isRightTurn()) {
     Forward();
-    delay(100);
+    delay(220);
     Stop();
 
     readSensors();
@@ -532,6 +533,8 @@ void lsrb() {
     if (isDeadEnd()) {
       Stop();
       delay(500);
+      Back();
+      delay(135);
       U_Turn();
     }
   } else if (isEndGame()) {
