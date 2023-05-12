@@ -7,8 +7,9 @@
 // connect 10 to EnA
 // connect 11 to EnB
 
-double fwd_spd_factor = 1.0 / 2.0;
-double turn_spd_factor = 1 / 1.0;
+double fwd_spd_factor = 1.0 / 3.0;
+double turn_for_spd_factor = 1 / 2.0;
+double turn_rev_spd_factor = 1 / 1.5;
 
 char path[50];  // Assuming number of operations won't exceed 50
 int actualSize;
@@ -247,8 +248,8 @@ void turnLeft() {
   realPath[currRealIdx++] = 'L';
 
 
-  analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed );
+  analogWrite(ENR, fullSpeed * turn_for_spd_factor);
+  analogWrite(ENL, fullSpeed * turn_rev_spd_factor);
   Stop();
   // smothStop(fullSpeed);
 
@@ -261,9 +262,9 @@ void turnLeft() {
   delay(900);
 
   // delay(3500);
-  // while (!isCenter()) {
-  //   readSensors();
-  // }
+  while (!isCenter()) {
+    readSensors();
+  }
 
   // delay(500)
   //  while (!isCenter()) {
@@ -275,37 +276,38 @@ void turnRight() {
   Serial.println("Inside turnRight ..");
   realPath[currRealIdx++] = 'R';
 
-  // analogWrite(ENR, fullSpeed  );
-  // analogWrite(ENL, fullSpeed);
+  analogWrite(ENR, fullSpeed * turn_rev_spd_factor);
+  analogWrite(ENL, fullSpeed * turn_for_spd_factor);
 
 
   // smothStop(fullSpeed);
 
-  // Stop();
-  // delay(500);
+  Stop();
+  delay(500);
 
-  // Forward_The_Left();
+  Forward_The_Left();
   // Stop_The_Right();
 
-  // Reverse_The_Right();
-  // delay(900);
+  Reverse_The_Right();
+  delay(900);
 
-  // while (!isCenter()) {
-  //   readSensors();
-  // }
+  while (!isCenter()) {
+    readSensors();
+  }
 
-while(true){
-  digitalWrite(right_motor_front1, LOW);
-    digitalWrite(right_motor_front2, HIGH);
-    digitalWrite(right_motor_back1, LOW);
-    digitalWrite(right_motor_back2, HIGH);
-    digitalWrite(left_motor_front1, HIGH);
-    digitalWrite(left_motor_front2, LOW);
-    digitalWrite(left_motor_back1, HIGH);
-    digitalWrite(left_motor_back2, LOW);
-    analogWrite(ENL, fullSpeed);
-    analogWrite(ENR, fullSpeed);
-}}
+// while(true){
+//   digitalWrite(right_motor_front1, LOW);
+//     digitalWrite(right_motor_front2, HIGH);
+//     digitalWrite(right_motor_back1, LOW);
+//     digitalWrite(right_motor_back2, HIGH);
+//     digitalWrite(left_motor_front1, HIGH);
+//     digitalWrite(left_motor_front2, LOW);
+//     digitalWrite(left_motor_back1, HIGH);
+//     digitalWrite(left_motor_back2, LOW);
+//     analogWrite(ENL, fullSpeed);
+//     analogWrite(ENR, fullSpeed);
+// }
+}
 
 bool isNearLeft() {
   return !farLeftReading && nearLeftReading && centerReading && !nearRightReading && !farRightReading;
@@ -420,7 +422,8 @@ void setup() {
 
   shortestPathCalculated = false;
   actualSize = 0;
-  currRealIdx = 0;
+  realPath[0]='S';
+  currRealIdx = 1;
   currIdx = 0;
 
   flag = 0;
@@ -446,7 +449,7 @@ void loop() {
   {
 
     readSensors();
-    if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
+    // if (precenterReading != centerReading || prefarLeftReading != farLeftReading || prenearLeftReading != nearLeftReading || prefarRightReading != farRightReading || prenearRightReading != nearRightReading) {
       Serial.print(farLeftReading);
       Serial.print(" ");
       Serial.print(nearLeftReading);
@@ -463,7 +466,7 @@ void loop() {
       prenearLeftReading = nearLeftReading;
       prefarRightReading = farRightReading;
       prenearRightReading = nearRightReading;
-    }
+    // }
 
     if (isTurningAround) {
       if (isDeadEnd()) {
@@ -522,11 +525,16 @@ void loop() {
         // if (isDeadEnd())
         //   ;
         // U_Turn();
-        isTurningAround = true;
-        Stop();
-        delay(450);
-        Back();
-        delay(1000);
+        delay(100);
+        readSensors();
+        delay(50);
+        if(isDeadEnd()){
+          isTurningAround = true;
+          Stop();
+          delay(450);
+          Back();
+          delay(1000);
+        }
       } else if (isEndGame()) {
         Serial.println("ENNNNNNNNNNNNNNNNNND");
         CALCULATE_SHORTEST_PATH(realPath, currRealIdx);

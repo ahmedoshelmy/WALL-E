@@ -7,7 +7,7 @@
 // connect 10 to EnA
 // connect 11 to EnB
 
-double fwd_spd_factor = 1.0/2.0;
+double fwd_spd_factor = 1.0/1.0;
 double turn_spd_factor = 1 / 1.0;
 
 char path[50]; // Assuming number of operations won't exceed 50
@@ -271,10 +271,10 @@ void turnLeft()
 
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
-  Stop();
+  // Stop();
   // smothStop(fullSpeed);
 
-  delay(500);
+  // delay(500);
 
   Forward_The_Right();
   Reverse_The_Left();
@@ -304,14 +304,14 @@ void turnRight()
 
   // smothStop(fullSpeed);
 
-  Stop();
-  delay(500);
+  // Stop();
+  // delay(500);
 
   Forward_The_Left();
   // Stop_The_Right();
 
   Reverse_The_Right();
-  delay(900);
+  // delay(500);
 
   while (!isCenter())
   {
@@ -399,11 +399,13 @@ void U_Turn()
   realPath[currRealIdx++] = 'B';
 
   analogWrite(ENR, fullSpeed);
-  analogWrite(ENL, fullSpeed );
-  Stop();
-  delay(500);
+  analogWrite(ENL, fullSpeed);
+  // Stop();
+  // delay(500);
   Forward_The_Right();
   Reverse_The_Left();
+  // Forward_The_Left();
+  // Reverse_The_Right();
   // Stop_The_Left();
   
   // adjustRight();
@@ -445,6 +447,7 @@ void setup()
 
   Stop();
   delay(1000);
+
 
   readSensors();
 
@@ -535,10 +538,10 @@ void loop()
     }
     else if (isDeadEnd())
     { // Dead End
-      delay(500);
-      readSensors();
-      if (isDeadEnd())
-        ;
+      // delay(500);
+      // readSensors();
+      // if (isDeadEnd())
+      //   ;
       U_Turn();
     }
     else if (isEndGame())
@@ -547,10 +550,10 @@ void loop()
       CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
       flag=1;
 
-      while(!isCenter())
-      {
-        readSensors();
-      }
+      // while(!isCenter())
+      // {
+      //   readSensors();
+      // }
 
       Stop();
     }
