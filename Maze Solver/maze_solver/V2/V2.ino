@@ -385,8 +385,8 @@ void readSensors() {
 
 void Forward() {
 
-  analogWrite(ENL, fullSpeed * 1 / 2.0);
-  analogWrite(ENR, fullSpeed * 1 / 2.0);
+  analogWrite(ENL, fullSpeed * 1 / 2.5);
+  analogWrite(ENR, fullSpeed * 1 / 2.5);
   Forward_The_Right();
   Forward_The_Left();
 }
@@ -421,7 +421,7 @@ void U_Turn() {
 
   realPath[currRealIdx++] = 'B';
 
-  analogWrite(ENR, fullSpeed * 0.65);
+  analogWrite(ENR, fullSpeed * 0.6);
   analogWrite(ENL, fullSpeed * 0.65);
 
   Reverse_The_Right();
@@ -532,9 +532,9 @@ void lsrb() {
     readSensors();
     if (isDeadEnd()) {
       Stop();
-      delay(500);
-      Back();
-      delay(135);
+      delay(250);
+      Back(); 
+      delay(150);
       U_Turn();
     }
   } else if (isEndGame()) {
@@ -605,13 +605,14 @@ void rslb() {
       delay(500);
       U_Turn();
     }
-  } else if (isEndGame()) {
-    Serial.println("END GAME...");
-    CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
-    flag = 1;
-
-    Stop();
   }
+  // } else if (isEndGame()) {
+  //   Serial.println("END GAME...");
+  //   CALCULATE_SHORTEST_PATH(realPath, currRealIdx);
+  //   flag = 1;
+
+  //   Stop();
+  // }
 }
 
 // الاسود وحايد
