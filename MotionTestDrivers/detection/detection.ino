@@ -1,9 +1,4 @@
 #include "communication.h"
-
-#include <Servo.h>
-
-//===================== START: Variables =========================
-// TODO Rest of variables : Aliaa [DONE]
 int commands = 0;
 Command c;
 
@@ -12,8 +7,8 @@ Command c;
 #define LEFT_CAMERA_SERVO_PIN 15
 
 // TODO: Set Ultrasonic pin
-#define ULTRA_SONIC_PIN_T 12
-#define ULTRA_SONIC_PIN_E 13
+#define ULTRA_SONIC_PIN_T 9
+#define ULTRA_SONIC_PIN_E 8
 #define MAX_US_RD
 
 int game_mode = 0; // for switch between game modes
@@ -78,7 +73,7 @@ int direction = 0; // for detect the direction of Defend
 
 void Forward(float l_speed, float r_speed)
 {
-
+    
     digitalWrite(right_motor_front1, HIGH);
     digitalWrite(right_motor_front2, LOW);
     digitalWrite(right_motor_back1, HIGH);
@@ -87,11 +82,14 @@ void Forward(float l_speed, float r_speed)
     digitalWrite(left_motor_front2, LOW);
     digitalWrite(left_motor_back1, HIGH);
     digitalWrite(left_motor_back2, LOW);
-    for(int i = 15 ; i <= 255;i+=20){
-      analogWrite(ENL, i);
-      analogWrite(ENR, i);
-      delay(100) ; 
-    }
+
+    analogWrite(ENL, l_speed);
+    analogWrite(ENR, r_speed);
+    // for(int i = 15 ; i <= 255;i+=20){
+    //   analogWrite(ENL, i);
+    //   analogWrite(ENR, i);
+    //   delay(100) ; 
+    // }
 }
 void Forward_The_Right()
 {
@@ -144,7 +142,7 @@ void adjustRight()
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed);
   Forward_The_Left();
-  Stop_The_Right();
+  Reverse_The_Right();
   // while (!isCenter()) {
   //   readSensors();
   // }
@@ -203,10 +201,12 @@ void Back(float speed)
 
 void Left(float speed)
 {
+    print("Arduino : move left");
     digitalWrite(right_motor_front1, HIGH);
     digitalWrite(right_motor_front2, LOW);
     digitalWrite(right_motor_back1, HIGH);
     digitalWrite(right_motor_back2, LOW);
+    
     digitalWrite(left_motor_front1, LOW);
     digitalWrite(left_motor_front2, HIGH);
     digitalWrite(left_motor_back1, LOW);
@@ -236,14 +236,17 @@ void Forward_The_Left(float speed)
 
 void Right(float speed)
 {
+    print("Arduino : move right");
     digitalWrite(right_motor_front1, LOW);
     digitalWrite(right_motor_front2, HIGH);
     digitalWrite(right_motor_back1, LOW);
     digitalWrite(right_motor_back2, HIGH);
+
     digitalWrite(left_motor_front1, HIGH);
     digitalWrite(left_motor_front2, LOW);
     digitalWrite(left_motor_back1, HIGH);
     digitalWrite(left_motor_back2, LOW);
+
     analogWrite(ENL, speed);
     analogWrite(ENR, speed);
 }
@@ -274,8 +277,6 @@ void Stop()
     digitalWrite(left_motor_front2, LOW);
     digitalWrite(left_motor_back1, LOW);
     digitalWrite(left_motor_back2, LOW);
-
-    
     analogWrite(ENL, 0);
     analogWrite(ENR, 0);
 }
@@ -364,19 +365,10 @@ void turn_90_deg() {
   }
   print("Stop Turning \n");
 }
-void setup()
-{
+void setup() {
+  // put your setup code here, to run once:
   Serial.begin(31250);
-  // TODO : Found the right values
-  // camera_right.attach(15);
-  // camera_left.attach(16);
-  // rotating_servo.attach(ROTATING_SERVO_PIN);
-  //* for Ball Collecting I think
-  // rotating_servo.write(180);
-  // camera_left.write(180);
-  // camera_right.write(180);
 
-  // DECLARING MOTORS AS OUTPUTS
   pinMode(right_motor_front1, OUTPUT);
   pinMode(right_motor_front2, OUTPUT);
   pinMode(right_motor_back1, OUTPUT);
@@ -392,178 +384,124 @@ void setup()
 
   pinMode(ULTRA_SONIC_PIN_T, OUTPUT); // Sets the trigPin as an Output
   pinMode(ULTRA_SONIC_PIN_E, INPUT);  // Sets the echoPin as an Input
-  print("$start_ball{}");
+  print("========== Start ball collecting ==========\n");
+  //print("$start_ball{}");
   // pinMode(3, INPUT);
 
-  Serial.println("start Ball Collecting");
-  // Forward();
-  //onRoller();
-  //first_round();
-  //turnRight();
-  //finish_round();
-  //onRoller();
+
+  //print("$start{m=0}"); //forward
+
 
 }
-void loop()
-{
-  
-  Left(255);
-  delay(10000);
-  Stop();
-  Right(255);
-  delay(10000);
 
-  //finish_round();
-  //ReadUS();
-  // Forward(fullSpeed, fullSpeed);
-  //first_round();
-  // Serial.println("Arduino: Turn Right");
-  // Right(255);
-  // analogWrite(ENR, fullSpeed );
-  // analogWrite(ENL, fullSpeed);
-  // Forward_The_Left();
-  // Reverse_The_Right();
-  // delay(2000);
-  
+void loop() {
+  // Serial.print(ReadUS());
+  //nothing, TK_Forward, TK_right, TK_left, AVD_forward
+  //0         1           2         3        4
+  // put your main code here, to run repeatedly:
+  // int last_dir = -1;
+  // int us_read = -1000;
+  // if(c.read()) {
+  //   if(c == "set_d") {
+  //     int d = c["d"].get<int>();
+  //     switch (d) {
+  //       // case 0:
+  //       //   offRoller();
+  //       //   print("Arduino : Do Nothing \n");
+  //       //   // print("$start{m=0}"); //forward
+  //       //   Forward(255,255);
+  //       //   break;
+  //       case 1:
+  //         // if(us_read - ReadUS() > 40 || ReadUS() - us_read  > 40) {
+  //           print("Arduino : take forward \n");
+  //           // print("$start{m=0}"); //forward
+  //           Forward(255,255);
+  //           onRoller();
+  //           // us_read = ReadUS();
+  //         // }
+  //         break;
+  //       case 4:
+  //         // if(us_read - ReadUS() > 40 || ReadUS() - us_read  > 40) {
+  //           print("Avd Forward \n");
+  //           offRoller();
 
-  // Stop();
+  //           // print("$start{m=2,deg=45}"); //left
+  //           Forward(255, 0); //right
+  //           delay(500);
+  //           Left(255);
+  //           delay(500);
+  //           Forward(255, 255);
+  //           onRoller();
+  //           //us_read = ReadUS();
+  //         // }
+  //         break;
+        
+  //       case 2:
+  //         print("Arduino : take Right\n");
+  //         // print("$start{m=2,deg=-45}"); //right
+  //         Forward(255, 0);
+  //         onRoller();
+
+          
+  //         break;
+  //       case 3:
+  //         print("Arduino : take left \n");
+  //         // print("$start{m=2,deg=45}"); //left
+  //         Forward(0, 255);
+  //         onRoller();
+
+
+  //         // Left(100);
+  //         break;
+
+  //       default: 
+  //         Stop();
+  //         break;
+  //     }
+  //       // case 0:
+  //       //   Forward(255, 255);
+  //       //   print("Arduino: Move Forward %i \n", d);
+  //       //   break;
+  //       // case 1:
+  //       //   Left(255);
+  //       //   print("Arduino: Move Left %i \n", d);
+  //       //   break;
+  //       // case 2:
+  //       //   Right(255);
+  //       //   print("Arduino: Move Right %i \n", d);
+  //       //   break;
+      
+  //   }
+  // }
+
+   /* if(c == "move") {
+      int d = c["d"].get<int>();
+      switch (d) {
+        case 0:
+          Forward(255, 255);
+          print("Arduino: Move Forward %i \n", d);
+          break;
+        case 1:
+          Left(255);
+          print("Arduino: Move Left %i \n", d);
+          break;
+        case 2:
+          Right(255);
+          print("Arduino: Move Right %i \n", d);
+          break;
+        case 3:
+          Stop();
+          print("Arduino: Stop \n");
+          break;
+      }
+    }*/
+  // }
+  //delay(1000);
+  //Right(255);
+  // delay(3000);
+   Forward(255, 0); //right
   // delay(500);
-
-  
-  //Serial.println(ReadUS());
-  //delay(50);
-  
-  //finish_round();
-  //while (1)
-   // ;
-  // turnRight();
-  // delay(1000);
-  // turnLeft();
-  //  Serial.println("woo ");
-  // delay(1000);
-  // Stop();
-  // // ;  ReadUS();
-
-    // if (c.read())
-    // {
-    //   ReadFromDetection = true;
-    //   if (c == "set_game")
-    //   {
-    //       game_mode = c["g"].get<int>();
-    //   }
-
-    //   if (c == "set_act")
-    //     action_bc = c["a"].get<int>();
-    //   commands++;
-    //   print("game_mode = %d, commands = %d, act = %d \n", game_mode, commands, action_bc);
-    //          switch (action_bc) {
-    //             case 4:
-    //                 print("Arduino: Avoid Forward\n");
-    //                 break;
-    //             case 1:
-    //                 print("Arduino: Move Forward\n");
-    //                 break;
-    //             case 2:
-    //                 print("Arduino: Move Right\n");
-    //                 break;
-    //             case 3:
-    //                 print("Arduino: Move Left\n");
-    //                 break;
-    //             default:
-    //                 print("Arduino: nothing\n");
-    //                 break;
-    //         }
-    // }
-    // // // Menna :TODO: put the ultrasonic code and ultraReading will be the distance
-    // // // the robot start and will walk until the wall then turn
-
-    // if (FirstTime)
-    //   first_round();
-
-    // if (ReadFromDetection)
-    // {
-    //   ReadFromDetection = false;
-    //   // Assuming that it will move in slow motion till the action is not right
-    //   if (action_bc == 2 && last_turn_dir != 1)
-    //   {
-    //     is_bet_balls = !is_bet_balls;
-    //     last_turn_dir = 1;
-    //     Right(255);
-    //   }
-    //   if (action_bc == 3 && last_turn_dir != -1)
-    //   { // if it faces a ball that it has to avoid
-
-    //     is_bet_balls = !is_bet_balls;
-    //     last_turn_dir = -1;
-    //     Left(255);
-    //   }
-    //   if (action_bc == 1)
-    //   { // Move forward
-    //     last_turn_dir = 0;
-    //     Forward(255, 255);
-    //   }
-    //   if(action_bc == 4 ) //avoid forward
-    //    {if (last_turn_dir==1) // if the last dir is right turn left
-    //         Left(255);
-    //         else if (last_turn_dir==-1) //if the last dir is left turn right
-    //         Right(255);
-
-    //   }
-    // }
-    // // Menna :TODO: put the ultrasonic code and ultraReading will be the distance
-    // if (ReadUS() <= d1)
-    // {
-    //   finish_round();
-    // }
-    // if (round_no == all_rounds)
-    // {
-    //     Forward();
-    //   while (ReadUS() > GoalDist);
-    //   turnLeft();
-    //   while(ReadUS() > 10)
-    //   Stop();
-    //   // Menna:TODO: the robot must round like in the first round but in the opposite direction
-    //   // We have to call firstround here
-    // Serial.println(" == Finish Finish All == ");
-    // while(1);
-    // }
-
-    // TODO : Menna
-    //delay(50);
+  // Forward(0,255); //right
+  // delay(500);
+  // Forward(255, 255);
 }
-
-void finish_round()
-{
-  round_no++;
-  if (is_bet_balls)
-    d2 -= offset_d;
-  is_bet_balls = 0;
-  last_turn_dir = 0;
-  // TODO : Sara
-  // first turn
-  if (last_round_turn_dir == 1)
-    Right(fullSpeed);
-  else
-    Left(fullSpeed);
-  
-  turn_90_deg();
-  // move forward
-  Forward(fullSpeed, fullSpeed);
-  while (ReadUS() > d3 ) //d3
-    ;
-
-  // Second turn
-  if (last_round_turn_dir == 1)
-    Right(255);
-  else
-    Left(255);
-
-  turn_90_deg();
-
-  last_round_turn_dir *= -1;
-  d2 = d3;
-  d3 -= dd;
-  Forward(fullSpeed, fullSpeed);
-}
-
-
