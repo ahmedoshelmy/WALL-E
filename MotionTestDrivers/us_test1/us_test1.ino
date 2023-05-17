@@ -410,7 +410,7 @@ void loop() {
   if(c.read()) {
     if(c == "set_d") {
       int d = c["d"].get<int>();
-      if(us_read - ReadUS() > 40 || ReadUS() - us_read  > 40) {
+      if(us_read - ReadUS() > 50 || ReadUS() - us_read  > 50) {
         us_read = ReadUS();
         print("$ACK{}");
         switch (d) {

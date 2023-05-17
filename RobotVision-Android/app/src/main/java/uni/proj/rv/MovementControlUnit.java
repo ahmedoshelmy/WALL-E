@@ -5,8 +5,8 @@ import uni.proj.ec.Command;
 // Right = decreasing
 // Left = increasing
 public class MovementControlUnit {
-    static final int ERR_RNG = 2;
-    enum State {
+    static final int ERR_RNG = 3;
+    public  enum State {
         Forward,    //move forward straight
         Centering,  //! centering it self to take the ball
         Turning,    //rotating with specific angle
@@ -17,11 +17,13 @@ public class MovementControlUnit {
         FRONT,
         LEFT,
         RIGHT,
-        Stop
+        Stop,
+        ADJ_LEFT,
+        ADJ_RIGHT
     }
 
     RobotGame robotGame;
-    State curr_state;
+    public State curr_state;
     int first_degree;   // first degree at start of any state
     int curr_degree;    // current degree in that time
 
@@ -61,29 +63,47 @@ public class MovementControlUnit {
         }
     }
     int change = 0;
+    DIRECTION last_dir_cmd = DIRECTION.Stop;
     public void forwardMotion() throws Exception {
         // if it's it first time set the relative angle
-        if(curr_state != State.Forward) {
+
+        if(curr_state != State.Turning) {
             first_degree = curr_degree;
-            curr_state = State.Forward;
-        }
-        if(change != curr_degree - first_degree) {
-            robotGame.print((curr_degree - first_degree) + "\n");
-            change = curr_degree - first_degree;
-        }
-        if(change > ERR_RNG) { //increasing => left => right to tune
-            robotGame.print("I'm Android till you to move right\n");
 
-            robotGame.sendCommand(Command.fromString("move{d=2}"));
+            curr_state = State.Turning;
         }
-        else if(change < ERR_RNG ) { //decreasing => right => left to tune
-            robotGame.print("I'm Android till you to move left\n");
-            robotGame.sendCommand(Command.fromString("move{d=1}"));
-        } else {
-            robotGame.print("I'm Android till you to move forward\n");
+        // ==== Printing purpose =======
+        if(curr_degree - first_degree != change) {
 
-            robotGame.sendCommand(Command.fromString("move{d=0}"));
+            robotGame.print((curr_degree-first_degree) + "\n");
+        }
+        change = curr_degree - first_degree;
 
+        if(change > ERR_RNG ) { //increasing => left => right to tune
+            if( last_dir_cmd != DIRECTION.RIGHT) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+                robotGame.print("phone: move right\n");
+                robotGame.sendCommand(Command.fromString("move{d=2}"));
+            }
+            last_dir_cmd = DIRECTION.RIGHT;
+        }
+        else if(change  < -1* ERR_RNG ) { //decreasing => right => left to tune
+            if( last_dir_cmd != DIRECTION.LEFT) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+
+                robotGame.print("phone: move left\n");
+                robotGame.sendCommand(Command.fromString("move{d=1}"));
+            }
+            last_dir_cmd = DIRECTION.LEFT;
+        }
+        else {
+            if( last_dir_cmd != DIRECTION.FRONT) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+
+                robotGame.print("phone:  forward\n");
+                robotGame.sendCommand(Command.fromString("move{d=0}"));
+            }
+            stoppingMotion();
         }
     }
 
@@ -95,26 +115,45 @@ public class MovementControlUnit {
 
             curr_state = State.Turning;
         }
+        // ==== Printing purpose =======
+        if(curr_degree - first_degree != change) {
 
-        if(change != curr_degree - first_degree) {
-            robotGame.print((curr_degree - first_degree) + "\n");
-            change = curr_degree - first_degree;
+            robotGame.print((curr_degree-first_degree) + "\n");
         }
+        change = curr_degree - first_degree;
 
-        if(change > degree_turn + ERR_RNG) { //increasing => left => right to tune
-            robotGame.sendCommand(Command.fromString("move{d="+DIRECTION.RIGHT.ordinal()+"}"));
+        if(change > degree_turn + ERR_RNG ) { //increasing => left => right to tune
+            if( last_dir_cmd != DIRECTION.RIGHT) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+                robotGame.print("phone: move right\n");
+                robotGame.sendCommand(Command.fromString("move{d=2}"));
+            }
+            last_dir_cmd = DIRECTION.RIGHT;
         }
-        else if(change  < degree_turn   - ERR_RNG) { //decreasing => right => left to tune
-            robotGame.sendCommand(Command.fromString("move{d="+DIRECTION.LEFT.ordinal()+"}"));
-        } else {
-            robotGame.sendCommand(Command.fromString("move{d="+DIRECTION.Stop.ordinal()+"}"));
+        else if(change  < degree_turn   - ERR_RNG ) { //decreasing => right => left to tune
+            if( last_dir_cmd != DIRECTION.LEFT) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+
+                robotGame.print("phone: move left\n");
+                robotGame.sendCommand(Command.fromString("move{d=1}"));
+            }
+            last_dir_cmd = DIRECTION.LEFT;
+        }
+        else {
+            if( last_dir_cmd != DIRECTION.Stop) {
+                robotGame.print((curr_degree - first_degree) + "\n");
+
+                robotGame.print("phone:  stop\n");
+                robotGame.sendCommand(Command.fromString("move{d=3}"));
+            }
+            stoppingMotion();
         }
     }
     public void stoppingMotion() {
         // no need to do anything "just a function in case"
         first_degree = curr_degree;
         curr_state = State.Stopped;
-
+        last_dir_cmd = DIRECTION.Stop;
     }
     public void centeringMotion() {
         // till I know what should I do

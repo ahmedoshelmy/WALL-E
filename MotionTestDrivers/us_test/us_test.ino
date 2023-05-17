@@ -8,7 +8,7 @@ Command c;
 
 // TODO: Set Ultrasonic pin
 #define ULTRA_SONIC_PIN_T 9
-#define ULTRA_SONIC_PIN_E 8
+#define ULTRA_SONIC_PIN_E 10
 #define MAX_US_RD
 
 int game_mode = 0; // for switch between game modes
@@ -301,9 +301,7 @@ int ReadUS()
 {
   // to read ultrasonic sensor value
   // Clears the trigPin
-  float distance = 0;
   
-  do {
     digitalWrite(ULTRA_SONIC_PIN_T, LOW);
     delayMicroseconds(2);
     // Sets the trigPin on HIGH state for 10 micro seconds
@@ -313,12 +311,10 @@ int ReadUS()
     // Reads the echoPin, returns the sound wave travel time in microseconds
     float duration = pulseIn(ULTRA_SONIC_PIN_E, HIGH);
     // Calculating the distance
-    distance = duration * 0.034 / 2;
+    float distance = duration * 0.034 / 2;
 
     // Prints the distance on the Serial Monitor
     
-    delay(50);
-  } while(distance >= 600);
 
   Serial.print("dist : ");
   Serial.println(distance);
@@ -395,12 +391,12 @@ void setup() {
 }
 
 void loop() {
-  // Serial.print(ReadUS());
-  Forward(255,255);
-  while (ReadUS() > d1)
-    ;
-  Right(255);
-  delay(1000);
+  Serial.print(ReadUS());
+  // Forward(255,255);
+  // while (ReadUS() > d1)
+  //   ;
+  // Right(255);
+  // delay(1000);
 
   //nothing, TK_Forward, TK_right, TK_left, AVD_forward
   //0         1           2         3        4

@@ -7,8 +7,8 @@ Command c;
 #define LEFT_CAMERA_SERVO_PIN 15
 
 // TODO: Set Ultrasonic pin
-#define ULTRA_SONIC_PIN_T 9
-#define ULTRA_SONIC_PIN_E 8
+#define ULTRA_SONIC_PIN_T 13
+#define ULTRA_SONIC_PIN_E 12
 #define MAX_US_RD
 
 int game_mode = 0; // for switch between game modes

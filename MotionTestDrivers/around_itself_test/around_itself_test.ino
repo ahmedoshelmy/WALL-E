@@ -8,7 +8,7 @@ Command c;
 
 // TODO: Set Ultrasonic pin
 #define ULTRA_SONIC_PIN_T 9
-#define ULTRA_SONIC_PIN_E 8
+#define ULTRA_SONIC_PIN_E 10
 #define MAX_US_RD
 
 int game_mode = 0; // for switch between game modes
@@ -95,7 +95,7 @@ void Move_Forward_Left() {
   Forward(0, 255);
 }
 void Move_Forward_Right() {
-  Forward(255,0);
+  Forward(200,100);
 }
 void Forward_The_Right()
 {
@@ -168,7 +168,7 @@ void turnLeft()
 
   analogWrite(ENR, fullSpeed);
   analogWrite(ENL, fullSpeed * turn_spd_factor);
-  Stop();
+  Stop(); 
   delay(500);
   Forward_The_Right();
   Reverse_The_Left();
@@ -396,7 +396,7 @@ void setup() {
 
 
   //print("$start{m=0}"); //forward
-
+  // onRoller();
 
 }
 
@@ -501,20 +501,30 @@ void loop() {
           break;
       }
     }*/
-  // }
+//  Forward(255,255);
   //delay(1000);
-  //Right(255);
+  
+  // Right(255);
+  // delay(5000);
+  // Left(200);
   // delay(3000);
-  Right(255);
-  delay(5000);
-  Left(255);
-  delay(5000);
-  Move_Forward_Left(); 
-  delay(5000);
-  Move_Forward_Right(); 
-  delay(5000);
-  Forward(255,255);
-  delay(5000);
+  // forward(255,255);
+  // Move_Forward_Left(); 
+  // delay(5000);
+  //Move_Forward_Right(); 
+  
+  // delay(5000);
+  Forward(200,200);
+  delay(2000);
+  Stop();
+  delay(500);
+  Back(200);
+  // Right(200);
+  // delay(2000);
+  // Left(200);
+  // delay(200);
+  // delay(5000);
+  onRoller();
 
   // delay(500);
   // Forward(0,255); //right

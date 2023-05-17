@@ -8,7 +8,7 @@ Command c;
 
 // TODO: Set Ultrasonic pin
 #define ULTRA_SONIC_PIN_T 9
-#define ULTRA_SONIC_PIN_E 8
+#define ULTRA_SONIC_PIN_E 10
 #define MAX_US_RD
 
 int game_mode = 0; // for switch between game modes
@@ -58,7 +58,7 @@ bool is_bet_balls = 0;       //* is balls in front of WallE
 // TODO: refa ctor better names
 // TODO: set values
 //* taken from pic
-#define d1 30
+#define d1 60
 #define d4 65
 #define dd 30
 #define offset_d 20
@@ -307,9 +307,7 @@ int ReadUS()
 {
   // to read ultrasonic sensor value
   // Clears the trigPin
-  float distance = 0;
   
-  do {
     digitalWrite(ULTRA_SONIC_PIN_T, LOW);
     delayMicroseconds(2);
     // Sets the trigPin on HIGH state for 10 micro seconds
@@ -319,12 +317,10 @@ int ReadUS()
     // Reads the echoPin, returns the sound wave travel time in microseconds
     float duration = pulseIn(ULTRA_SONIC_PIN_E, HIGH);
     // Calculating the distance
-    distance = duration * 0.034 / 2;
+    float distance = duration * 0.034 / 2;
 
     // Prints the distance on the Serial Monitor
     
-    delay(50);
-  } while(distance >= 600);
 
   Serial.print("dist : ");
     Serial.println(distance);
@@ -395,103 +391,50 @@ void setup() {
   // pinMode(3, INPUT);
 
 
-  print("$start{m=2,d=90}"); //forward
 
 
 
 }
 
 void loop() {
-  // Serial.print(ReadUS());
-  // // nothing, TK_Forward, TK_right, TK_left, AVD_forward
-  // // 0         1           2         3        4
-  // // put your main code here, to run repeatedly:
-  // int last_dir = -1;
-  // int us_read = -1000;
-  // if(c.read()) {
-  //   if(c == "set_d") {
-  //     int d = c["d"].get<int>();
-  //     switch (d) {
-  //       case 1:
-  //         // if(us_read - ReadUS() > 40 || ReadUS() - us_read  > 40) {
-  //           print("Arduino : take forward \n");
-  //           // print("$start{m=0}"); //forward
-  //           Forward(255,255);
-  //           onRoller();
-  //           // us_read = ReadUS();
-  //         // }
-  //         break;
-  //       case 4:
-  //         // if(us_read - ReadUS() > 40 || ReadUS() - us_read  > 40) {
-  //           print("Avd Forward \n");
-  //           offRoller();
-  //           // TODO: add direction;
-  //           Move_Forward_Left();
-  //           onRoller();
-  //           //us_read = ReadUS();
-  //         // }
-  //         break;
-        
-  //       case 2:
-  //         print("Arduino : take Right\n");
-  //         // print("$start{m=2,deg=-45}"); //right
-  //         Move_Forward_Right();
-  //         onRoller();
+  Forward(200,200);
+  while(ReadUS() > 100);
+  Stop();
+  bool out_loop = true;
+  print("$start{m=2,d=90}"); //forward
 
-          
-  //         break;
-  //       case 3:
-  //         print("Arduino : take left \n");
-  //         // print("$start{m=2,deg=45}"); //left
-  //         Move_Forward_Left();
-  //         onRoller();
+  while(out_loop) {
 
-
-  //         // Left(100);
-  //         break;
-
-  //       default: 
-  //         Forward(255,255);
-  //         break;
-  //     }
-  //       // case 0:
-  //       //   Forward(255, 255);
-  //       //   print("Arduino: Move Forward %i \n", d);
-  //       //   break;
-  //       // case 1:
-  //       //   Left(255);
-  //       //   print("Arduino: Move Left %i \n", d);
-  //       //   break;
-  //       // case 2:
-  //       //   Right(255);
-  //       //   print("Arduino: Move Right %i \n", d);
-  //       //   break;
+    // ReadUS();
+  if(c.read()) {
+    Serial.println(c) ; 
+    if(c == "move") {
+        print(" ==wow entered ===\n");
+        int d = c["d"].get<int>();
+        switch (d) {
+          case 0:
+            Forward(200, 200);
+            print("Arduino: Move Forward %i \n", d);
+            break;
+          case 1:
+            Left(200);
+            print("Arduino: Move Left %i \n", d);
+            break;
+          case 2:
+            Right(200);
+            print("Arduino: Move Right %i \n", d);
+            break;
+          case 3:
+            Stop();
+            print("Arduino: Stop \n");
+            out_loop = false;
+            break;
+        }
       
-  //   }
-  // }
-
-   if(c == "move") {
-      int d = c["d"].get<int>();
-      switch (d) {
-        case 0:
-          Forward(255, 255);
-          print("Arduino: Move Forward %i \n", d);
-          break;
-        case 1:
-          Left(255);
-          print("Arduino: Move Left %i \n", d);
-          break;
-        case 2:
-          Right(255);
-          print("Arduino: Move Right %i \n", d);
-          break;
-        case 3:
-          Stop();
-          print("Arduino: Stop \n");
-          break;
-      }
     }
   }
+  }
+  Forward(200,200);
   //delay(1000);
   //Right(255);
   // delay(3000);
